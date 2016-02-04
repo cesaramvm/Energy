@@ -10,8 +10,12 @@ import java.util.Arrays;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.LearningRule;
+import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
+import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
+
 
 /**
  *
@@ -78,7 +82,7 @@ public class NeurophModule {
         for (TransferFunctionType type : testTipes) {
             System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
             
-            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
+            NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, INPUT,OUTPUT);
             
             long before = System.currentTimeMillis();
             neuralNetwork.learn(trainingDataSet);
@@ -114,10 +118,17 @@ public class NeurophModule {
 
     }
     
-    public static void test(){
+    public void test(){
         
-        
-        
+         NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, 14,2,1);
+         LearningRule rule = new MomentumBackpropagation();
+                                    //new LMS();
+            //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
+            //new BackPropagation();
+            //new MomentumBackpropagation();
+         neuralNetwork.learn(trainingDataSet, rule);
+         
+         
     }
 
     private void clearTransferFunctionsNotWorking() {
