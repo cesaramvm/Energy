@@ -121,8 +121,10 @@ public class NeurophModule {
     public void test(){
         
          NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, 14,2,1);
-         LearningRule rule = new MomentumBackpropagation();
-                                    //new LMS();
+         MomentumBackpropagation rule = new MomentumBackpropagation();
+         rule.setLearningRate(0.5);
+         rule.setMomentum(0.5);
+                                    //new LMS(); <-SupervisedLearning<-IterativeLearning<-LearningRule
             //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
             //new BackPropagation();
             //new MomentumBackpropagation();
