@@ -24,14 +24,14 @@ import org.neuroph.util.TransferFunctionType;
 public class NeurophModule {
 
     private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
-    private DataSet trainingDataSet;
-    private DataSet testingDataSet;
+    private static DataSet trainingDataSet;
+    private static DataSet testingDataSet;
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
-    private String ANSI_RED = "\u001B[31m";
-    private String ANSI_RESET = "\u001B[0m";
-    private static String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
-    private static String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
+    private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
     public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
         testTipes = arrayTestTipes;
