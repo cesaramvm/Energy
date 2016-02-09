@@ -28,6 +28,8 @@ public class NeurophModule {
     private static DataSet testingDataSet;
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
+    private static double MAXERROR = 0.01;
+    private static int MAXITERATIONS = 5000;
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
@@ -109,8 +111,13 @@ public class NeurophModule {
             nnet.setInput(dataRow.getInput());
             nnet.calculate();
             double[] networkOutput = nnet.getOutput();
+            double[] desiredOut = dataRow.getDesiredOutput();
+            System.out.println("Desired: " + desiredOut[0]);
             System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
             System.out.println(" Output: " + Arrays.toString(networkOutput));
+            
+            //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
+            //LISTENERS NEUROPH
 
         }
         
@@ -124,6 +131,8 @@ public class NeurophModule {
          MomentumBackpropagation rule = new MomentumBackpropagation();
          rule.setLearningRate(0.5);
          rule.setMomentum(0.5);
+         rule.setMaxError(MAXERROR);
+         rule.setMaxIterations(MAXITERATIONS);        
                                     //new LMS(); <-SupervisedLearning<-IterativeLearning<-LearningRule
             //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
             //new BackPropagation();
