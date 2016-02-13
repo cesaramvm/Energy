@@ -7,6 +7,8 @@ package energytfg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
@@ -26,6 +28,7 @@ public class NeurophModule {
     private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
     private static DataSet trainingDataSet;
     private static DataSet testingDataSet;
+    private static BackPropagation rule = new BackPropagation();
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
     private static double MAXERROR = 0.01;
@@ -34,6 +37,7 @@ public class NeurophModule {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
+    
 
     public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
         testTipes = arrayTestTipes;
@@ -43,7 +47,6 @@ public class NeurophModule {
     }
 
     public NeurophModule(TransferFunctionType transferType, String trainingFile, String testingFile) {
-
         testTipes.add(transferType);
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ",");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
@@ -112,9 +115,11 @@ public class NeurophModule {
             nnet.calculate();
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
-            System.out.println("Desired: " + desiredOut[0]);
-            System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
-            System.out.println(" Output: " + Arrays.toString(networkOutput));
+            double errorParcial = networkOutput[0]-desiredOut[0];
+            System.out.println("Error parcial: " + errorParcial);
+            System.out.print("Desired: " + desiredOut[0] + " ");
+//            System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
+            System.out.println(" Output: " + networkOutput[0]);
             
             //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
             //LISTENERS NEUROPH
@@ -141,11 +146,43 @@ public class NeurophModule {
          
          
     }
+    
+    public void test2(){
+        
+        System.out.println("-----PERCEPTRON-----");
+        
+        for (TransferFunctionType type : testTipes) {
+            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
+            
+            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);            
+            long before = System.currentTimeMillis();
+            rule.setMaxError(0.001);
+            neuralNetwork.learn(trainingDataSet, rule);
+            long time = System.currentTimeMillis() - before;
+            
+            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
+            
+            testNetwork(neuralNetwork, trainingDataSet);
+            
+            //Para guardar:
+            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
+            neuralNetwork.save(saveFile);
+            //Para cargar:
+            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+    }
 
     private void clearTransferFunctionsNotWorking() {
-        testTipes.remove(TransferFunctionType.STEP);
-        testTipes.remove(TransferFunctionType.SGN);
-        testTipes.remove(TransferFunctionType.LOG);
+//        testTipes.remove(TransferFunctionType.STEP);
+//        testTipes.remove(TransferFunctionType.SGN);
+//        testTipes.remove(TransferFunctionType.LOG);
     }
 
 }

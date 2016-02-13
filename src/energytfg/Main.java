@@ -33,7 +33,7 @@ public class Main {
         
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH);
 //        learningModule.testMultiLayerPerceptron();
-        learningModule.test();
+        learningModule.test2();
 
 
     }
