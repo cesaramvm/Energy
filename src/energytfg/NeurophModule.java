@@ -150,22 +150,22 @@ public class NeurophModule {
     }
 
     public void test2() {
-        LineChartSample lcs = new LineChartSample();
-        ArrayList<Double> test = new ArrayList<>();
-        test.add(91.24);
-        test.add(44.14);
-        test.add(34.17);
-        test.add(41.49);
-        test.add(18.58);
-
-        Thread thread = new Thread() {
-            public void run() {
-//                      lcs.execute(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
-                lcs.main(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
-            }
-        };
-
-        thread.start();
+//        LineChartSample lcs = new LineChartSample();
+//        ArrayList<Double> test = new ArrayList<>();
+//        test.add(91.24);
+//        test.add(44.14);
+//        test.add(34.17);
+//        test.add(41.49);
+//        test.add(18.58);
+//
+//        Thread thread = new Thread() {
+//            public void run() {
+////                      lcs.execute(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
+//                lcs.main(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
+//            }
+//        };
+//
+//        thread.start();
 
         System.out.println("-----PERCEPTRON-----");
 
@@ -177,6 +177,7 @@ public class NeurophModule {
             NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
             long before = System.currentTimeMillis();
             BackPropagation rule = new BackPropagation();
+            rule.setLearningRate(0.3);
             rule.setMaxError(0.001);
             rule.setMaxIterations(MAXITERATIONS);
             LearningEventListener listener = new LearningEventListener() {
@@ -203,6 +204,7 @@ public class NeurophModule {
 //
 //        thread.start();
 //            DrawGraph.createAndShowGui(chartData, type.toString());
+        LineChartSample lcs = new LineChartSample();
             lcs.main(chartData, type.toString());
 
 //            testNetwork(neuralNetwork, trainingDataSet);
