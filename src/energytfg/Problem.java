@@ -100,25 +100,32 @@ class Problem {
     private void normalizeData(HashMap<Integer, YearInfo> auxYears, ArrayList<Double> maxs, ArrayList<Double> mins) {
         double objRange = maxs.get(0) - mins.get(0);
         double objMax = maxs.get(0) + NORMALIZATION_RANGE_PERCENTAGE * objRange;
-        double objMin = mins.get(0) + NORMALIZATION_RANGE_PERCENTAGE * objRange;
+        double objMin = mins.get(0) - NORMALIZATION_RANGE_PERCENTAGE * objRange;
         System.out.println("El maximo era: " + maxs.get(0) + "ahora es " + objMax);
         System.out.println("El minimo era: " + mins.get(0) + "ahora es " + objMin + "\n");
+
+        ArrayList<Double> newMaxs = new ArrayList<>();
+        ArrayList<Double> newMins = new ArrayList<>();
 
         for (int i = 0; i < numParams; i++) {
             double dataRange = maxs.get(i + 1) - mins.get(i + 1);
             double dataMax = maxs.get(i + 1) + NORMALIZATION_RANGE_PERCENTAGE * dataRange;
-            double dataMin = mins.get(i + 1) + NORMALIZATION_RANGE_PERCENTAGE * dataRange;
+            double dataMin = mins.get(i + 1) - NORMALIZATION_RANGE_PERCENTAGE * dataRange;
             System.out.println("El maximo era: " + maxs.get(i + 1) + "ahora es " + dataMax);
             System.out.println("El minimo era: " + mins.get(i + 1) + "ahora es " + dataMin + "\n");
-            for (YearInfo auxYear : auxYears.values()) {
-                double objNormaliation = normalizeOne(auxYear.getObj(), objMax, objMin);
-                auxYear.setObj(objNormaliation);
-                double normalization = normalizeOne(auxYear.getData(i), dataMax, dataMin);
+            newMaxs.add(dataMax);
+            newMins.add(dataMin);
+        }
+        for (YearInfo auxYear : auxYears.values()) {
+            double objNormaliation = normalizeOne(auxYear.getObj(), objMax, objMin);
+            auxYear.setObj(objNormaliation);
+            for (int i=0; i<numParams; i++){
+                double normalization = normalizeOne(auxYear.getData(i), newMaxs.get(i), newMins.get(i));
                 auxYear.setData(i, normalization);
             }
-
+            
         }
-        
+
         years = auxYears;
     }
 
