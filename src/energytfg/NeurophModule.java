@@ -18,7 +18,6 @@ import org.neuroph.nnet.Perceptron;
 import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
 
-
 /**
  *
  * @author portatil
@@ -36,7 +35,6 @@ public class NeurophModule {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
-    
 
     public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
         testTipes = arrayTestTipes;
@@ -55,53 +53,53 @@ public class NeurophModule {
     public void testPerceptron() {
 
         System.out.println("-----PERCEPTRON-----");
-        
+
         for (TransferFunctionType type : testTipes) {
             System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-            
+
             NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
-            
+
             long before = System.currentTimeMillis();
             neuralNetwork.learn(trainingDataSet);
             long time = System.currentTimeMillis() - before;
-            
+
             System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
-            
+
             testNetwork(neuralNetwork, trainingDataSet);
-            
+
             //Para guardar:
             String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
             neuralNetwork.save(saveFile);
             //Para cargar:
             //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
-            
+
         }
 
     }
-    
-     public void testMultiLayerPerceptron() {
-         
+
+    public void testMultiLayerPerceptron() {
+
         System.out.println("-----MULTI PERCEPTRON-----");
 
         for (TransferFunctionType type : testTipes) {
             System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-            
-            NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, INPUT,OUTPUT);
-            
+
+            NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, INPUT, OUTPUT);
+
             long before = System.currentTimeMillis();
             neuralNetwork.learn(trainingDataSet);
             long time = System.currentTimeMillis() - before;
-            
+
             System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
-            
+
             testNetwork(neuralNetwork, trainingDataSet);
-            
+
             //Para guardar:
             String saveFile = MLPERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
             neuralNetwork.save(saveFile);
             //Para cargar:
             //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
-            
+
         }
 
     }
@@ -114,69 +112,76 @@ public class NeurophModule {
             nnet.calculate();
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
-            double errorParcial = networkOutput[0]-desiredOut[0];
+            double errorParcial = networkOutput[0] - desiredOut[0];
             System.out.println("Error parcial: " + errorParcial);
             System.out.print("Desired: " + desiredOut[0] + " ");
 //            System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
             System.out.println(" Output: " + networkOutput[0]);
-            
+
             //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
             //LISTENERS NEUROPH
-
         }
-        
+
         System.out.println("\n\n");
 
     }
-    
-    public void test(){
-        
-         NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, 14,2,1);
-         MomentumBackpropagation rule = new MomentumBackpropagation();
-         rule.setLearningRate(0.5);
-         rule.setMomentum(0.5);
-         rule.setMaxError(MAXERROR);
-         rule.setMaxIterations(MAXITERATIONS);        
-                                    //new LMS(); <-SupervisedLearning<-IterativeLearning<-LearningRule
-            //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
-            //new BackPropagation();
-            //new MomentumBackpropagation();
-         neuralNetwork.learn(trainingDataSet, rule);
-         
-         
+
+    public void test() {
+
+        NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, 14, 2, 1);
+        MomentumBackpropagation rule = new MomentumBackpropagation();
+        rule.setLearningRate(0.5);
+        rule.setMomentum(0.5);
+        rule.setMaxError(MAXERROR);
+        rule.setMaxIterations(MAXITERATIONS);
+        //new LMS(); <-SupervisedLearning<-IterativeLearning<-LearningRule
+        //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
+        //new BackPropagation();
+        //new MomentumBackpropagation();
+        neuralNetwork.learn(trainingDataSet, rule);
+
     }
-    
-    public void test2(){
-        
-        System.out.println("-----PERCEPTRON-----");
-        
-        for (TransferFunctionType type : testTipes) {
-            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-            
-            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);            
-            long before = System.currentTimeMillis();
-            BackPropagation rule = new BackPropagation();
-            rule.setMaxError(0.001);
-            neuralNetwork.learn(trainingDataSet, rule);
-            long time = System.currentTimeMillis() - before;
-            
-            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
-            
-            testNetwork(neuralNetwork, trainingDataSet);
-            
-            //Para guardar:
-            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
-            neuralNetwork.save(saveFile);
-            //Para cargar:
-            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        
+
+    public void test2() {
+        LineChartSample lcs = new LineChartSample();
+        ArrayList<Double> test = new ArrayList<>();
+        test.add(91.24);
+        test.add(44.14);
+        test.add(34.17);
+        test.add(41.49);
+        test.add(18.58);
+
+        lcs.execute(test);
+
+//        
+//        System.out.println("-----PERCEPTRON-----");
+//        
+//        for (TransferFunctionType type : testTipes) {
+//            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
+//            
+//            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);            
+//            long before = System.currentTimeMillis();
+//            BackPropagation rule = new BackPropagation();
+//            rule.setMaxError(0.001);
+//            neuralNetwork.learn(trainingDataSet, rule);
+//            long time = System.currentTimeMillis() - before;
+//            
+//            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
+//            
+//            testNetwork(neuralNetwork, trainingDataSet);
+//            
+//            //Para guardar:
+//            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
+//            neuralNetwork.save(saveFile);
+//            //Para cargar:
+//            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//        }
     }
 
     private void clearTransferFunctionsNotWorking() {
