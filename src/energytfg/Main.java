@@ -32,7 +32,6 @@ public class Main {
         sol.solve();
         
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH);
-//        learningModule.testMultiLayerPerceptron();
         learningModule.test2();
 
 

@@ -28,7 +28,6 @@ public class NeurophModule {
     private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
     private static DataSet trainingDataSet;
     private static DataSet testingDataSet;
-    private static BackPropagation rule = new BackPropagation();
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
     private static double MAXERROR = 0.01;
@@ -156,6 +155,7 @@ public class NeurophModule {
             
             NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);            
             long before = System.currentTimeMillis();
+            BackPropagation rule = new BackPropagation();
             rule.setMaxError(0.001);
             neuralNetwork.learn(trainingDataSet, rule);
             long time = System.currentTimeMillis() - before;
