@@ -20,19 +20,20 @@ import javafx.stage.Stage;
 public class LineChartSample extends Application {
     
     private static ArrayList<Double> data;
+    private static String mseChartTitle;
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Line Chart Sample");
+        stage.setTitle("Line Chart");
         //defining the axes
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Number of Month");
+        xAxis.setLabel("Epochs");
+        yAxis.setLabel("MSE");
         //creating the chart
-        LineChart<Number, Number> lineChart
-                = new LineChart<Number, Number>(xAxis, yAxis);
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
-        lineChart.setTitle("Stock Monitoring, 2010");
+        lineChart.setTitle("MSE Chart for " + mseChartTitle);
         //defining a series
         XYChart.Series series = new XYChart.Series();
         series.setName("My portfolio");
@@ -42,16 +43,16 @@ public class LineChartSample extends Application {
             series.getData().add(new XYChart.Data(i, d));
         }
 
-        Scene scene = new Scene(lineChart, 800, 600);
-        scene = scene;
+        Scene scene = new Scene(lineChart, 1000, 600);
         lineChart.getData().add(series);
 
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void execute(ArrayList<Double> incomingData) {
+    public void execute(ArrayList<Double> incomingData, String chartTitle) {
         data = incomingData;
+        mseChartTitle = chartTitle;
         launch();
     }
 
