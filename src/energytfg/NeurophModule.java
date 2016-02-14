@@ -204,8 +204,7 @@ public class NeurophModule {
 //
 //        thread.start();
 //            DrawGraph.createAndShowGui(chartData, type.toString());
-        LineChartSample lcs = new LineChartSample();
-            lcs.main(chartData, type.toString());
+        LineChartSample lcs = new LineChartSample(chartData, type.toString());
 
 //            testNetwork(neuralNetwork, trainingDataSet);
             //Para guardar:

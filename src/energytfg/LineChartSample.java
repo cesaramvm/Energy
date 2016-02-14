@@ -24,6 +24,23 @@ public class LineChartSample {
     private static ArrayList<Double> data;
     private static String mseChartTitle;
 
+        public LineChartSample(ArrayList<Double> incomingData, String chartTitle) {
+        data = incomingData;
+        mseChartTitle = chartTitle;
+
+        SwingUtilities.invokeLater(() -> {
+            initAndShowGUI();
+        });
+        /*same as
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                initAndShowGUI();
+            }
+        });
+        */
+    }
+    
     private static void initAndShowGUI() {
         // This method is invoked on the EDT thread
         JFrame frame = new JFrame("Swing and JavaFX");
@@ -75,23 +92,6 @@ public class LineChartSample {
         lineChart.getData().addAll(series);
 
         return (scene);
-    }
-
-    public static void main(ArrayList<Double> incomingData, String chartTitle) {
-        data = incomingData;
-        mseChartTitle = chartTitle;
-
-        SwingUtilities.invokeLater(() -> {
-            initAndShowGUI();
-        });
-        /*same as
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                initAndShowGUI();
-            }
-        });
-        */
     }
 
 }
