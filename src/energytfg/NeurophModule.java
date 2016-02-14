@@ -32,7 +32,7 @@ public class NeurophModule {
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
     private static double MAXERROR = 0.01;
-    private static int MAXITERATIONS = 100;
+    private static int MAXITERATIONS = 10000;
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";

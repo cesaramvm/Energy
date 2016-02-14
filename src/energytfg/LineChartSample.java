@@ -43,12 +43,12 @@ public class LineChartSample {
     
     private static void initAndShowGUI() {
         // This method is invoked on the EDT thread
-        JFrame frame = new JFrame("Swing and JavaFX");
+        JFrame frame = new JFrame(mseChartTitle);
         final JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
         frame.setSize(1000, 600);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         Platform.runLater(() -> {
             initFX(fxPanel);
