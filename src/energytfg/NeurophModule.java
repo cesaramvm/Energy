@@ -133,12 +133,12 @@ public class NeurophModule {
 
             LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
 
-//            testNetwork(neuralNetwork, trainingDataSet);
+            //testNetwork(neuralNetwork, trainingDataSet);
             //Para guardar:
-//            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
-//            neuralNetwork.save(saveFile);
-//Para cargar:
-//NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
+            //String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
+            //neuralNetwork.save(saveFile);
+            //Para cargar:
+            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
             try {
 
                 Thread.sleep(1000);
