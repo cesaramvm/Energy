@@ -14,7 +14,6 @@ import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.events.LearningEvent;
 import static org.neuroph.core.events.LearningEvent.Type.EPOCH_ENDED;
 import org.neuroph.core.events.LearningEventListener;
-import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
 import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
@@ -25,18 +24,20 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeurophModule {
 
-    private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
-    private static DataSet trainingDataSet;
-    private static DataSet testingDataSet;
-    private static ArrayList<Double> chartData = new ArrayList<>();
     private static final int INPUT = 14;
     private static final int OUTPUT = 1;
-    private static double MAXERROR = 0.01;
-    private static int MAXITERATIONS = 10000;
+    private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
+    private static DataSet trainingDataSet;
+    private static DataSet testingDataSet;    
+    
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
+    
+    private static double MAXERROR = 0.01;
+    private static int MAXITERATIONS = 10000;
+    private static ArrayList<Double> chartData = new ArrayList<>();
 
     public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
         testTipes = arrayTestTipes;
@@ -50,112 +51,12 @@ public class NeurophModule {
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
     }
 
-    public void testPerceptron() {
-
-        System.out.println("-----PERCEPTRON-----");
-
-        for (TransferFunctionType type : testTipes) {
-            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-
-            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
-
-            long before = System.currentTimeMillis();
-            neuralNetwork.learn(trainingDataSet);
-            long time = System.currentTimeMillis() - before;
-
-            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
-
-            testNetwork(neuralNetwork, trainingDataSet);
-
-            //Para guardar:
-            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
-            neuralNetwork.save(saveFile);
-            //Para cargar:
-            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
-
-        }
-
-    }
-
-    public void testMultiLayerPerceptron() {
-
-        System.out.println("-----MULTI PERCEPTRON-----");
-
-        for (TransferFunctionType type : testTipes) {
-            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-
-            NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, INPUT, OUTPUT);
-
-            long before = System.currentTimeMillis();
-            neuralNetwork.learn(trainingDataSet);
-            long time = System.currentTimeMillis() - before;
-
-            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
-
-            testNetwork(neuralNetwork, trainingDataSet);
-
-            //Para guardar:
-            String saveFile = MLPERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
-            neuralNetwork.save(saveFile);
-            //Para cargar:
-            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
-
-        }
-
-    }
-
-    public static void testNetwork(NeuralNetwork nnet, DataSet tset) {
-        Double sumatorio = 0.0;
-
-        for (DataSetRow dataRow : tset.getRows()) {
-
-            nnet.setInput(dataRow.getInput());
-            nnet.calculate();
-            double[] networkOutput = nnet.getOutput();
-            double[] desiredOut = dataRow.getDesiredOutput();
-            double errorParcial = networkOutput[0] - desiredOut[0];
-            double sumaux = errorParcial * errorParcial;
-            sumatorio = sumatorio + sumaux;
-
-            System.out.println("Error parcial: " + errorParcial);
-            System.out.print("Desired: " + desiredOut[0] + " ");
-            //System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
-            System.out.println(" Output: " + networkOutput[0]);
-
-            //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
-            //LISTENERS NEUROPH
-        }
-
-        Double resultado = sumatorio / 14;
-        chartData.add(resultado);
-
-        System.out.println("\n\n");
-
-    }
-
     public void test() {
-
-        NeuralNetwork neuralNetwork = new MultiLayerPerceptron(TransferFunctionType.GAUSSIAN, 14, 2, 1);
-        MomentumBackpropagation rule = new MomentumBackpropagation();
-        rule.setLearningRate(0.5);
-        rule.setMomentum(0.5);
-        rule.setMaxError(MAXERROR);
-        rule.setMaxIterations(MAXITERATIONS);
-        //new LMS(); <-SupervisedLearning<-IterativeLearning<-LearningRule
-        //new SigmoidDeltaRule();         new SupervisedHebbianLearning();
-        //new BackPropagation();
-        //new MomentumBackpropagation();
-        neuralNetwork.learn(trainingDataSet, rule);
-
-    }
-
-    public void test2() {
 
         System.out.println("-----PERCEPTRON-----");
 
         for (TransferFunctionType type : testTipes) {
             chartData.clear();
-
             System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
 
             NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
@@ -169,7 +70,7 @@ public class NeurophModule {
                 public void handleLearningEvent(LearningEvent le) {
                     if (le.getEventType() == EPOCH_ENDED) {
                         System.out.println("EPOCH_ENDED");
-                        testNetwork(neuralNetwork, testingDataSet);
+                        mseToChart(neuralNetwork, testingDataSet, "TESTING");
                     }
                 }
             };
@@ -196,11 +97,41 @@ public class NeurophModule {
 
         }
     }
+    
+    private static void mseToChart(NeuralNetwork nnet, DataSet tset, String testConfig) {
+        
+        Double mse = netWorkMSE(nnet, tset);
+        chartData.add(mse);
 
-    private void clearTransferFunctionsNotWorking() {
-//        testTipes.remove(TransferFunctionType.STEP);
-//        testTipes.remove(TransferFunctionType.SGN);
-//        testTipes.remove(TransferFunctionType.LOG);
+        System.out.println("\n\n");
+
     }
+    
+    private static Double netWorkMSE(NeuralNetwork nnet, DataSet tset) {
+        Double sumatorio = 0.0;
+
+        for (DataSetRow dataRow : tset.getRows()) {
+
+            nnet.setInput(dataRow.getInput());
+            nnet.calculate();
+            double[] networkOutput = nnet.getOutput();
+            double[] desiredOut = dataRow.getDesiredOutput();
+            double errorParcial = networkOutput[0] - desiredOut[0];
+            double sumaux = errorParcial * errorParcial;
+            sumatorio = sumatorio + sumaux;
+
+            System.out.println("Error parcial: " + errorParcial);
+            System.out.print("Desired: " + desiredOut[0] + " ");
+            //System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
+            System.out.println(" Output: " + networkOutput[0]);
+
+            //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
+        }
+
+        
+        return sumatorio / INPUT;
+
+    }
+
 
 }

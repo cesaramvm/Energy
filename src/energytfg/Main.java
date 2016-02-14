@@ -32,7 +32,7 @@ public class Main {
         sol.solve();
         
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH);
-        learningModule.test2();
+        learningModule.test();
 
 
     }
