@@ -150,22 +150,6 @@ public class NeurophModule {
     }
 
     public void test2() {
-//        LineChartSample lcs = new LineChartSample();
-//        ArrayList<Double> test = new ArrayList<>();
-//        test.add(91.24);
-//        test.add(44.14);
-//        test.add(34.17);
-//        test.add(41.49);
-//        test.add(18.58);
-//
-//        Thread thread = new Thread() {
-//            public void run() {
-////                      lcs.execute(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
-//                lcs.main(test, "BackProp + Gaussian + lr = 0.4 + maxep = 10000 + maxerr = 15+ 3 2 2 1");
-//            }
-//        };
-//
-//        thread.start();
 
         System.out.println("-----PERCEPTRON-----");
 
@@ -195,16 +179,7 @@ public class NeurophModule {
 
             System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
 
-//        LineChartSample lcs = new LineChartSample();
-//            Thread thread = new Thread() {
-//            public void run() {
-//                lcs.execute(chartData, "TESTING");
-//            }
-//        };
-//
-//        thread.start();
-//            DrawGraph.createAndShowGui(chartData, type.toString());
-        LineChartSample lcs = new LineChartSample(chartData, type.toString());
+            LineChartSample lcs = new LineChartSample(chartData, type.toString());
 
 //            testNetwork(neuralNetwork, trainingDataSet);
             //Para guardar:
