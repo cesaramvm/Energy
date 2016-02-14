@@ -28,16 +28,17 @@ public class NeurophModule {
     private static final int OUTPUT = 1;
     private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
     private static DataSet trainingDataSet;
-    private static DataSet testingDataSet;    
-    
+    private static DataSet testingDataSet;
+
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
-    
-    private static double MAXERROR = 0.01;
+
+    private static double MAXERROR = 0.001;
     private static int MAXITERATIONS = 10000;
-    private static ArrayList<Double> chartData = new ArrayList<>();
+
+    private static ChartData chartData;
 
     public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
         testTipes = arrayTestTipes;
@@ -52,35 +53,85 @@ public class NeurophModule {
     }
 
     public void test() {
+//
+//        System.out.println("-----PERCEPTRON-----");
+//
+//        for (TransferFunctionType type : testTipes) {
+//            chartData.clear();
+//            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
+//
+//            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
+//            long before = System.currentTimeMillis();
+//            BackPropagation rule = new BackPropagation();
+//            rule.setLearningRate(LEARNINGRATE);
+//            rule.setMaxError(MAXERROR);
+//            rule.setMaxIterations(MAXITERATIONS);
+//            LearningEventListener listener = new LearningEventListener() {
+//                @Override
+//                public void handleLearningEvent(LearningEvent le) {
+//                    if (le.getEventType() == EPOCH_ENDED) {
+//                        System.out.println("EPOCH_ENDED");
+//                        mseToChart(neuralNetwork, testingDataSet, "TESTING");
+//                    } else {
+//                        System.out.println("TRAIN ENDED");
+//                    }
+//                }
+//            };
+//            rule.addListener(listener);
+//            neuralNetwork.learn(trainingDataSet, rule);
+//            long time = System.currentTimeMillis() - before;
+//
+////            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
+//
+//            LineChartSample lcs = new LineChartSample(chartData, type.toString());
+//
+////            testNetwork(neuralNetwork, trainingDataSet);
+//            //Para guardar:
+////            String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
+////            neuralNetwork.save(saveFile);
+////Para cargar:
+////NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
+//            try {
+//
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//        }
+    }
 
-        System.out.println("-----PERCEPTRON-----");
+    public void test2() {
 
         for (TransferFunctionType type : testTipes) {
-            chartData.clear();
-            System.out.print(ANSI_RED + "TEST " + TransferFunctionType.valueOf(type.toString()) + ". ");
-
-            NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
-            long before = System.currentTimeMillis();
-            BackPropagation rule = new BackPropagation();
-            rule.setLearningRate(0.3);
-            rule.setMaxError(0.001);
-            rule.setMaxIterations(MAXITERATIONS);
-            LearningEventListener listener = new LearningEventListener() {
-                @Override
-                public void handleLearningEvent(LearningEvent le) {
-                    if (le.getEventType() == EPOCH_ENDED) {
-                        System.out.println("EPOCH_ENDED");
-                        mseToChart(neuralNetwork, testingDataSet, "TESTING");
+            ArrayList<ChartData> arrayChartData = new ArrayList<>();
+            double learningRate = 0.05;
+            for (int i = 0; i < 9; i++) {
+                NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
+                BackPropagation rule = new BackPropagation();
+                LearningEventListener listener = new LearningEventListener() {
+                    @Override
+                    public void handleLearningEvent(LearningEvent le) {
+                        if (le.getEventType() == EPOCH_ENDED) {
+                            System.out.println("EPOCH ENDED");
+                            mseToChartData(neuralNetwork, testingDataSet);
+                        } else {
+                            System.out.println("TRAIN ENDED");
+                        }
                     }
-                }
-            };
-            rule.addListener(listener);
-            neuralNetwork.learn(trainingDataSet, rule);
-            long time = System.currentTimeMillis() - before;
+                };
+                rule.addListener(listener);
+                rule.setMaxError(MAXERROR);
+                rule.setMaxIterations(MAXITERATIONS);                
 
-            System.out.println("Terminado en " + time + " ms." + ANSI_RESET);
+                rule.setLearningRate(learningRate);
+                learningRate = learningRate - 0.005;
+                chartData = new ChartData(String.valueOf(learningRate));
+                neuralNetwork.learn(trainingDataSet, rule);
+                arrayChartData.add(chartData.clone());
+            }
 
-            LineChartSample lcs = new LineChartSample(chartData, type.toString());
+            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
 
 //            testNetwork(neuralNetwork, trainingDataSet);
             //Para guardar:
@@ -97,16 +148,14 @@ public class NeurophModule {
 
         }
     }
-    
-    private static void mseToChart(NeuralNetwork nnet, DataSet tset, String testConfig) {
-        
+
+    private static void mseToChartData(NeuralNetwork nnet, DataSet tset) {
+
         Double mse = netWorkMSE(nnet, tset);
         chartData.add(mse);
 
-        System.out.println("\n\n");
-
     }
-    
+
     private static Double netWorkMSE(NeuralNetwork nnet, DataSet tset) {
         Double sumatorio = 0.0;
 
@@ -120,18 +169,15 @@ public class NeurophModule {
             double sumaux = errorParcial * errorParcial;
             sumatorio = sumatorio + sumaux;
 
-            System.out.println("Error parcial: " + errorParcial);
-            System.out.print("Desired: " + desiredOut[0] + " ");
+//            System.out.println("Error parcial: " + errorParcial);
+//            System.out.print("Desired: " + desiredOut[0] + " ");
             //System.out.println("Input: " + Arrays.toString(dataRow.getInput()));
-            System.out.println(" Output: " + networkOutput[0]);
-
+//            System.out.println(" Output: " + networkOutput[0]);
             //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
         }
 
-        
         return sumatorio / INPUT;
 
     }
-
 
 }

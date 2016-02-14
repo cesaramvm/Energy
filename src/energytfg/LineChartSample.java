@@ -21,10 +21,10 @@ import javax.swing.SwingUtilities;
 
 public class LineChartSample {
 
-    private static ArrayList<Double> data;
+    private static ArrayList<ChartData> data;
     private static String mseChartTitle;
 
-        public LineChartSample(ArrayList<Double> incomingData, String chartTitle) {
+        public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
         data = incomingData;
         mseChartTitle = chartTitle;
 
@@ -79,17 +79,47 @@ public class LineChartSample {
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
         lineChart.setTitle("MSE Chart for " + mseChartTitle);
-        //defining a series
-        XYChart.Series series = new XYChart.Series();
-        series.setName("My portfolio");
-        //populating the series with data
+        ArrayList<XYChart.Series<Number,Number>> arraySeries = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            Double d = data.get(i);
-            series.getData().add(new XYChart.Data(i, d));
+            XYChart.Series series = new XYChart.Series();
+            ChartData chartD = data.get(i);
+            series.setName(chartD.getName());
+            for (int j=0; j<chartD.getGraphData().size(); j++){
+                series.getData().add(new XYChart.Data(j, chartD.get(j)));
+            }
+            arraySeries.add(series);
+            
+            
         }
 
         Scene scene = new Scene(lineChart, 1000, 600);
-        lineChart.getData().addAll(series);
+        lineChart.getData().addAll(arraySeries);
+
+        return (scene);
+    }
+    
+    private static Scene createOldScene() {
+
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Epochs");
+        yAxis.setLabel("MSE");
+        //creating the chart
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
+        lineChart.setTitle("MSE Chart for " + mseChartTitle);
+        //defining a series
+        ArrayList<XYChart.Series<Number,Number>> seriesArray = new ArrayList<>();
+        for (ChartData cd: data){
+            XYChart.Series series = new XYChart.Series();
+            series.setName(cd.getName());
+            for (int i=0; i<cd.getGraphData().size(); i++){
+                series.getData().add(new XYChart.Data(i, cd.getGraphData().get(i)));
+            }
+        }
+
+        Scene scene = new Scene(lineChart, 1000, 600);
+        lineChart.getData().addAll(seriesArray);
 
         return (scene);
     }
