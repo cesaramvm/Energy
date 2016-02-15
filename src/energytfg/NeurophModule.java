@@ -168,7 +168,7 @@ public class NeurophModule {
     }
 
     private static Double netWorkMSE(NeuralNetwork nnet, DataSet tset) {
-//        https://github.com/neuroph/neuroph/blob/master/neuroph-2.9/Contrib/src/main/java/org/neuroph/contrib/eval/Evaluation.java
+//https://github.com/neuroph/neuroph/blob/master/neuroph-2.9/Core/src/main/java/org/neuroph/core/learning/error/MeanSquaredError.java
 // ellos hacen ((real-calculado)²)/2*n  ¿¿??
         Double sumatorio = 0.0;
 
