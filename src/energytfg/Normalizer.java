@@ -82,11 +82,11 @@ public class Normalizer {
     private double deNormalizeOne(double normalizedData, double max, double min) {
         if (norm_Type == 1) {
 
-            return (normalizedData*max - normalizedData*min)+min;
+            return (normalizedData * max - normalizedData * min)+min;
 
         } else {
 
-            return (normalizedData*max);
+            return (normalizedData * max);
 
         }
     }
