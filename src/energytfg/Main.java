@@ -27,12 +27,12 @@ public class Main {
 
         Problem problem = new Problem("ProjectData/O-data.txt");
         problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-        Solution sol = new Solution(problem);
-        sol.solve();
-
-//        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
-        NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
-        learningModule.test2();
+//        Solution sol = new Solution(problem);
+//        sol.solve();
+//
+////        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
+//        NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
+//        learningModule.test2();
 
     }
 

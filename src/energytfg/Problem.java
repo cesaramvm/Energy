@@ -79,9 +79,8 @@ class Problem {
         }
 
         Normalizer norm = new Normalizer(numParams, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE, maxs, mins);
-        norm.normalizeData(auxYears);
+        years = norm.normalizeData(auxYears);
         normalizer = norm;
-
     }
 
     public HashMap<Integer, YearInfo> getYears() {

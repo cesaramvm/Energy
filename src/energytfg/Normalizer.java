@@ -20,10 +20,10 @@ public class Normalizer {
     ArrayList<Double> maxs = new ArrayList<>();
     ArrayList<Double> mins = new ArrayList<>();
 
-    public Normalizer(int num_Params, int norm_Type, double norm_Range_Percentage, ArrayList<Double> max_array, ArrayList<Double> min_array) {
-        num_Params = num_Params;
-        norm_Type = norm_Type;
-        norm_Range_Percentage = norm_Range_Percentage;
+    public Normalizer(int num_params, int norm_type, double norm_range_percentage, ArrayList<Double> max_array, ArrayList<Double> min_array) {
+        num_Params = num_params;
+        norm_Type = norm_type;
+        norm_Range_Percentage = norm_range_percentage;
         maxs = max_array;
         mins = min_array;
     }
