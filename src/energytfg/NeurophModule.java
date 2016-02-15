@@ -126,17 +126,23 @@ public class NeurophModule {
                 };
                 rule.addListener(listener);
                 rule.setMaxError(MAXERROR);
-                rule.setMaxIterations(MAXITERATIONS);                
+                rule.setMaxIterations(MAXITERATIONS);
 
                 rule.setLearningRate(learningRate);
                 learningRate = learningRate - 0.005;
-                DecimalFormat df = new DecimalFormat("0.0000"); 
+                DecimalFormat df = new DecimalFormat("0.0000");
                 chartData = new ChartData(df.format(learningRate));
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
 
-            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+            (new Thread() {
+                public void run() {
+                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+                }
+            }).start();
+
+            
 
             //testNetwork(neuralNetwork, trainingDataSet);
             //Para guardar:
@@ -146,7 +152,7 @@ public class NeurophModule {
             //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
             try {
 
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
             }
