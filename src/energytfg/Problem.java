@@ -23,7 +23,8 @@ import java.util.logging.Logger;
 class Problem {
 
     private HashMap<Integer, YearInfo> years = new HashMap<>();
-    private int numParams;
+    private static int numParams;
+    private static Normalizer normalizer;
     //1 MEANS: KEEPING PROPORCIONALITY IN RANGE (0,1]
     //0 MEANS: NOT KEEPING PROPORCIONALITY IN RANGE [0,1] Abraham
     private static final int NORMALIZATION_TYPE = 0;
@@ -77,7 +78,9 @@ class Problem {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        normalizeData(auxYears, maxs, mins);
+        Normalizer norm = new Normalizer(numParams, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE, maxs, mins);
+        norm.normalizeData(auxYears);
+        normalizer = norm;
 
     }
 
@@ -97,49 +100,15 @@ class Problem {
         this.numParams = numParams;
     }
 
-    private void normalizeData(HashMap<Integer, YearInfo> auxYears, ArrayList<Double> maxs, ArrayList<Double> mins) {
-        double objRange = maxs.get(0) - mins.get(0);
-        double objMax = maxs.get(0) + NORMALIZATION_RANGE_PERCENTAGE * objRange;
-        double objMin = mins.get(0) - NORMALIZATION_RANGE_PERCENTAGE * objRange;
-//        System.out.println("El maximo era: " + maxs.get(0) + "ahora es " + objMax);
-//        System.out.println("El minimo era: " + mins.get(0) + "ahora es " + objMin + "\n");
-
-        ArrayList<Double> newMaxs = new ArrayList<>();
-        ArrayList<Double> newMins = new ArrayList<>();
-
-        for (int i = 0; i < numParams; i++) {
-            double dataRange = maxs.get(i + 1) - mins.get(i + 1);
-            double dataMax = maxs.get(i + 1) + NORMALIZATION_RANGE_PERCENTAGE * dataRange;
-            double dataMin = mins.get(i + 1) - NORMALIZATION_RANGE_PERCENTAGE * dataRange;
-//            System.out.println("El maximo era: " + maxs.get(i + 1) + "ahora es " + dataMax);
-//            System.out.println("El minimo era: " + mins.get(i + 1) + "ahora es " + dataMin + "\n");
-            newMaxs.add(dataMax);
-            newMins.add(dataMin);
-        }
-        for (YearInfo auxYear : auxYears.values()) {
-            double objNormaliation = normalizeOne(auxYear.getObj(), objMax, objMin);
-            auxYear.setObj(objNormaliation);
-            for (int i=0; i<numParams; i++){
-                double normalization = normalizeOne(auxYear.getData(i), newMaxs.get(i), newMins.get(i));
-                auxYear.setData(i, normalization);
-            }
-            
-        }
-
-        years = auxYears;
+    public Normalizer getNormalizer() {
+        return normalizer;
     }
 
-    private double normalizeOne(double data, double max, double min) {
-        if (NORMALIZATION_TYPE == 1) {
-
-            return ((data - min) / (max - min));
-
-        } else {
-
-            return (data / max);
-
-        }
+    public void setNormalizer(Normalizer normalizer) {
+        Problem.normalizer = normalizer;
     }
+    
+    
 
     public void saveNormalizedData(String full, String train, String test) {
 

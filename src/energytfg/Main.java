@@ -31,7 +31,7 @@ public class Main {
         sol.solve();
 
 //        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
-        NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH);
+        NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
         learningModule.test2();
 
     }

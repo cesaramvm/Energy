@@ -5,6 +5,7 @@
  */
 package energytfg;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ public class NeurophModule {
     private static ArrayList<TransferFunctionType> testTipes = new ArrayList<>();
     private static DataSet trainingDataSet;
     private static DataSet testingDataSet;
+    private static Normalizer normalizer;
 
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_RESET = "\u001B[0m";
@@ -40,16 +42,18 @@ public class NeurophModule {
 
     private static ChartData chartData;
 
-    public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile) {
+    public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile, Normalizer norm) {
         testTipes = arrayTestTipes;
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ",");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
+        normalizer = norm;
     }
 
-    public NeurophModule(TransferFunctionType transferType, String trainingFile, String testingFile) {
+    public NeurophModule(TransferFunctionType transferType, String trainingFile, String testingFile, Normalizer norm) {
         testTipes.add(transferType);
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ",");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
+        normalizer = norm;
     }
 
     public void test() {
@@ -126,7 +130,8 @@ public class NeurophModule {
 
                 rule.setLearningRate(learningRate);
                 learningRate = learningRate - 0.005;
-                chartData = new ChartData(String.valueOf(learningRate));
+                DecimalFormat df = new DecimalFormat("0.0000"); 
+                chartData = new ChartData(df.format(learningRate));
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
