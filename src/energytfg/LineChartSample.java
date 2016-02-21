@@ -23,8 +23,9 @@ public class LineChartSample {
 
     private static ArrayList<ChartData> data;
     private static String mseChartTitle;
+    private static JFrame frame;
 
-        public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
+    public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
         data = incomingData;
         mseChartTitle = chartTitle;
 
@@ -43,7 +44,7 @@ public class LineChartSample {
     
     private static void initAndShowGUI() {
         // This method is invoked on the EDT thread
-        JFrame frame = new JFrame(mseChartTitle);
+        frame = new JFrame(mseChartTitle);
         final JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
         frame.setSize(1000, 600);
@@ -122,6 +123,16 @@ public class LineChartSample {
         lineChart.getData().addAll(seriesArray);
 
         return (scene);
+    }
+    
+    public void erase (){
+        
+        if (frame != null){
+            
+            frame.setVisible(false);
+            
+        }
+        
     }
 
 }

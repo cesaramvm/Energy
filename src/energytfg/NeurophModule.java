@@ -5,8 +5,10 @@
  */
 package energytfg;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
@@ -104,14 +106,70 @@ public class NeurophModule {
 //
 //        }
     }
-
-    public void test2() {
-
+    
+    public void testRprop() {
+        
+        ArrayList<Double> learningRates = 
+                new ArrayList<>(Arrays.asList(0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.045, 0.04, 0.035, 0.03));
+        
         for (TransferFunctionType type : testTipes) {
             ArrayList<ChartData> arrayChartData = new ArrayList<>();
-            double learningRate = 0.05;
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < learningRates.size(); i++) {
                 NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
+                
+                Double newLearningRate = learningRates.get(i);
+                ResilientPropagation rule = new ResilientPropagation();
+                LearningEventListener listener = new LearningEventListener() {
+                    @Override
+                    public void handleLearningEvent(LearningEvent le) {
+                        if (le.getEventType() == EPOCH_ENDED) {
+                            System.out.println("EPOCH ENDED");
+                            mseToChartData(neuralNetwork, testingDataSet);
+                        } else {
+                            System.out.println("TRAIN ENDED");
+                        }
+                    }
+                };
+                rule.addListener(listener);
+                rule.setMaxError(MAXERROR);
+                rule.setMaxIterations(MAXITERATIONS);
+                rule.setLearningRate(newLearningRate);
+                
+                DecimalFormat df = new DecimalFormat("0.000");
+                chartData = new ChartData(df.format(newLearningRate));
+                neuralNetwork.learn(trainingDataSet, rule);
+                arrayChartData.add(chartData.clone());
+            }
+
+            
+            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+//            (new Thread() {
+//                public void run() {
+//                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+//                }
+//            }).start();
+            try {
+                System.in.read();
+            } catch (IOException ex) {
+                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            lcs.erase();
+
+        }
+    }
+
+    public void testBackprop() {
+        ResilientPropagation rule2 = new ResilientPropagation();
+        ArrayList<Double> learningRates = 
+                new ArrayList<>(Arrays.asList(0.05, 0.045, 0.04, 0.035, 0.03));
+        
+        for (TransferFunctionType type : testTipes) {
+            ArrayList<ChartData> arrayChartData = new ArrayList<>();
+            for (int i = 0; i < learningRates.size(); i++) {
+                NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
+                
+                Double newLearningRate = learningRates.get(i);
                 BackPropagation rule = new BackPropagation();
                 LearningEventListener listener = new LearningEventListener() {
                     @Override
@@ -127,35 +185,28 @@ public class NeurophModule {
                 rule.addListener(listener);
                 rule.setMaxError(MAXERROR);
                 rule.setMaxIterations(MAXITERATIONS);
-
-                rule.setLearningRate(learningRate);
-                learningRate = learningRate - 0.005;
-                DecimalFormat df = new DecimalFormat("0.0000");
-                chartData = new ChartData(df.format(learningRate));
+                rule.setLearningRate(newLearningRate);
+                
+                DecimalFormat df = new DecimalFormat("0.000");
+                chartData = new ChartData(df.format(newLearningRate));
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
 
-            (new Thread() {
-                public void run() {
-                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
-                }
-            }).start();
-
             
-
-            //testNetwork(neuralNetwork, trainingDataSet);
-            //Para guardar:
-            //String saveFile = PERCEPTRON_SAVE + TransferFunctionType.valueOf(type.toString()) + ".nnet";
-            //neuralNetwork.save(saveFile);
-            //Para cargar:
-            //NeuralNetwork loadedPerceptron = NeuralNetwork.createFromFile("mySamplePerceptron.nnet");
+            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+//            (new Thread() {
+//                public void run() {
+//                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+//                }
+//            }).start();
             try {
-
-                Thread.sleep(5000);
-            } catch (InterruptedException ex) {
+                System.in.read();
+            } catch (IOException ex) {
                 Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            lcs.erase();
 
         }
     }
