@@ -40,7 +40,7 @@ public class NeurophModule {
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
     private static double MAXERROR = 0.001;
-    private static int MAXITERATIONS = 10000;
+    private static int MAXITERATIONS = 5000;
 
     private static ChartData chartData;
 
@@ -106,27 +106,25 @@ public class NeurophModule {
 //
 //        }
     }
-    
+
     public void testRprop() {
-        
-        ArrayList<Double> learningRates = 
-                new ArrayList<>(Arrays.asList(0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.045, 0.04, 0.035, 0.03));
-        
+
+        ArrayList<Double> learningRates
+                = new ArrayList<>(Arrays.asList(0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.045, 0.04, 0.035, 0.03));
+
         for (TransferFunctionType type : testTipes) {
             ArrayList<ChartData> arrayChartData = new ArrayList<>();
             for (int i = 0; i < learningRates.size(); i++) {
                 NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
-                
+
                 Double newLearningRate = learningRates.get(i);
                 ResilientPropagation rule = new ResilientPropagation();
                 LearningEventListener listener = new LearningEventListener() {
                     @Override
                     public void handleLearningEvent(LearningEvent le) {
                         if (le.getEventType() == EPOCH_ENDED) {
-                            System.out.println("EPOCH ENDED");
                             mseToChartData(neuralNetwork, testingDataSet);
                         } else {
-                            System.out.println("TRAIN ENDED");
                         }
                     }
                 };
@@ -134,14 +132,13 @@ public class NeurophModule {
                 rule.setMaxError(MAXERROR);
                 rule.setMaxIterations(MAXITERATIONS);
                 rule.setLearningRate(newLearningRate);
-                
+
                 DecimalFormat df = new DecimalFormat("0.000");
                 chartData = new ChartData(df.format(newLearningRate));
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
 
-            
             LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
 //            (new Thread() {
 //                public void run() {
@@ -153,7 +150,7 @@ public class NeurophModule {
             } catch (IOException ex) {
                 Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             lcs.erase();
 
         }
@@ -161,24 +158,23 @@ public class NeurophModule {
 
     public void testBackprop() {
         ResilientPropagation rule2 = new ResilientPropagation();
-        ArrayList<Double> learningRates = 
-                new ArrayList<>(Arrays.asList(0.05, 0.045, 0.04, 0.035, 0.03));
-        
+        ArrayList<Double> learningRates
+                = new ArrayList<>(Arrays.asList(0.05, 0.045, 0.04, 0.035, 0.03));
+
         for (TransferFunctionType type : testTipes) {
+            //Poner unos cuantos parámetros de la red... Capas ocultas nº neuronas, learningRate y nada más
             ArrayList<ChartData> arrayChartData = new ArrayList<>();
             for (int i = 0; i < learningRates.size(); i++) {
                 NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
-                
+
                 Double newLearningRate = learningRates.get(i);
                 BackPropagation rule = new BackPropagation();
                 LearningEventListener listener = new LearningEventListener() {
                     @Override
                     public void handleLearningEvent(LearningEvent le) {
                         if (le.getEventType() == EPOCH_ENDED) {
-                            System.out.println("EPOCH ENDED");
                             mseToChartData(neuralNetwork, testingDataSet);
                         } else {
-                            System.out.println("TRAIN ENDED");
                         }
                     }
                 };
@@ -186,14 +182,13 @@ public class NeurophModule {
                 rule.setMaxError(MAXERROR);
                 rule.setMaxIterations(MAXITERATIONS);
                 rule.setLearningRate(newLearningRate);
-                
+
                 DecimalFormat df = new DecimalFormat("0.000");
                 chartData = new ChartData(df.format(newLearningRate));
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
 
-            
             LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
 //            (new Thread() {
 //                public void run() {
@@ -205,7 +200,7 @@ public class NeurophModule {
             } catch (IOException ex) {
                 Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             lcs.erase();
 
         }
@@ -229,7 +224,9 @@ public class NeurophModule {
             nnet.calculate();
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
-            double errorParcial = networkOutput[0] - desiredOut[0];
+//            double errorParcial = networkOutput[0] - desiredOut[0];
+            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
+            
             double sumaux = errorParcial * errorParcial;
             sumatorio = sumatorio + sumaux;
 
@@ -240,7 +237,8 @@ public class NeurophModule {
             //TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA NEUROPH
         }
 
-        return sumatorio / INPUT;
+        return sumatorio / (2*INPUT); //Así lo hace neuroph
+//        return sumatorio / (INPUT);
 
     }
 

@@ -1,7 +1,10 @@
 package energytfg;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.neuroph.util.TransferFunctionType;
 
 /*
@@ -33,6 +36,14 @@ public class Main {
 //        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
         learningModule.testRprop();
+        System.out.println("Test completado. Pulsa intro para salir");
+        try {
+            System.in.read();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.exit(0);
 
     }
 
