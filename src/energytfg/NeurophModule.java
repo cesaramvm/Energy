@@ -39,7 +39,7 @@ public class NeurophModule {
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
-    private static double MAXERROR = 0.001;
+    private static double MAXERROR = 0.0005;
     private static int MAXITERATIONS = 5000;
 
     private static ChartData chartData;
@@ -140,18 +140,6 @@ public class NeurophModule {
             }
 
             LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
-//            (new Thread() {
-//                public void run() {
-//                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
-//                }
-//            }).start();
-            try {
-                System.in.read();
-            } catch (IOException ex) {
-                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            lcs.erase();
 
         }
     }
@@ -159,7 +147,7 @@ public class NeurophModule {
     public void testBackprop() {
         ResilientPropagation rule2 = new ResilientPropagation();
         ArrayList<Double> learningRates
-                = new ArrayList<>(Arrays.asList(0.05, 0.045, 0.04, 0.035, 0.03));
+                = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
 
         for (TransferFunctionType type : testTipes) {
             //Poner unos cuantos parámetros de la red... Capas ocultas nº neuronas, learningRate y nada más
@@ -188,20 +176,8 @@ public class NeurophModule {
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
-
+            
             LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
-//            (new Thread() {
-//                public void run() {
-//                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
-//                }
-//            }).start();
-            try {
-                System.in.read();
-            } catch (IOException ex) {
-                Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            lcs.erase();
 
         }
     }
@@ -224,8 +200,8 @@ public class NeurophModule {
             nnet.calculate();
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
-//            double errorParcial = networkOutput[0] - desiredOut[0];
-            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
+            double errorParcial = networkOutput[0] - desiredOut[0];
+//            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
             
             double sumaux = errorParcial * errorParcial;
             sumatorio = sumatorio + sumaux;
