@@ -14,9 +14,9 @@ import java.util.HashMap;
  */
 public class Normalizer {
 
-    private int num_Params;
-    private int norm_Type;
-    private double norm_Range_Percentage;
+    private final int num_Params;
+    private final int norm_Type;
+    private final double norm_Range_Percentage;
     ArrayList<Double> maxs = new ArrayList<>();
     ArrayList<Double> mins = new ArrayList<>();
 

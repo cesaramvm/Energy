@@ -5,12 +5,9 @@
  */
 package energytfg;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
@@ -110,7 +107,7 @@ public class NeurophModule {
     public void testRprop() {
 
         ArrayList<Double> learningRates
-                = new ArrayList<>(Arrays.asList(0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.045, 0.04, 0.035, 0.03));
+                = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
 
         for (TransferFunctionType type : testTipes) {
             ArrayList<ChartData> arrayChartData = new ArrayList<>();
@@ -145,7 +142,6 @@ public class NeurophModule {
     }
 
     public void testBackprop() {
-        ResilientPropagation rule2 = new ResilientPropagation();
         ArrayList<Double> learningRates
                 = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
 
@@ -201,6 +197,9 @@ public class NeurophModule {
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
             double errorParcial = networkOutput[0] - desiredOut[0];
+            System.out.println("Output: " + normalizer.denormalizeObjective(networkOutput[0]));
+            System.out.println("Desired: " + normalizer.denormalizeObjective(desiredOut[0]));
+            System.out.println("Error: " + errorParcial);
 //            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
             
             double sumaux = errorParcial * errorParcial;

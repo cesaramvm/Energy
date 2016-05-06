@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.neuroph.util.TransferFunctionType;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Cesar
@@ -32,8 +27,8 @@ public class Main {
 
 //        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
-//        learningModule.testRprop();
-        learningModule.testBackprop();
+        learningModule.testRprop();
+//        learningModule.testBackprop();
 
     }
 
