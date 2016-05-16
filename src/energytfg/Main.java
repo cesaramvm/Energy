@@ -25,7 +25,7 @@ public class Main {
         Solution sol = new Solution(problem);
         sol.solve();
 
-//        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH);
+//        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH, problem.getNormalizer());
         NeurophModule learningModule = new NeurophModule(ALLTYPES, TRAINPATH, TESTPATH, problem.getNormalizer());
         learningModule.testRprop();
 //        learningModule.testBackprop();
