@@ -78,9 +78,14 @@ class Problem {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Normalizer norm = new Normalizer(numParams, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE, maxs, mins);
-        years = norm.normalizeData(auxYears);
+        Normalizer norm = new Normalizer(numParams+1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);
+        years = norm.normalizeData(auxYears, maxs, mins);
         normalizer = norm;
+        
+//        System.out.println(auxYears.get(2000));
+//        System.out.println(years.get(2000));
+//        System.out.println(normalizer.denormalizeObjective(years.get(2000).getObj()));
+//        System.exit(0);
     }
 
     public HashMap<Integer, YearInfo> getYears() {
