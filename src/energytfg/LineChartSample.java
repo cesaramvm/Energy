@@ -30,7 +30,7 @@ public class LineChartSample {
     private ArrayList<ChartData> data;
     private String mseChartTitle;
     private JFrame frame;
-    private int blockSentinel = 1;
+    private boolean blockSentinel = true;
 
     public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
         data = incomingData;
@@ -40,7 +40,7 @@ public class LineChartSample {
             initAndShowGUI();
         });
 
-        while (this.blockSentinel == 1) {
+        while (blockSentinel) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -112,15 +112,25 @@ public class LineChartSample {
 
         lineChart.setTitle("MSE Chart for " + mseChartTitle);
         ArrayList<XYChart.Series<Number, Number>> arraySeries = new ArrayList<>();
+
         for (int i = 0; i < data.size(); i++) {
             XYChart.Series series = new XYChart.Series();
             ChartData chartD = data.get(i);
             series.setName(chartD.getName());
             //Me quito los 4 primeros epochs porque tienen un error demasiado grande y hace que la gráfica
             //Se vea demasiado pequeña
-            for (int j = 4; j < chartD.getGraphData().size(); j++) {
-                series.getData().add(new XYChart.Data(j, chartD.get(j)));
+            if(chartD.getGraphData().size() > 100){
+                for (int j = 4; j < chartD.getGraphData().size(); j++) {
+                    if (j%(chartD.getGraphData().size()/100) == 0){
+                    series.getData().add(new XYChart.Data(j, chartD.get(j)));
+                    }
+                }
+            } else{
+                for (int j = 4; j < chartD.getGraphData().size(); j++) {
+                    series.getData().add(new XYChart.Data(j, chartD.get(j)));
+                }
             }
+                
             arraySeries.add(series);
 
         }
@@ -132,8 +142,8 @@ public class LineChartSample {
     }
 
     private void exit(boolean close) {
-        if(blockSentinel==1){
-            blockSentinel = 0;
+        if(blockSentinel){
+            blockSentinel = false;
         }
         if (close) {
             frame.dispose();

@@ -36,7 +36,7 @@ public class NeurophModule {
     private static final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
-    private static double MAXERROR = 0.0005;
+    private static double MAXERROR = 0.001;
     private static int MAXITERATIONS = 5000;
 
     private static ChartData chartData;
@@ -106,10 +106,13 @@ public class NeurophModule {
 
     public void testRprop() {
 
-        ArrayList<Double> learningRates
-                = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
+//        ArrayList<Double> learningRates
+//                = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
+ArrayList<Double> learningRates
+                = new ArrayList<>(Arrays.asList(0.01, 0.05, 0.1, 0.2, 0.3, 0.5));
 
         for (TransferFunctionType type : testTipes) {
+            System.out.println(type.toString());
             ArrayList<ChartData> arrayChartData = new ArrayList<>();
             for (int i = 0; i < learningRates.size(); i++) {
                 NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, type);
@@ -117,11 +120,15 @@ public class NeurophModule {
                 Double newLearningRate = learningRates.get(i);
                 ResilientPropagation rule = new ResilientPropagation();
                 LearningEventListener listener = new LearningEventListener() {
+                    int j = 0;
                     @Override
                     public void handleLearningEvent(LearningEvent le) {
                         if (le.getEventType() == EPOCH_ENDED) {
                             mseToChartData(neuralNetwork, testingDataSet);
+                            j++;
+//                            System.out.println("                                           "+j);
                         } else {
+                            System.out.println(newLearningRate + " " + j);
                         }
                     }
                 };
@@ -197,9 +204,9 @@ public class NeurophModule {
             double[] networkOutput = nnet.getOutput();
             double[] desiredOut = dataRow.getDesiredOutput();
             double errorParcial = networkOutput[0] - desiredOut[0];
-            System.out.println("Output: " + normalizer.denormalizeObjective(networkOutput[0]));
-            System.out.println("Desired: " + normalizer.denormalizeObjective(desiredOut[0]));
-            System.out.println("Error: " + errorParcial);
+//            System.out.println("Output: " + normalizer.denormalizeObjective(networkOutput[0]));
+//            System.out.println("Desired: " + normalizer.denormalizeObjective(desiredOut[0]));
+//            System.out.println("Error: " + errorParcial);
 //            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
             
             double sumaux = errorParcial * errorParcial;
