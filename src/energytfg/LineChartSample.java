@@ -30,11 +30,12 @@ public class LineChartSample {
     private ArrayList<ChartData> data;
     private String mseChartTitle;
     private JFrame frame;
-    private boolean blockSentinel = true;
+    private boolean blockSentinel;
 
-    public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
+    public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle, boolean block) {
         data = incomingData;
         mseChartTitle = chartTitle;
+        blockSentinel = block;
 
         SwingUtilities.invokeLater(() -> {
             initAndShowGUI();
@@ -55,7 +56,7 @@ public class LineChartSample {
         frame = new JFrame(mseChartTitle);
         final JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
-        frame.setSize(1000, 600);
+        frame.setSize(600, 360);
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override

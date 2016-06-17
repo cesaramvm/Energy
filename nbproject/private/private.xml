@@ -3,18 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/home/sobremesa/Energy/src/energytfg/Solution.java</file>
-            <file>file:/home/sobremesa/Energy/src/energytfg/Main.java</file>
-            <file>file:/home/sobremesa/Energy/src/energytfg/LineChartSample.java</file>
-            <file>file:/home/sobremesa/Energy/src/energytfg/Problem.java</file>
-            <file>file:/home/sobremesa/Energy/src/energytfg/NeurophModule.java</file>
-=======
-            <file>file:/D:/Windows/Documentos/Energy/src/energytfg/Problem.java</file>
-            <file>file:/D:/Windows/Documentos/Energy/src/energytfg/NeurophModule.java</file>
-            <file>file:/D:/Windows/Documentos/Energy/src/energytfg/Normalizer.java</file>
-            <file>file:/D:/Windows/Documentos/Energy/src/energytfg/LineChartSample.java</file>
->>>>>>> fdbd5d6a1b82e3808e25b1783d67023d5b153054
+            <file>file:/C:/Users/Cesar/Documents/Energy/src/energytfg/NeurophModule.java</file>
+            <file>file:/C:/Users/Cesar/Documents/Energy/src/energytfg/Solution.java</file>
+            <file>file:/C:/Users/Cesar/Documents/Energy/src/energytfg/help.java</file>
+            <file>file:/C:/Users/Cesar/Documents/Energy/src/energytfg/Main.java</file>
         </group>
     </open-files>
 </project-private>

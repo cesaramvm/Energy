@@ -8,12 +8,14 @@ package energytfg;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.events.LearningEvent;
 import static org.neuroph.core.events.LearningEvent.Type.EPOCH_ENDED;
 import org.neuroph.core.events.LearningEventListener;
+import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
 import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
@@ -37,7 +39,7 @@ public class NeurophModule {
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
     private static double MAXERROR = 0.001;
-    private static int MAXITERATIONS = 5000;
+    private static int MAXITERATIONS = 20*1000;
 
     private static ChartData chartData;
 
@@ -108,7 +110,7 @@ public class NeurophModule {
 
 //        ArrayList<Double> learningRates
 //                = new ArrayList<>(Arrays.asList(0.02, 0.01, 0.005, 0.001));
-ArrayList<Double> learningRates
+        ArrayList<Double> learningRates
                 = new ArrayList<>(Arrays.asList(0.01, 0.05, 0.1, 0.2, 0.3, 0.5));
 
         for (TransferFunctionType type : testTipes) {
@@ -121,19 +123,19 @@ ArrayList<Double> learningRates
                 ResilientPropagation rule = new ResilientPropagation();
                 LearningEventListener listener = new LearningEventListener() {
                     int j = 0;
+
                     @Override
                     public void handleLearningEvent(LearningEvent le) {
                         if (le.getEventType() == EPOCH_ENDED) {
                             mseToChartData(neuralNetwork, testingDataSet);
                             j++;
-//                            System.out.println("                                           "+j);
                         } else {
                             System.out.println(newLearningRate + " " + j);
                         }
                     }
                 };
                 rule.addListener(listener);
-                rule.setMaxError(MAXERROR);
+                rule.setMaxError(0);
                 rule.setMaxIterations(MAXITERATIONS);
                 rule.setLearningRate(newLearningRate);
 
@@ -143,7 +145,8 @@ ArrayList<Double> learningRates
                 arrayChartData.add(chartData.clone());
             }
 
-            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+            boolean block = false;
+            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString(), block);
 
         }
     }
@@ -161,11 +164,15 @@ ArrayList<Double> learningRates
                 Double newLearningRate = learningRates.get(i);
                 BackPropagation rule = new BackPropagation();
                 LearningEventListener listener = new LearningEventListener() {
+                    int j = 0;
+
                     @Override
                     public void handleLearningEvent(LearningEvent le) {
                         if (le.getEventType() == EPOCH_ENDED) {
                             mseToChartData(neuralNetwork, testingDataSet);
+                            j++;
                         } else {
+                            System.out.println(newLearningRate + " " + j);
                         }
                     }
                 };
@@ -179,10 +186,80 @@ ArrayList<Double> learningRates
                 neuralNetwork.learn(trainingDataSet, rule);
                 arrayChartData.add(chartData.clone());
             }
-            
-            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString());
+            boolean block = false;
+            LineChartSample lcs = new LineChartSample(arrayChartData, type.toString(), block);
 
         }
+    }
+
+    public void testing() {
+        ArrayList<Double> learningRates
+                = new ArrayList<>(Arrays.asList(0.1, 0.2, 0.3, 0.5));
+        for (TransferFunctionType type : testTipes) {
+                    System.out.println(type.toString());
+            for (int i = 2; i <= 6; i++) {
+                for (int j = 2; j <= 6; j++) {
+                System.out.println("    " + i + " " + j);
+                    ArrayList<ChartData> arrayChartData = new ArrayList<>();
+                    Iterator it = learningRates.iterator();
+                    while (it.hasNext()) {
+                        NeuralNetwork neuralNetwork = new MultiLayerPerceptron(type, INPUT, i, j, OUTPUT);
+                        Double newLearningRate = (Double) it.next();
+                        ResilientPropagation rule = new ResilientPropagation();
+                        LearningEventListener listener = new LearningEventListener() {
+                            int j = 0;
+
+                            @Override
+                            public void handleLearningEvent(LearningEvent le) {
+                                if (le.getEventType() == EPOCH_ENDED) {
+                                    mseToChartData(neuralNetwork, testingDataSet);
+                                    j++;
+                                } else {
+                                    System.out.println("        " + newLearningRate + " " + j);
+                                }
+                            }
+                        };
+                        rule.addListener(listener);
+                        rule.setMaxError(0);
+                        rule.setMaxIterations(MAXITERATIONS);
+                        rule.setLearningRate(newLearningRate);
+
+                        DecimalFormat df = new DecimalFormat("0.000");
+                        chartData = new ChartData(df.format(newLearningRate));
+                        neuralNetwork.learn(trainingDataSet, rule);
+                        arrayChartData.add(chartData.clone());
+
+                    }
+                    boolean block = false;
+                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString() + " " + i + " " + j, block);
+                }
+            }
+        }
+    }
+
+    public void simple() {
+        ArrayList<ChartData> arrayChartData = new ArrayList<>();
+        NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, TransferFunctionType.GAUSSIAN);
+        ResilientPropagation rule = new ResilientPropagation();
+
+        LearningEventListener listener = new LearningEventListener() {
+            int j = 0;
+
+            @Override
+            public void handleLearningEvent(LearningEvent le) {
+
+                if (le.getEventType() == EPOCH_ENDED) {
+                    j++;
+                    System.out.println(j);
+//                            System.out.println("                                           "+j);
+                }
+            }
+        };
+        rule.addListener(listener);
+
+        rule.setMaxIterations(5000);
+        neuralNetwork.learn(trainingDataSet, rule);
+
     }
 
     private static void mseToChartData(NeuralNetwork nnet, DataSet tset) {
@@ -208,7 +285,7 @@ ArrayList<Double> learningRates
 //            System.out.println("Desired: " + normalizer.denormalizeObjective(desiredOut[0]));
 //            System.out.println("Error: " + errorParcial);
 //            double errorParcial = normalizer.denormalizeObjective(networkOutput[0]) - normalizer.denormalizeObjective(desiredOut[0]);
-            
+
             double sumaux = errorParcial * errorParcial;
             sumatorio = sumatorio + sumaux;
 
