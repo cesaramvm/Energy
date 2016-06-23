@@ -39,22 +39,22 @@ public class NeurophModule {
     private static final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
     private static double MAXERROR = 0.001;
-    private static int MAXITERATIONS = 20*1000;
+    private static int MAXITERATIONS = 60 * 1000;
 
     private static ChartData chartData;
 
-    public NeurophModule(ArrayList<TransferFunctionType> arrayTestTipes, String trainingFile, String testingFile, Normalizer norm) {
-        testTipes = arrayTestTipes;
+    public NeurophModule(String trainingFile, String testingFile, Normalizer norm) {
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ",");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
         normalizer = norm;
     }
-
-    public NeurophModule(TransferFunctionType transferType, String trainingFile, String testingFile, Normalizer norm) {
-        testTipes.add(transferType);
-        trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ",");
-        testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ",");
-        normalizer = norm;
+    
+    public void setTransferTypes (ArrayList<TransferFunctionType> arrayTestTipes){
+        testTipes = arrayTestTipes;
+    }
+    
+    void start() {
+        
     }
 
     public void test() {
@@ -196,15 +196,50 @@ public class NeurophModule {
         ArrayList<Double> learningRates
                 = new ArrayList<>(Arrays.asList(0.1, 0.2, 0.3, 0.5));
         for (TransferFunctionType type : testTipes) {
-                    System.out.println(type.toString());
-            for (int i = 2; i <= 6; i++) {
-                for (int j = 2; j <= 6; j++) {
-                System.out.println("    " + i + " " + j);
-                    ArrayList<ChartData> arrayChartData = new ArrayList<>();
-                    Iterator it = learningRates.iterator();
-                    while (it.hasNext()) {
+            System.out.println(type.toString());
+            for (int i = 6; i <= 6; i++) {
+
+                System.out.println("    " + i);
+                ArrayList<ChartData> arrayChartData = new ArrayList<>();
+                Iterator it = learningRates.iterator();
+                while (it.hasNext()) {
+                    NeuralNetwork neuralNetwork = new MultiLayerPerceptron(type, INPUT, i, OUTPUT);
+                    Double newLearningRate = (Double) it.next();
+                    ResilientPropagation rule = new ResilientPropagation();
+                    LearningEventListener listener = new LearningEventListener() {
+                        int j = 0;
+
+                        @Override
+                        public void handleLearningEvent(LearningEvent le) {
+                            if (le.getEventType() == EPOCH_ENDED) {
+                                mseToChartData(neuralNetwork, testingDataSet);
+                                j++;
+                            } else {
+                                System.out.println("        " + newLearningRate + " " + j);
+                            }
+                        }
+                    };
+                    rule.addListener(listener);
+                    rule.setMaxError(0);
+                    rule.setMaxIterations(MAXITERATIONS);
+                    rule.setLearningRate(newLearningRate);
+
+                    DecimalFormat df = new DecimalFormat("0.000");
+                    chartData = new ChartData(df.format(newLearningRate));
+                    neuralNetwork.learn(trainingDataSet, rule);
+                    arrayChartData.add(chartData.clone());
+
+                }
+                boolean block = false;
+                LineChartSample lcs = new LineChartSample(arrayChartData, type.toString() + " " + i + " ", block);
+
+                for (int j = 3; j <= 6; j++) {
+                    System.out.println("    " + i + " " + j);
+                    ArrayList<ChartData> arrayChartData2 = new ArrayList<>();
+                    Iterator it2 = learningRates.iterator();
+                    while (it2.hasNext()) {
                         NeuralNetwork neuralNetwork = new MultiLayerPerceptron(type, INPUT, i, j, OUTPUT);
-                        Double newLearningRate = (Double) it.next();
+                        Double newLearningRate = (Double) it2.next();
                         ResilientPropagation rule = new ResilientPropagation();
                         LearningEventListener listener = new LearningEventListener() {
                             int j = 0;
@@ -227,41 +262,116 @@ public class NeurophModule {
                         DecimalFormat df = new DecimalFormat("0.000");
                         chartData = new ChartData(df.format(newLearningRate));
                         neuralNetwork.learn(trainingDataSet, rule);
-                        arrayChartData.add(chartData.clone());
+                        arrayChartData2.add(chartData.clone());
 
                     }
-                    boolean block = false;
-                    LineChartSample lcs = new LineChartSample(arrayChartData, type.toString() + " " + i + " " + j, block);
+                    LineChartSample lcs2 = new LineChartSample(arrayChartData2, type.toString() + " " + i + " " + j, block);
                 }
             }
         }
     }
 
     public void simple() {
-        ArrayList<ChartData> arrayChartData = new ArrayList<>();
-        NeuralNetwork neuralNetwork = new Perceptron(INPUT, OUTPUT, TransferFunctionType.GAUSSIAN);
-        ResilientPropagation rule = new ResilientPropagation();
+//        ArrayList<Double> learningRates
+//                = new ArrayList<>(Arrays.asList(0.1, 0.2, 0.3, 0.5));
+        ArrayList<Double> learningRates
+                = new ArrayList<>(Arrays.asList(0.6, 0.7, 0.8));
+        for (TransferFunctionType type : testTipes) {
+            Iterator it = learningRates.iterator();
+            while (it.hasNext()) {
+                Double newLearningRate = (Double) it.next();
+                System.out.println(type.toString());
+                int i = 6;
+                int j = 3;
+                ArrayList<ChartData> arrayChartData = new ArrayList<>();
 
-        LearningEventListener listener = new LearningEventListener() {
-            int j = 0;
+                boolean block = false;
+                System.out.println("    " + i + " " + j);
+                
+                
+                for (int z = 0; z < 5; z++) {
+                    NeuralNetwork neuralNetwork = new MultiLayerPerceptron(type, INPUT, i, j, OUTPUT);
+                    ResilientPropagation rule = new ResilientPropagation();
+                    LearningEventListener listener = new LearningEventListener() {
+                        int j = 0;
 
-            @Override
-            public void handleLearningEvent(LearningEvent le) {
+                        @Override
+                        public void handleLearningEvent(LearningEvent le) {
+                            if (le.getEventType() == EPOCH_ENDED) {
+                                mseToChartData(neuralNetwork, testingDataSet);
+                                j++;
+                            } else {
+                                System.out.println("        " + newLearningRate + " " + j);
+                            }
+                        }
+                    };
+                    rule.addListener(listener);
+                    rule.setMaxError(0);
+                    rule.setMaxIterations(MAXITERATIONS);
+                    rule.setLearningRate(newLearningRate);
 
-                if (le.getEventType() == EPOCH_ENDED) {
-                    j++;
-                    System.out.println(j);
-//                            System.out.println("                                           "+j);
+                    DecimalFormat df = new DecimalFormat("0.000");
+                    chartData = new ChartData(df.format(newLearningRate));
+                    neuralNetwork.learn(trainingDataSet, rule);
+                    arrayChartData.add(chartData.clone());
+
                 }
-            }
-        };
-        rule.addListener(listener);
+                LineChartSample lcs2 = new LineChartSample(arrayChartData, type.toString() + " " + i + " " + j, block);
 
-        rule.setMaxIterations(5000);
-        neuralNetwork.learn(trainingDataSet, rule);
+            }
+
+        }
 
     }
 
+    public void oneGraph(ArrayList<Double> learningRates, int firstLayer, int secondLayer){
+        
+        for (TransferFunctionType type : testTipes) {
+            Iterator it = learningRates.iterator();
+            while (it.hasNext()) {
+                Double newLearningRate = (Double) it.next();
+                System.out.println(type.toString());
+                ArrayList<ChartData> arrayChartData = new ArrayList<>();
+
+                boolean block = false;
+                System.out.println("    " + firstLayer + " " + secondLayer);
+                
+                
+                for (int z = 0; z < 5; z++) {
+                    NeuralNetwork neuralNetwork = new MultiLayerPerceptron(type, INPUT, firstLayer, secondLayer, OUTPUT);
+                    ResilientPropagation rule = new ResilientPropagation();
+                    LearningEventListener listener = new LearningEventListener() {
+                        int j = 0;
+
+                        @Override
+                        public void handleLearningEvent(LearningEvent le) {
+                            if (le.getEventType() == EPOCH_ENDED) {
+                                mseToChartData(neuralNetwork, testingDataSet);
+                                j++;
+                            } else {
+                                System.out.println("        " + newLearningRate + " " + j);
+                            }
+                        }
+                    };
+                    rule.addListener(listener);
+                    rule.setMaxError(0);
+                    rule.setMaxIterations(MAXITERATIONS);
+                    rule.setLearningRate(newLearningRate);
+
+                    DecimalFormat df = new DecimalFormat("0.000");
+                    chartData = new ChartData(df.format(newLearningRate));
+                    neuralNetwork.learn(trainingDataSet, rule);
+                    arrayChartData.add(chartData.clone());
+
+                }
+                LineChartSample lcs2 = new LineChartSample(arrayChartData, type.toString() + " " + firstLayer + " " + secondLayer, block);
+
+            }
+
+        }
+        
+    }
+    
     private static void mseToChartData(NeuralNetwork nnet, DataSet tset) {
 
         Double mse = netWorkMSE(nnet, tset);

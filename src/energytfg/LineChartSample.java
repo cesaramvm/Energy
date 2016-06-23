@@ -58,6 +58,7 @@ public class LineChartSample {
         frame.add(fxPanel);
         frame.setSize(600, 360);
         frame.setVisible(true);
+        frame.setLocation(-1280, 0);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
@@ -110,7 +111,7 @@ public class LineChartSample {
         yAxis.setLabel("MSE");
         //creating the chart
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-
+        lineChart.setCreateSymbols(false);
         lineChart.setTitle("MSE Chart for " + mseChartTitle);
         ArrayList<XYChart.Series<Number, Number>> arraySeries = new ArrayList<>();
 
@@ -120,18 +121,18 @@ public class LineChartSample {
             series.setName(chartD.getName());
             //Me quito los 4 primeros epochs porque tienen un error demasiado grande y hace que la gráfica
             //Se vea demasiado pequeña
-            if(chartD.getGraphData().size() > 100){
+            if (chartD.getGraphData().size() > 20) {
                 for (int j = 4; j < chartD.getGraphData().size(); j++) {
-                    if (j%(chartD.getGraphData().size()/100) == 0){
-                    series.getData().add(new XYChart.Data(j, chartD.get(j)));
+                    if (j % (chartD.getGraphData().size() / 100) == 0) {
+                        series.getData().add(new XYChart.Data(j, chartD.get(j)));
                     }
                 }
-            } else{
+            } else {
                 for (int j = 4; j < chartD.getGraphData().size(); j++) {
                     series.getData().add(new XYChart.Data(j, chartD.get(j)));
                 }
             }
-                
+
             arraySeries.add(series);
 
         }
@@ -143,7 +144,7 @@ public class LineChartSample {
     }
 
     private void exit(boolean close) {
-        if(blockSentinel){
+        if (blockSentinel) {
             blockSentinel = false;
         }
         if (close) {
