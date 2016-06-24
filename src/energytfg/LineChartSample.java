@@ -58,7 +58,7 @@ public class LineChartSample {
         frame.add(fxPanel);
         frame.setSize(600, 360);
         frame.setVisible(true);
-        frame.setLocation(-1280, 0);
+//        frame.setLocation(-1280, 0);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
@@ -117,19 +117,19 @@ public class LineChartSample {
 
         for (int i = 0; i < data.size(); i++) {
             XYChart.Series series = new XYChart.Series();
-            ChartData chartD = data.get(i);
-            series.setName(chartD.getName());
+            ChartData chart = data.get(i);
+            series.setName(chart.getName());
             //Me quito los 4 primeros epochs porque tienen un error demasiado grande y hace que la gráfica
             //Se vea demasiado pequeña
-            if (chartD.getGraphData().size() > 20) {
-                for (int j = 4; j < chartD.getGraphData().size(); j++) {
-                    if (j % (chartD.getGraphData().size() / 100) == 0) {
-                        series.getData().add(new XYChart.Data(j, chartD.get(j)));
+            if (chart.getGraphData().size() > 20) {
+                for (int j = 4; j < chart.getGraphData().size(); j++) {
+                    if (j % (chart.getGraphData().size() / 100) == 0) {
+                        series.getData().add(new XYChart.Data(j, chart.get(j)));
                     }
                 }
             } else {
-                for (int j = 4; j < chartD.getGraphData().size(); j++) {
-                    series.getData().add(new XYChart.Data(j, chartD.get(j)));
+                for (int j = 4; j < chart.getGraphData().size(); j++) {
+                    series.getData().add(new XYChart.Data(j, chart.get(j)));
                 }
             }
 
