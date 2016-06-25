@@ -32,10 +32,10 @@ public class Main {
         sol.solve();
 
 //        NeurophModule learningModule = new NeurophModule(TransferFunctionType.LINEAR, TRAINPATH, TESTPATH, problem.getNormalizer());
-        NeurophModule learningModule = new NeurophModule(50000, TRAINPATH, TESTPATH, problem.getNormalizer());
+        NeurophModule learningModule = new NeurophModule(30000, TRAINPATH, TESTPATH, problem.getNormalizer());
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2,0.3,0.4));
-        learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
+        learningModule.onePlot(20, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.Rprop, false);
 
     }
 

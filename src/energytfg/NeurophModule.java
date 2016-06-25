@@ -45,31 +45,31 @@ public class NeurophModule {
         normalizer = norm;
     }
 
-    public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType) {
+    public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType, boolean block) {
         graphData.clear();
         for (int i = 0; i < linesNum; i++) {
             ChartData chartData = train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphData.add(chartData);
         }
-        LineChartSample lineGraph = new LineChartSample(graphData, transferType.toString() + " " + firstLayer + " " + secondLayer, true);
+        LineChartSample lineGraph = new LineChartSample((ArrayList<ChartData>) graphData.clone(), transferType.toString() + " " + firstLayer + " " + secondLayer, block);
     }
 
-    public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType) {
+    public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType, boolean block) {
         graphData.clear();
         for (Double learningRate : learningRates) {
             ChartData chartdata = train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphData.add(chartdata);
         }
-        LineChartSample lineGraph = new LineChartSample((ArrayList<ChartData>) graphData.clone(), transferType.toString() + " " + firstLayer + " " + secondLayer, false);
+        LineChartSample lineGraph = new LineChartSample((ArrayList<ChartData>) graphData.clone(), transferType.toString() + " " + firstLayer + " " + secondLayer, block);
     }
 
-    public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int firstLayer, int secondLayer, int propagationType) {
+    public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int firstLayer, int secondLayer, int propagationType, boolean block) {
         graphData.clear();
         for (TransferFunctionType transferType : transferTypes) {
             ChartData chartdata = train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphData.add(chartdata);
         }
-        LineChartSample lineGraph = new LineChartSample((ArrayList<ChartData>) graphData.clone(), learningRate.toString() + " " + firstLayer + " " + secondLayer, false);
+        LineChartSample lineGraph = new LineChartSample((ArrayList<ChartData>) graphData.clone(), learningRate.toString() + " " + firstLayer + " " + secondLayer, block);
     }
 
     private ChartData train(Double learningRate, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType) {
