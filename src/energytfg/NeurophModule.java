@@ -5,11 +5,10 @@
  */
 package energytfg;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -30,26 +29,29 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeurophModule {
 
-    private final int INPUT = 14;
-    private final int OUTPUT = 1;
+    private final static int INPUT = 14;
+    private final static int OUTPUT = 1;
+    private final static DecimalFormat LEARNING_RATE_DF = new DecimalFormat("0.00");
+    private final static DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
+    private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
+    private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
+    private final String TEST_TABLE_PATH = "ProjectTables/test-table.csv";
+    private static final String TRAINING_TABLE_PATH = "ProjectTables/training-table.csv";
+    public final static int BPROP = 0;
+    public final static int RPROP = 1;
+    public final static int TRAINING = 0;
+    public final static int TEST = 1;
+
     private final DataSet trainingDataSet;
     private final DataSet testingDataSet;
     private final Normalizer normalizer;
-    private final static DecimalFormat learningRateDF = new DecimalFormat("0.00");
-    private final static DecimalFormat errorDF = new DecimalFormat("0.00000");
-    
-    private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
-    private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 
     private final int MAXITERATIONS;
-    public static int Bprop = 0;
-    public static int Rprop = 1;
 
-    private ArrayList<ChartData> graphTestData = new ArrayList<>();
-    private ArrayList<ChartData> graphTrainData = new ArrayList<>();
+    private final ArrayList<ChartData> graphTestData = new ArrayList<>();
+    private final ArrayList<ChartData> graphTrainingData = new ArrayList<>();
     private ChartData chartTestData;
-    private ChartData chartTrainData;
-    
+    private ChartData chartTrainingData;
 
     public NeurophModule(int iterations, String trainingFile, String testingFile, Normalizer norm) {
         MAXITERATIONS = iterations;
@@ -63,10 +65,10 @@ public class NeurophModule {
         for (int i = 0; i < linesNum; i++) {
             train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphTestData.add(chartTestData);
-            graphTrainData.add(chartTrainData);
+            graphTrainingData.add(chartTrainingData);
         }
         String graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
-        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainData.clone(), graphName, false);
+        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
 
         graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
@@ -77,11 +79,11 @@ public class NeurophModule {
         for (Double learningRate : learningRates) {
             train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphTestData.add(chartTestData);
-            graphTrainData.add(chartTrainData);
+            graphTrainingData.add(chartTrainingData);
 
         }
         String graphName = "Train TF:" + transferType.toString() + " " + firstLayer + " " + secondLayer;
-        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainData.clone(), graphName, false);
+        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
 
         graphName = "Test TF:" + transferType.toString() + " " + firstLayer + " " + secondLayer;
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
@@ -93,89 +95,62 @@ public class NeurophModule {
         for (TransferFunctionType transferType : transferTypes) {
             train(learningRate, transferType, firstLayer, secondLayer, propagationType);
             graphTestData.add(chartTestData);
-            graphTrainData.add(chartTrainData);
+            graphTrainingData.add(chartTrainingData);
 
         }
         String graphName = "Train LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
-        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainData.clone(), graphName, false);
+        LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
 
         graphName = "Test LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
     }
 
-    public void createTrainTable(String path) {
-
-        try {
-            PrintWriter fullwriter = new PrintWriter(path, "UTF-8");
-//            for (int i = 1981; i <= 2011; i++) {
-//                    
-//                    fullwriter.print(1);
-//                    fullwriter.print(";");
-//            }
-            ArrayList<Integer> columns = new ArrayList<>();
-            columns.add(0);
-            int column = MAXITERATIONS / 10;
-            String firstRow = "Caract\\Error;0;";
-            for (int i = 1; i <= 10; i++) {
-                int columnNumber=column * (i)-1;
-                columns.add(columnNumber);
-                firstRow = firstRow + columnNumber + ";";
-
-            }
-            fullwriter.println(firstRow);
-            
-            for (int j = 0; j < graphTrainData.size(); j++) {
-                ChartData trainChart = graphTrainData.get(j);
-                String nextRow=trainChart.getTransferType().substring(0,2) + " " + trainChart.getLearningRate()+";";
-                for (Integer columnIndex: columns){
-                    String error = errorDF.format(trainChart.get(columnIndex));
-                    nextRow = nextRow + error + ";";
-                }
-                fullwriter.println(nextRow);
-            }
-            fullwriter.close();
-
-        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
-            Logger.getLogger(Problem.class.getName()).log(Level.SEVERE, null, ex);
+    public void writeTable(int tableType, boolean append) {
+        ArrayList<ChartData> graphToBePrinted;
+        String path;
+        if (tableType == TRAINING) {
+            path = TRAINING_TABLE_PATH;
+            graphToBePrinted = graphTrainingData;
+        } else if (tableType == TEST) {
+            path = TEST_TABLE_PATH;
+            graphToBePrinted = graphTestData;
+        } else {
+            throw new Error("Unknown table type");
         }
-
+        try {
+            FileWriter fw = new FileWriter(path, append);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            write(pw, graphToBePrinted);
+        } catch (IOException ex) {
+            Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-        public void createTestTable(String path) {
 
-        try {
-            PrintWriter fullwriter = new PrintWriter(path, "UTF-8");
-//            for (int i = 1981; i <= 2011; i++) {
-//                    
-//                    fullwriter.print(1);
-//                    fullwriter.print(";");
-//            }
-            ArrayList<Integer> columns = new ArrayList<>();
-            columns.add(0);
-            int column = MAXITERATIONS / 10;
-            String firstRow = "Caract\\Error;0;";
-            for (int i = 1; i <= 10; i++) {
-                int columnNumber=column * (i)-1;
-                columns.add(columnNumber);
-                firstRow = firstRow + columnNumber + ";";
+    private void write(PrintWriter fullwriter, ArrayList<ChartData> graphToBePrinted) {
 
-            }
-            fullwriter.println(firstRow);
-            
-            for (int j = 0; j < graphTestData.size(); j++) {
-                ChartData testChart = graphTestData.get(j);
-                String nextRow=testChart.getTransferType().substring(0,2) + " " + testChart.getLearningRate()+";";
-                for (Integer columnIndex: columns){
-                    String error = errorDF.format(testChart.get(columnIndex));
-                    nextRow = nextRow + error + ";";
-                }
-                fullwriter.println(nextRow);
-            }
-            fullwriter.close();
+        ArrayList<Integer> columns = new ArrayList<>();
+        columns.add(0);
+        int column = MAXITERATIONS / 10;
+        String firstRow = "Caract\\Error;0;";
+        for (int i = 1; i <= 10; i++) {
+            int columnNumber = column * (i) - 1;
+            columns.add(columnNumber);
+            firstRow = firstRow + columnNumber + ";";
 
-        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
-            Logger.getLogger(Problem.class.getName()).log(Level.SEVERE, null, ex);
         }
+        fullwriter.println(firstRow);
+
+        for (int j = 0; j < graphToBePrinted.size(); j++) {
+            ChartData trainChart = graphToBePrinted.get(j);
+            String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";";
+            for (Integer columnIndex : columns) {
+                String error = ERROR_DF.format(trainChart.get(columnIndex));
+                nextRow = nextRow + error + ";";
+            }
+            fullwriter.println(nextRow);
+        }
+        fullwriter.close();
 
     }
 
@@ -190,9 +165,9 @@ public class NeurophModule {
             neuralNetwork = new MultiLayerPerceptron(transferType, INPUT, firstLayer, OUTPUT);
         }
         LMS rule;
-        if (propagationType == Bprop) {
+        if (propagationType == BPROP) {
             rule = new BackPropagation();
-        } else if (propagationType == Rprop) {
+        } else if (propagationType == RPROP) {
             rule = new ResilientPropagation();
         } else {
             throw new Error("Unknown propagation type");
@@ -207,12 +182,12 @@ public class NeurophModule {
     }
 
     private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType) {
-        chartTestData = new ChartData(learningRateDF.format(learningRate), transferType);
-        chartTrainData = new ChartData(learningRateDF.format(learningRate), transferType);
+        chartTestData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType);
+        chartTrainingData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType);
         LearningEventListener listener = (LearningEvent le) -> {
             if (le.getEventType() == EPOCH_ENDED) {
                 mseToChartData(neuralNetwork, testingDataSet, chartTestData);
-                mseToChartData(neuralNetwork, trainingDataSet, chartTrainData);
+                mseToChartData(neuralNetwork, trainingDataSet, chartTrainingData);
             } else {
                 System.out.println("        Finished LR - " + learningRate);
             }
@@ -262,9 +237,9 @@ public class NeurophModule {
     private void clearAll() {
 
         chartTestData = null;
-        chartTrainData = null;
+        chartTrainingData = null;
         graphTestData.clear();
-        graphTrainData.clear();
+        graphTrainingData.clear();
     }
 
 }
