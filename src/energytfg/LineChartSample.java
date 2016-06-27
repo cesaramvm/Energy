@@ -118,7 +118,7 @@ public class LineChartSample {
         for (int i = 0; i < data.size(); i++) {
             XYChart.Series series = new XYChart.Series();
             ChartData chart = data.get(i);
-            series.setName(chart.getName());
+            series.setName(chart.getLearningRate() + " " + chart.getTransferType().substring(0, 2));
             //Me quito los 4 primeros epochs porque tienen un error demasiado grande y hace que la gráfica
             //Se vea demasiado pequeña
             if (chart.getGraphData().size() > 20) {

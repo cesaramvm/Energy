@@ -127,13 +127,13 @@ class Problem {
                 for (Double d : yearData) {
                     if (i <= 2005) {
                         trainwriter.print(d);
-                        trainwriter.print(",");
+                        trainwriter.print(";");
                     } else {
                         testwriter.print(d);
-                        testwriter.print(",");
+                        testwriter.print(";");
                     }
                     fullwriter.print(d);
-                    fullwriter.print(",");
+                    fullwriter.print(";");
                 }
                 if (i <= 2005) {
                     trainwriter.print(yearObj);

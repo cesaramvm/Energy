@@ -13,22 +13,31 @@ import java.util.ArrayList;
  */
 public class ChartData implements Cloneable{
     
-    private String name;
+    private String learningRate;
+    private String transferType;
     private ArrayList<Double> graphData = new ArrayList<>();
 
-    public ChartData(String name) {
-        this.name = name;
+    public ChartData(String learningRate, String transferType) {
+        this.learningRate = learningRate;
+        this.transferType = transferType;
+    }
+
+    public String getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearningRate(String learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
     }
     
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ArrayList<Double> getGraphData() {
         return graphData;
     }
@@ -48,7 +57,7 @@ public class ChartData implements Cloneable{
     @Override
     public ChartData clone(){
         
-        ChartData clone = new ChartData(name);
+        ChartData clone = new ChartData(learningRate, transferType);
         clone.setGraphData(graphData);
         return clone;
                 
@@ -57,7 +66,7 @@ public class ChartData implements Cloneable{
 
     public String toString(){
         
-        String aux = "ChartDataName: " + name + "\n"; 
+        String aux = "ChartData: LR: " + learningRate + " TF: " + transferType + "\n"; 
         aux = aux+graphData.toString();
         return aux;  
         
