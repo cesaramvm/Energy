@@ -14,11 +14,8 @@ public class Main {
     private static final String TRAINPATH = "ProjectData/N-train.csv";
     private static final String TESTPATH = "ProjectData/N-test.csv";
     private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(Arrays.asList(
-            //        TransferFunctionType.SIN
-            //        , 
-            //        TransferFunctionType.TANH
-            //        , 
-            //        TransferFunctionType.GAUSSIAN
+            TransferFunctionType.SIN,
+            TransferFunctionType.TANH,
             TransferFunctionType.GAUSSIAN
     ));
     //FALTAN RAMP STEP TRAPEZOID SGN LOG 
@@ -36,12 +33,19 @@ public class Main {
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
         boolean blockWindow = false;
-        learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
-//        learningModule.createTrainingTable(TRAININGTABLEPATH);
-//        learningModule.createTestTable(TESTTABLEPATH);
-//        learningModule.appendTestTable();
-        boolean append = false;
-        learningModule.writeTable(NeurophModule.TRAINING, append);
+//        learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
+        //        learningModule.createTrainingTable(TRAININGTABLEPATH);
+        //        learningModule.createTestTable(TESTTABLEPATH);
+        //        learningModule.appendTestTable();
+        //        boolean append = false;
+        //        learningModule.writeTable(NeurophModule.TRAINING, append);        
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
+        learningModule.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
 
     }
 
