@@ -6,11 +6,13 @@
 package energytfg;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
@@ -35,8 +37,6 @@ public class NeurophModule {
     private final static DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
     private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
-    private final String TEST_TABLE_PATH = "ProjectTables/test-table.csv";
-    private static final String TRAINING_TABLE_PATH = "ProjectTables/training-table.csv";
     public final static int BPROP = 0;
     public final static int RPROP = 1;
     public final static int TRAINING = 0;
@@ -64,95 +64,102 @@ public class NeurophModule {
         normalizer = norm;
     }
 
-    public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int firstLayer, int secondLayer, boolean block) {
+    public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers, boolean block) {
         clearAll();
         for (int i = 0; i < linesNum; i++) {
-            train(learningRate, transferType, firstLayer, secondLayer, propagationType);
+            train(learningRate, transferType, layers, propagationType);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
         }
 
-        String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
+        String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
         if (showTrainGraph) {
-            graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
+            graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
             LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
         }
 
     }
 
-    public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int firstLayer, int secondLayer, boolean block) {
+    public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int[] layers, boolean block) {
         clearAll();
         for (Double learningRate : learningRates) {
-            train(learningRate, transferType, firstLayer, secondLayer, propagationType);
+            train(learningRate, transferType, layers, propagationType);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
 
         }
 
-        String graphName = "Test TF:" + transferType.toString() + " " + firstLayer + " " + secondLayer;
+        String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
         if (showTrainGraph) {
-            graphName = "Train TF:" + transferType.toString() + " " + firstLayer + " " + secondLayer;
+            graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
             LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
         }
 
     }
 
-    public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int firstLayer, int secondLayer, boolean block) {
+    public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers, boolean block) {
         clearAll();
         for (TransferFunctionType transferType : transferTypes) {
-            train(learningRate, transferType, firstLayer, secondLayer, propagationType);
+            train(learningRate, transferType, layers, propagationType);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
 
         }
 
-        String graphName = "Test LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
+        String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
         LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
         if (showTrainGraph) {
-            graphName = "Train LR:" + learningRate.toString() + " " + firstLayer + " " + secondLayer;
+            graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
             LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
         }
 
     }
 
-    public void writeTable(int tableType, boolean append) {
+    public void writeTable(int tableType, String path, boolean append) {
         ArrayList<ChartData> graphToBePrinted;
-        String path;
+        String realpath = "ProjectTables/";
+        realpath += path;
         if (tableType == TRAINING) {
-            path = TRAINING_TABLE_PATH;
             graphToBePrinted = graphTrainingData;
         } else if (tableType == TEST) {
-            path = TEST_TABLE_PATH;
             graphToBePrinted = graphTestData;
         } else {
             throw new Error("Unknown table type");
         }
         try {
-            FileWriter fw = new FileWriter(path, append);
+            boolean existance = false;
+            File f = new File(realpath);
+            if (f.exists() && !f.isDirectory()) {
+                existance = true;
+            }
+            FileWriter fw = new FileWriter(realpath, append);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
-            write(pw, graphToBePrinted);
+            write(pw, graphToBePrinted, existance);
         } catch (IOException ex) {
             Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void write(PrintWriter fullwriter, ArrayList<ChartData> graphToBePrinted) {
+    private void write(PrintWriter fullwriter, ArrayList<ChartData> graphToBePrinted, boolean existance) {
 
         ArrayList<Integer> columns = new ArrayList<>();
         columns.add(0);
         int column = MAXITERATIONS / 10;
-        String firstRow = "Caract\\Error;0;";
         for (int i = 1; i <= 10; i++) {
             int columnNumber = column * (i) - 1;
             columns.add(columnNumber);
-            firstRow = firstRow + columnNumber + ";";
-
+        }
+        String firstRow = Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
+        if (!existance) {
+            for (Integer columnIndex : columns) {
+                firstRow = firstRow + columnIndex + ";";
+            }
         }
         fullwriter.println(firstRow);
 
@@ -161,6 +168,8 @@ public class NeurophModule {
             String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";";
             for (Integer columnIndex : columns) {
                 String error = ERROR_DF.format(trainChart.get(columnIndex));
+                System.out.println(columnIndex);
+                System.out.println(error);
                 nextRow = nextRow + error + ";";
             }
             fullwriter.println(nextRow);
@@ -169,16 +178,13 @@ public class NeurophModule {
 
     }
 
-    private void train(Double learningRate, TransferFunctionType transferType, int firstLayer, int secondLayer, int propagationType) {
+    private void train(Double learningRate, TransferFunctionType transferType, int[] layers, int propagationType) {
         NeuralNetwork neuralNetwork;
-        if (firstLayer == 0 || learningRate == 0) {
-            throw new Error("First layer or learning rate can't be 0");
+
+        if (layers.length == 0 || learningRate == 0) {
+            throw new Error("Learning rate can't be 0 and layers must contain something");
         }
-        if (secondLayer != 0) {
-            neuralNetwork = new MultiLayerPerceptron(transferType, INPUT, firstLayer, secondLayer, OUTPUT);
-        } else {
-            neuralNetwork = new MultiLayerPerceptron(transferType, INPUT, firstLayer, OUTPUT);
-        }
+        neuralNetwork = new MultiLayerPerceptron(transferType, layers);
         LMS rule;
         if (propagationType == BPROP) {
             rule = new BackPropagation();
@@ -187,7 +193,7 @@ public class NeurophModule {
         } else {
             throw new Error("Unknown propagation type");
         }
-        LearningEventListener listener = createListener(neuralNetwork, learningRate, transferType.toString());
+        LearningEventListener listener = createListener(neuralNetwork, learningRate, transferType.toString(), layers);
         rule.addListener(listener);
         rule.setMaxError(0);
         rule.setMaxIterations(MAXITERATIONS);
@@ -196,9 +202,9 @@ public class NeurophModule {
 
     }
 
-    private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType) {
-        chartTestData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType);
-        chartTrainingData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType);
+    private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType, int[] layers) {
+        chartTestData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType, layers);
+        chartTrainingData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType, layers);
         LearningEventListener listener = (LearningEvent le) -> {
             if (le.getEventType() == EPOCH_ENDED) {
                 mseToChartData(neuralNetwork, testingDataSet, chartTestData);

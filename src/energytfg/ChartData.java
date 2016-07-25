@@ -15,11 +15,13 @@ public class ChartData implements Cloneable{
     
     private String learningRate;
     private String transferType;
+    private int[] layersConf;
     private ArrayList<Double> graphData = new ArrayList<>();
 
-    public ChartData(String learningRate, String transferType) {
+    public ChartData(String learningRate, String transferType, int[] layersConfiguration) {
         this.learningRate = learningRate;
         this.transferType = transferType;
+        this.layersConf = layersConfiguration;
     }
 
     public String getLearningRate() {
@@ -36,6 +38,14 @@ public class ChartData implements Cloneable{
 
     public void setTransferType(String transferType) {
         this.transferType = transferType;
+    }
+
+    public int[] getLayersConf() {
+        return layersConf;
+    }
+
+    public void setLayersConf(int[] layersConf) {
+        this.layersConf = layersConf;
     }
     
     public ArrayList<Double> getGraphData() {
@@ -57,7 +67,7 @@ public class ChartData implements Cloneable{
     @Override
     public ChartData clone(){
         
-        ChartData clone = new ChartData(learningRate, transferType);
+        ChartData clone = new ChartData(learningRate, transferType, layersConf);
         clone.setGraphData(graphData);
         return clone;
                 
