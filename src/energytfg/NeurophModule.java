@@ -124,12 +124,15 @@ public class NeurophModule {
         ArrayList<ChartData> graphToBePrinted;
         String realpath = "ProjectTables/";
         realpath += path;
-        if (tableType == TRAINING) {
-            graphToBePrinted = graphTrainingData;
-        } else if (tableType == TEST) {
-            graphToBePrinted = graphTestData;
-        } else {
-            throw new Error("Unknown table type");
+        switch (tableType) {
+            case TRAINING:
+                graphToBePrinted = graphTrainingData;
+                break;
+            case TEST:
+                graphToBePrinted = graphTestData;
+                break;
+            default:
+                throw new Error("Unknown table type");
         }
         try {
             boolean existance = false;
@@ -186,12 +189,15 @@ public class NeurophModule {
         }
         neuralNetwork = new MultiLayerPerceptron(transferType, layers);
         LMS rule;
-        if (propagationType == BPROP) {
-            rule = new BackPropagation();
-        } else if (propagationType == RPROP) {
-            rule = new ResilientPropagation();
-        } else {
-            throw new Error("Unknown propagation type");
+        switch (propagationType) {
+            case BPROP:
+                rule = new BackPropagation();
+                break;
+            case RPROP:
+                rule = new ResilientPropagation();
+                break;
+            default:
+                throw new Error("Unknown propagation type");
         }
         LearningEventListener listener = createListener(neuralNetwork, learningRate, transferType.toString(), layers);
         rule.addListener(listener);
