@@ -48,7 +48,6 @@ public class LineChartSample {
                 Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
     private void initAndShowGUI() {
