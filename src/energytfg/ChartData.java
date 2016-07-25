@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  * @author sobremesa
  */
-public class ChartData implements Cloneable{
-    
+public class ChartData implements Cloneable {
+
     private String learningRate;
     private String transferType;
     private int[] layersConf;
@@ -47,7 +47,7 @@ public class ChartData implements Cloneable{
     public void setLayersConf(int[] layersConf) {
         this.layersConf = layersConf;
     }
-    
+
     public ArrayList<Double> getGraphData() {
         return graphData;
     }
@@ -63,23 +63,28 @@ public class ChartData implements Cloneable{
     public boolean add(Double e) {
         return graphData.add(e);
     }
-    
+
     @Override
-    public ChartData clone(){
+    public ChartData clone() throws CloneNotSupportedException {
+
+        ChartData clone;
+        try {
+            clone = (ChartData) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
         
-        ChartData clone = new ChartData(learningRate, transferType, layersConf);
-        clone.setGraphData(graphData);
         return clone;
-                
-        
+
     }
 
-    public String toString(){
-        
-        String aux = "ChartData: LR: " + learningRate + " TF: " + transferType + "\n"; 
-        aux = aux+graphData.toString();
-        return aux;  
-        
+    @Override
+    public String toString() {
+
+        String aux = "ChartData: LR: " + learningRate + " TF: " + transferType + "\n";
+        aux = aux + graphData.toString();
+        return aux;
+
     }
-    
+
 }

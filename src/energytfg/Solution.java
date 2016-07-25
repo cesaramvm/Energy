@@ -28,9 +28,7 @@ public class Solution {
     
     public Solution(Problem pro){
         problem = pro;
-        Iterator it = pro.getYears().keySet().iterator();
-        while (it.hasNext()){
-            Integer clave = (Integer) it.next();
+        for (Integer clave : pro.getYears().keySet()) {
             pVariables.put(clave, new ProblemVariable());
         }
         epsilon = -5 + (Math.random()*10);
