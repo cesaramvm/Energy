@@ -29,8 +29,8 @@ public class Main {
         Solution sol = new Solution(problem);
         sol.solve();
 
-        fullSearch(problem);
-        //testSearch(problem);
+        //fullSearch(problem);
+        testSearch(problem);
 
 //        createCombinations(3, possible3Neurons, new ArrayList<Integer>());
 //        for (Integer[] array : neuronsConfig) {
@@ -137,12 +137,11 @@ public class Main {
         boolean showGraphs = false;
         NeurophModule learningModule = new NeurophModule(15000, NeurophModule.RPROP, showTrainGraph, showGraphs, TRAINPATH, TESTPATH, problem.getNormalizer());
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
-        ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
         boolean blockWindow = false;
         boolean appendTable = true;
-        int[] combination = {14, 6, 13, 1};
-        learningModule.onePlot(20, 0.4, TransferFunctionType.TANH, combination, blockWindow);
-        learningModule.writeTable(NeurophModule.TEST, "FullGA.csv", appendTable);
+        int[] combination = {14, 7, 7, 1};
+        learningModule.onePlot(20, 0.3, TransferFunctionType.TANH, combination, blockWindow);
+        learningModule.writeTable(NeurophModule.TEST, "FullTA77.csv", appendTable);
 
     }
 
