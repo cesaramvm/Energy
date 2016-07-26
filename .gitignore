@@ -1,6 +1,10 @@
 
 # Created by https://www.gitignore.io/api/java,netbeans
 
+### Custom ###
+
+NetworkSaves/
+
 ### NetBeans ###
 nbproject/private/
 build/
