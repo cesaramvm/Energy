@@ -49,16 +49,18 @@ public class NeurophModule {
     private final int MAXITERATIONS;
     private final int propagationType;
     private final boolean showTrainGraph;
+    private final boolean showGraph;
 
     private final ArrayList<ChartData> graphTestData = new ArrayList<>();
     private final ArrayList<ChartData> graphTrainingData = new ArrayList<>();
     private ChartData chartTestData;
     private ChartData chartTrainingData;
 
-    public NeurophModule(int iterations, int propType, boolean trainGraphShow, String trainingFile, String testingFile, Normalizer norm) {
+    public NeurophModule(int iterations, int propType, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
         MAXITERATIONS = iterations;
         propagationType = propType;
         showTrainGraph = trainGraphShow;
+        showGraph = graphShow;
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
         normalizer = norm;
@@ -72,12 +74,14 @@ public class NeurophModule {
             graphTrainingData.add(chartTrainingData);
         }
 
-        String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-        LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
+        if (showGraph) {
+            String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
-        if (showTrainGraph) {
-            graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            if (showTrainGraph) {
+                graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            }
         }
 
     }
@@ -90,13 +94,14 @@ public class NeurophModule {
             graphTrainingData.add(chartTrainingData);
 
         }
+        if (showGraph) {
+            String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
+            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
-        String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
-        LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
-
-        if (showTrainGraph) {
-            graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            if (showTrainGraph) {
+                graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
+                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            }
         }
 
     }
@@ -110,12 +115,14 @@ public class NeurophModule {
 
         }
 
-        String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-        LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
+        if (showGraph) {
+            String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName, block);
 
-        if (showTrainGraph) {
-            graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            if (showTrainGraph) {
+                graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName, false);
+            }
         }
 
     }
@@ -171,8 +178,6 @@ public class NeurophModule {
             String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";";
             for (Integer columnIndex : columns) {
                 String error = ERROR_DF.format(trainChart.get(columnIndex));
-                System.out.println(columnIndex);
-                System.out.println(error);
                 nextRow = nextRow + error + ";";
             }
             fullwriter.println(nextRow);
@@ -205,7 +210,8 @@ public class NeurophModule {
         rule.setMaxIterations(MAXITERATIONS);
         rule.setLearningRate(learningRate);
         neuralNetwork.learn(trainingDataSet, rule);
-
+        Double mse = netWorkMSE(neuralNetwork, testingDataSet);
+        neuralNetwork.save("NetworkSaves/"+ ERROR_DF.format(mse) + "-Network-"+transferType.toString().substring(0, 2)+"-"+learningRate+"-"+Arrays.toString(layers)+".nnet"); 
     }
 
     private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType, int[] layers) {
