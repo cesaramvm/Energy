@@ -120,12 +120,11 @@ public class Main {
             for (Integer[] comb : neuronsConfig) {
                 for (int j = 1; j < i + 2 - 1; j++) {
                     combination[j] = comb[j - 1];
-                    for (TransferFunctionType type : TYPES) {
-                        //learningModule.onePlot(lrates, type, combination, blockWindow);
-                        //learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
-                    }
-
                 }
+                for (TransferFunctionType type : TYPES) {
+                        learningModule.onePlot(lrates, type, combination, blockWindow);
+                        learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
+                    }
 
             }
 
