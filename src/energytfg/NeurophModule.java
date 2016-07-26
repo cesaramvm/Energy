@@ -165,20 +165,20 @@ public class NeurophModule {
             int columnNumber = column * (i) - 1;
             columns.add(columnNumber);
         }
-        String firstRow = Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
         if (!existance) {
+            String firstRow = ";;";
             for (Integer columnIndex : columns) {
                 firstRow = firstRow + columnIndex + ";";
             }
+            fullwriter.println(firstRow);
         }
-        fullwriter.println(firstRow);
 
         for (int j = 0; j < graphToBePrinted.size(); j++) {
             ChartData trainChart = graphToBePrinted.get(j);
-            String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";";
+            String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";" + Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
             for (Integer columnIndex : columns) {
                 String error = ERROR_DF.format(trainChart.get(columnIndex));
-                nextRow = nextRow + error + ";";
+                nextRow += error + ";";
             }
             fullwriter.println(nextRow);
         }
@@ -211,7 +211,7 @@ public class NeurophModule {
         rule.setLearningRate(learningRate);
         neuralNetwork.learn(trainingDataSet, rule);
         Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-        neuralNetwork.save("NetworkSaves/"+ ERROR_DF.format(mse) + "-Network-"+transferType.toString().substring(0, 2)+"-"+learningRate+"-"+Arrays.toString(layers)+".nnet"); 
+        neuralNetwork.save("NetworkSaves/" + ERROR_DF.format(mse) + "-Network-" + transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers) + ".nnet");
     }
 
     private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType, int[] layers) {
