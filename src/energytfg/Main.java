@@ -125,6 +125,7 @@ public class Main {
                         learningModule.onePlot(lrates, type, combination, blockWindow);
                         learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
                     }
+                System.out.println("Finished " + Arrays.toString(combination));
 
             }
 

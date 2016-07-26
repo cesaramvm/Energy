@@ -222,7 +222,7 @@ public class NeurophModule {
                 mseToChartData(neuralNetwork, testingDataSet, chartTestData);
                 mseToChartData(neuralNetwork, trainingDataSet, chartTrainingData);
             } else {
-                System.out.println("        Finished LR - " + learningRate);
+                //System.out.println("        Finished LR - " + learningRate);
             }
         };
         return listener;
