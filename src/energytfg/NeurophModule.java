@@ -66,6 +66,17 @@ public class NeurophModule {
         normalizer = norm;
     }
 
+    NeurophModule(){
+        trainingDataSet = null;
+        testingDataSet = null;
+        normalizer = null;
+        MAXITERATIONS = 0;
+        propagationType = 0;
+        showGraph = false;
+        showTrainGraph = false;               
+        
+    }
+
     public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers, boolean block) {
         clearAll();
         for (int i = 0; i < linesNum; i++) {
@@ -235,7 +246,7 @@ public class NeurophModule {
 
     }
 
-    private Double netWorkMSE(NeuralNetwork nnet, DataSet tset) {
+    public Double netWorkMSE(NeuralNetwork nnet, DataSet tset) {
 //https://github.com/neuroph/neuroph/blob/master/neuroph-2.9/Core/src/main/java/org/neuroph/core/learning/error/MeanSquaredError.java
 // ellos hacen ((real-calculado)²)/2*n  ¿¿??
         Double sumatorio = 0.0;

@@ -1,7 +1,17 @@
 package energytfg;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
 
 /**
@@ -28,70 +38,11 @@ public class Main {
         problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
         Solution sol = new Solution(problem);
         sol.solve();
+        
+        findBestNetwork1(problem);
 
-        //fullSearch(problem);
-        testSearch(problem);
-
-//        createCombinations(3, possible3Neurons, new ArrayList<Integer>());
-//        for (Integer[] array : neuronsConfig) {
-//            System.out.println(Arrays.toString(array));
-//        }
-        /*
-        int[] layersNeurons = new int[4];
-        layersNeurons[0] = 14;
-        layersNeurons[3] = 1;
-        int[] possibleNeurons = {4, 6};
-        for (int i : possibleNeurons) {
-            for (int j : possibleNeurons) {
-                layersNeurons[1] = i;
-                layersNeurons[2] = j;
-                System.out.println(Arrays.toString(layersNeurons));
-                learningModule.onePlot(lrates, TransferFunctionType.GAUSSIAN, layersNeurons, blockWindow);
-                learningModule.writeTable(NeurophModule.TEST, "test.csv", appendTable);
-            }
-        }
-         */
-        //BY LEARNING RATE
-        /*for (int i=5; i<14; i++){
-            for (Double d: lrates){
-                learningModule.onePlot(d, TYPES, i, 0, blockWindow);
-            }
-        }
-        for (int i = 5; i < 10; i++) {
-            for (int j = 3; j < 5; j++) {
-                for (Double d : lrates) {
-                    learningModule.onePlot(d, TYPES, i, j, blockWindow);
-                }
-            }
-
-        }*/
-        //BY TRANSFER FUCTION
-        /*for (int i = 5; i < 14; i++) {
-            for (TransferFunctionType t : TYPES) {
-                learningModule.onePlot(lrates, t, i, 0, blockWindow);
-            }
-        }
-
-        /*for (int i = 6; i < 10; i++) {
-            for (int j = 3; j < 8; j++) {
-                for (TransferFunctionType t : TYPES) {
-                    learningModule.onePlot(lrates, t, i, j, blockWindow);
-                }
-            }
-
-        }*/
-//        learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
-        //        learningModule.createTrainingTable(TRAININGTABLEPATH);
-        //        learningModule.createTestTable(TESTTABLEPATH);
-        //        learningModule.appendTestTable();
-        //        boolean append = false;
-        //        learningModule.writeTable(NeurophModule.TRAINING, append);        
-//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
-//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
-//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
-//        learningModule.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
-//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
-//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
+        //String fileRoute = "Net.nnet";
+        //networkTest(fileRoute, problem);
     }
 
     private static void fullSearch(Problem problem) {
@@ -108,7 +59,7 @@ public class Main {
         int i;
         for (i = 1; i <= 3; i++) {
             neuronsConfig.clear();
-            
+
             Integer[] usedNeurons = possibleNeurons;
             if (i == 3) {
                 usedNeurons = possible3Neurons;
@@ -122,9 +73,9 @@ public class Main {
                     combination[j] = comb[j - 1];
                 }
                 for (TransferFunctionType type : TYPES) {
-                        learningModule.onePlot(lrates, type, combination, blockWindow);
-                        learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
-                    }
+                    learningModule.onePlot(lrates, type, combination, blockWindow);
+                    learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
+                }
                 System.out.println("Finished " + Arrays.toString(combination));
 
             }
@@ -163,6 +114,136 @@ public class Main {
                 createCombinations(maxLength, possibleNeurons, curr);
                 curr = oldCurr;
             }
+        }
+    }
+
+    private static void lastMain() {
+//        Problem problem = new Problem("ProjectData/O-data.txt");
+//        problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
+//        Solution sol = new Solution(problem);
+//        sol.solve();
+//        boolean showTrainGraph = false;
+//        boolean showGraphs = false;
+//        NeurophModule learningModule = new NeurophModule(15000, NeurophModule.RPROP, showTrainGraph, showGraphs, TRAINPATH, TESTPATH, problem.getNormalizer());
+////        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
+//        ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
+//        boolean blockWindow = false;
+//        boolean appendTable = true;
+//        Integer[] possible3Neurons = {6, 8, 10, 12};
+//        createCombinations(3, possible3Neurons, new ArrayList<Integer>());
+//        for (Integer[] array : neuronsConfig) {
+//            System.out.println(Arrays.toString(array));
+//        }
+//
+//        int[] layersNeurons = new int[4];
+//        layersNeurons[0] = 14;
+//        layersNeurons[3] = 1;
+//        int[] possibleNeurons = {4, 6};
+//        for (int i : possibleNeurons) {
+//            for (int j : possibleNeurons) {
+//                layersNeurons[1] = i;
+//                layersNeurons[2] = j;
+//                System.out.println(Arrays.toString(layersNeurons));
+//                learningModule.onePlot(lrates, TransferFunctionType.GAUSSIAN, layersNeurons, blockWindow);
+//                learningModule.writeTable(NeurophModule.TEST, "test.csv", appendTable);
+//            }
+//        }
+//
+//        //BY LEARNING RATE
+//        for (int i = 5; i < 14; i++) {
+//            for (Double d : lrates) {
+//                learningModule.onePlot(d, TYPES, i, 0, blockWindow);
+//            }
+//        }
+//        for (int i = 5; i < 10; i++) {
+//            for (int j = 3; j < 5; j++) {
+//                for (Double d : lrates) {
+//                    learningModule.onePlot(d, TYPES, i, j, blockWindow);
+//                }
+//            }
+//
+//        }
+//        //BY TRANSFER FUCTION
+//        for (int i = 5; i < 14; i++) {
+//            for (TransferFunctionType t : TYPES) {
+//                learningModule.onePlot(lrates, t, i, 0, blockWindow);
+//            }
+//        }
+//
+//        for (int i = 6; i < 10; i++) {
+//            for (int j = 3; j < 8; j++) {
+//                for (TransferFunctionType t : TYPES) {
+//                    learningModule.onePlot(lrates, t, i, j, blockWindow);
+//                }
+//            }
+//
+//        }
+//        learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
+//        learningModule.createTrainingTable(TRAININGTABLEPATH);
+//        learningModule.createTestTable(TESTTABLEPATH);
+//        learningModule.appendTestTable();
+//        boolean append = false;
+//        learningModule.writeTable(NeurophModule.TRAINING, append);
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 6, 3, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 10, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
+//        learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 14, 0, NeurophModule.RPROP, blockWindow);
+    }
+
+    private static void findBestNetwork1(Problem problem) {
+        NeurophModule learningModule = new NeurophModule();
+        DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+        String networkFile = "NetworkSaves/";
+        File folder = new File(networkFile);
+        File[] listOfFiles = folder.listFiles();
+        String bestNetworkFile = "";
+        Double minError = Double.POSITIVE_INFINITY;
+        for (File f : listOfFiles) {
+            Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
+            NeuralNetwork neuralNetwork = NeuralNetwork.load(f.toString());
+            for (DataSetRow dataRow : allDataset.getRows()) {
+                neuralNetwork.setInput(dataRow.getInput());
+                neuralNetwork.calculate();
+                double[] networkOutput = neuralNetwork.getOutput();
+                double[] desiredOut = dataRow.getDesiredOutput();
+                Normalizer n = problem.getNormalizer();
+                Double calculado = n.denormalizeObjective(networkOutput[0]);
+                Double deseado = n.denormalizeObjective(desiredOut[0]);
+                Double error = abs(calculado - deseado);
+                if (error > maxErrorNetwork) {
+                    maxErrorNetwork = error;
+                }
+            }
+            if (maxErrorNetwork < minError) {
+                minError = maxErrorNetwork;
+                bestNetworkFile = f.toString();
+            }
+        }
+
+        System.out.println(bestNetworkFile);
+        System.out.println(minError);
+    }
+
+    private static void networkTest(String fileRoute, Problem problem) {
+        NeurophModule learningModule = new NeurophModule();
+        DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+
+        NeuralNetwork neuralNetwork = NeuralNetwork.load(fileRoute);
+        for (DataSetRow dataRow : allDataset.getRows()) {
+            neuralNetwork.setInput(dataRow.getInput());
+            neuralNetwork.calculate();
+            double[] networkOutput = neuralNetwork.getOutput();
+            double[] desiredOut = dataRow.getDesiredOutput();
+            Normalizer n = problem.getNormalizer();
+            Double calculado = n.denormalizeObjective(networkOutput[0]);
+            Double deseado = n.denormalizeObjective(desiredOut[0]);
+            Double error = calculado - deseado;
+            System.out.println("Calculado: " + calculado);
+            System.out.println("Deseado: " + deseado);
+            System.out.println("Error: " + error + "\n");
+
         }
     }
 }
