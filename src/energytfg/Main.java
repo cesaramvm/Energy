@@ -1,10 +1,15 @@
 package energytfg;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import static java.lang.Math.abs;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -38,11 +43,10 @@ public class Main {
         problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
         Solution sol = new Solution(problem);
         sol.solve();
-        
-        findBestNetwork1(problem);
 
-        //String fileRoute = "Net.nnet";
-        //networkTest(fileRoute, problem);
+        //findBestNetwork1(problem);
+        String fileRoute = "Net.nnet";
+        networkTest(fileRoute, problem, "FinalNnetOut.csv");
     }
 
     private static void fullSearch(Problem problem) {
@@ -195,12 +199,14 @@ public class Main {
     private static void findBestNetwork1(Problem problem) {
         NeurophModule learningModule = new NeurophModule();
         DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
-        String networkFile = "NetworkSaves/";
-        File folder = new File(networkFile);
+        String networkDir = "NetworkSaves/";
+        File folder = new File(networkDir);
         File[] listOfFiles = folder.listFiles();
         String bestNetworkFile = "";
+        Double minMeanError = Double.POSITIVE_INFINITY;
         Double minError = Double.POSITIVE_INFINITY;
         for (File f : listOfFiles) {
+            Double networkSumError = 0.0;
             Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
             NeuralNetwork neuralNetwork = NeuralNetwork.load(f.toString());
             for (DataSetRow dataRow : allDataset.getRows()) {
@@ -212,38 +218,61 @@ public class Main {
                 Double calculado = n.denormalizeObjective(networkOutput[0]);
                 Double deseado = n.denormalizeObjective(desiredOut[0]);
                 Double error = abs(calculado - deseado);
+                networkSumError += error;
                 if (error > maxErrorNetwork) {
                     maxErrorNetwork = error;
                 }
             }
-            if (maxErrorNetwork < minError) {
+            Double meanError = networkSumError / (allDataset.getRows().size());
+
+//            if (maxErrorNetwork < minError) {
+//                minError = maxErrorNetwork;
+//                minMeanError = meanError;
+//                bestNetworkFile = f.toString();
+//            }
+            if (meanError < minMeanError) {
                 minError = maxErrorNetwork;
+                minMeanError = meanError;
                 bestNetworkFile = f.toString();
             }
+
         }
 
         System.out.println(bestNetworkFile);
         System.out.println(minError);
+        System.out.println(minMeanError);
     }
 
-    private static void networkTest(String fileRoute, Problem problem) {
+    private static void networkTest(String fileRoute, Problem problem, String saveRoute) {
         NeurophModule learningModule = new NeurophModule();
         DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+        
+        try {
+            FileWriter fw = new FileWriter(saveRoute, false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            pw.println("TABLA FINAL; OBJETIVO; RESULTADO; ERROR");
+            NeuralNetwork neuralNetwork = NeuralNetwork.load(fileRoute);
+            for (DataSetRow dataRow : allDataset.getRows()) {
+                neuralNetwork.setInput(dataRow.getInput());
+                neuralNetwork.calculate();
+                double[] networkOutput = neuralNetwork.getOutput();
+                double[] desiredOut = dataRow.getDesiredOutput();
+                Normalizer n = problem.getNormalizer();
+                Double calculado = n.denormalizeObjective(networkOutput[0]);
+                Double deseado = n.denormalizeObjective(desiredOut[0]);
+                Double error = calculado - deseado;
+                System.out.println("Calculado: " + calculado);
+                System.out.println("Deseado: " + deseado);
+                System.out.println("Error: " + error + "\n");
+                DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
+                pw.println(";" + ERROR_DF.format(deseado) + ";" + ERROR_DF.format(calculado) + ";" + ERROR_DF.format(error) + ";");
 
-        NeuralNetwork neuralNetwork = NeuralNetwork.load(fileRoute);
-        for (DataSetRow dataRow : allDataset.getRows()) {
-            neuralNetwork.setInput(dataRow.getInput());
-            neuralNetwork.calculate();
-            double[] networkOutput = neuralNetwork.getOutput();
-            double[] desiredOut = dataRow.getDesiredOutput();
-            Normalizer n = problem.getNormalizer();
-            Double calculado = n.denormalizeObjective(networkOutput[0]);
-            Double deseado = n.denormalizeObjective(desiredOut[0]);
-            Double error = calculado - deseado;
-            System.out.println("Calculado: " + calculado);
-            System.out.println("Deseado: " + deseado);
-            System.out.println("Error: " + error + "\n");
-
+            }
+            
+            pw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
