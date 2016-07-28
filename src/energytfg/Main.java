@@ -44,14 +44,16 @@ public class Main {
         Solution sol = new Solution(problem);
         sol.solve();
 
+        
+        fullSearch(problem);
         //findBestNetwork1(problem);
-        String fileRoute = "Net.nnet";
-        networkTest(fileRoute, problem, "FinalNnetOut.csv");
+        //String fileRoute = "Net.nnet";
+        //networkTest(fileRoute, problem, "FinalNnetOut.csv");
     }
 
     private static void fullSearch(Problem problem) {
         boolean showTrainGraph = false;
-        boolean showGraphs = false;
+        boolean showGraphs = true;
         NeurophModule learningModule = new NeurophModule(15000, NeurophModule.RPROP, showTrainGraph, showGraphs, TRAINPATH, TESTPATH, problem.getNormalizer());
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
@@ -77,7 +79,7 @@ public class Main {
                     combination[j] = comb[j - 1];
                 }
                 for (TransferFunctionType type : TYPES) {
-                    learningModule.onePlot(lrates, type, combination, blockWindow);
+                    learningModule.onePlot(lrates, type, combination);
                     learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
                 }
                 System.out.println("Finished " + Arrays.toString(combination));
@@ -95,7 +97,7 @@ public class Main {
         boolean blockWindow = false;
         boolean appendTable = true;
         int[] combination = {14, 7, 7, 1};
-        learningModule.onePlot(20, 0.3, TransferFunctionType.TANH, combination, blockWindow);
+        learningModule.onePlot(20, 0.3, TransferFunctionType.TANH, combination);
         learningModule.writeTable(NeurophModule.TEST, "FullTA77.csv", appendTable);
 
     }

@@ -9,10 +9,14 @@ package energytfg;
  *
  * @author sobremesa
  */
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,32 +26,32 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class LineChartSample {
 
-    private ArrayList<ChartData> data;
-    private String mseChartTitle;
-    private JFrame frame;
-    private boolean blockSentinel;
+    private static ArrayList<ChartData> data;
+    private static String mseChartTitle;
+    private static JFrame frame;
 
-    public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle, boolean block) {
-        data = incomingData;
-        mseChartTitle = chartTitle;
-        blockSentinel = block;
+    public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
+        try {
+            data = incomingData;
+            mseChartTitle = chartTitle;
 
-        SwingUtilities.invokeLater(() -> {
-            initAndShowGUI();
-        });
+            SwingUtilities.invokeLater(() -> {
+                initAndShowGUI();
+            });
 
-        while (blockSentinel) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Thread.sleep(2000);
+            makeScreenshot(frame);
+            frame.dispose();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void initAndShowGUI() {
@@ -57,29 +61,13 @@ public class LineChartSample {
         frame.add(fxPanel);
         frame.setSize(600, 360);
         frame.setVisible(true);
-//        frame.setLocation(-1280, 0);
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent evt) {
-                exit(true);
-            }
-
-            @Override
-            public void windowIconified(WindowEvent evt) {
-                exit(false);
-            }
-        });
         fxPanel.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyChar() == 'q') {
-                    exit(true);
-                } else if (e.getKeyChar() == 'e') {
-                    exit(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    frame.dispose();
+                }else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    exit(false);
                 }
             }
 
@@ -142,13 +130,18 @@ public class LineChartSample {
         return (scene);
     }
 
-    private void exit(boolean close) {
-        if (blockSentinel) {
-            blockSentinel = false;
-        }
-        if (close) {
-            frame.dispose();
-        }
 
+
+    public static final void makeScreenshot(JFrame argFrame) {
+        Rectangle rec = argFrame.getBounds();
+        BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
+        argFrame.paint(bufferedImage.getGraphics());
+
+        try {
+            // Create temp file.
+            File file = new File("NetworkSaves/" + mseChartTitle.replace(":", "-") + ".png");
+            ImageIO.write(bufferedImage, "png", file);
+        } catch (IOException ioe) {
+        } // catch
     }
 }
