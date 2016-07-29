@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Cesar
  */
-public class ProblemVariable {
+public class SolutionVariable {
     
     // <editor-fold desc="Class Variables">
     boolean selected; 
@@ -20,8 +20,8 @@ public class ProblemVariable {
     // </editor-fold>
     
     // <editor-fold desc="Constructor">
-    public ProblemVariable(){
-        selected=false;
+    public SolutionVariable(){
+        selected=true;
         alfa= 0;
         beta= 0;
     }
@@ -56,7 +56,7 @@ public class ProblemVariable {
         
     // <editor-fold desc="Custom Functions">
     public void randomize() {
-        selected=randomBoolean();
+        //selected=randomBoolean();
         if(selected){
             alfa = -1 + (Math.random()*2);
             beta = -1 + (Math.random()*2);
@@ -74,7 +74,7 @@ public class ProblemVariable {
     // <editor-fold desc="Overrided">
     @Override
     public String toString() {
-        return "ProblemVariable{" + "selected=" + selected + ", alfa=" + alfa + ", beta=" + beta + "}\n";
+        return "SolutionVariable {" + "selected=" + selected + ", alfa=" + alfa + ", beta=" + beta + "}\n";
     }
     // </editor-fold>
     

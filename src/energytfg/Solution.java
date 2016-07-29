@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class Solution {
     
 // <editor-fold desc="Class Variables">    
-    private HashMap<Integer,ProblemVariable> pVariables = new HashMap<>();
+    private HashMap<Integer,SolutionVariable> solVariables = new HashMap<>();
     private double epsilon;
     private Problem problem;
 // </editor-fold>
@@ -29,7 +29,7 @@ public class Solution {
     public Solution(Problem pro){
         problem = pro;
         for (Integer clave : pro.getYears().keySet()) {
-            pVariables.put(clave, new ProblemVariable());
+            solVariables.put(clave, new SolutionVariable());
         }
         epsilon = -5 + (Math.random()*10);
         
@@ -38,16 +38,16 @@ public class Solution {
     
 // <editor-fold desc="Getters & Setters">
 
-    public HashMap<Integer, ProblemVariable> getpVariables() {
-        return pVariables;
+    public HashMap<Integer, SolutionVariable> getsolVariables() {
+        return solVariables;
     }
 
-    public void setpVariables(HashMap<Integer, ProblemVariable> pVariables) {
-        this.pVariables = pVariables;
+    public void setsolVariables(HashMap<Integer, SolutionVariable> solVariables) {
+        this.solVariables = solVariables;
     }
 
-    public ProblemVariable get(String key) {
-        return pVariables.get(key);
+    public SolutionVariable get(String key) {
+        return solVariables.get(key);
     }
 
     public double getEpsilon() {
@@ -105,10 +105,10 @@ public class Solution {
 
     
     private void randomize() {
-        Iterator it = pVariables.values().iterator();
+        Iterator it = solVariables.values().iterator();
         while (it.hasNext()){
             
-            ProblemVariable pv = (ProblemVariable) it.next();
+            SolutionVariable pv = (SolutionVariable) it.next();
             pv.randomize();   
         }
     }
@@ -141,7 +141,7 @@ public class Solution {
 // <editor-fold desc="Overrided">
     @Override
     public String toString() {
-        return "Solution{" + "epsilon=" + epsilon + ", pVariables=" + pVariables + '}';
+        return "Solution{" + "epsilon=" + epsilon + ", pVariables=" + solVariables + '}';
     }
 // </editor-fold>
     
