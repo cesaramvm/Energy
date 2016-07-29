@@ -139,7 +139,7 @@ public class LineChartSample {
 
         try {
             // Create temp file.
-            File file = new File("NetworkSaves/" + mseChartTitle.replace(":", "-") + ".png");
+            File file = new File("NetworkSaves/Graphs/" + mseChartTitle.replace(":", "-") + ".png");
             ImageIO.write(bufferedImage, "png", file);
         } catch (IOException ioe) {
         } // catch

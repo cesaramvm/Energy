@@ -140,7 +140,7 @@ public class NeurophModule {
 
     public void writeTable(int tableType, String path, boolean append) {
         ArrayList<ChartData> graphToBePrinted;
-        String realpath = "ProjectTables/";
+        String realpath = "NetworkSaves/";
         realpath += path;
         switch (tableType) {
             case TRAINING:
@@ -222,7 +222,7 @@ public class NeurophModule {
         rule.setLearningRate(learningRate);
         neuralNetwork.learn(trainingDataSet, rule);
         Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-        neuralNetwork.save("NetworkSaves/" + ERROR_DF.format(mse) + "-Network-" + transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers) + ".nnet");
+        neuralNetwork.save("NetworkSaves/Networks/" + ERROR_DF.format(mse) + "-Network-" + transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers) + ".nnet");
     }
 
     private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType, int[] layers) {

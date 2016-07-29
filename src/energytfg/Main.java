@@ -1,13 +1,10 @@
 package energytfg;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import static java.lang.Math.abs;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -44,7 +41,6 @@ public class Main {
         Solution sol = new Solution(problem);
         sol.solve();
 
-        
         fullSearch(problem);
         //findBestNetwork1(problem);
         //String fileRoute = "Net.nnet";
@@ -61,7 +57,7 @@ public class Main {
         boolean appendTable = true;
 
         Integer[] possibleNeurons = {4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-        Integer[] possible3Neurons = {6, 8, 10, 12};
+        Integer[] possible3Neurons = {6, 7, 8, 9, 10, 11, 12, 13, 14};
         int i;
         for (i = 1; i <= 3; i++) {
             neuronsConfig.clear();
@@ -78,11 +74,14 @@ public class Main {
                 for (int j = 1; j < i + 2 - 1; j++) {
                     combination[j] = comb[j - 1];
                 }
-                for (TransferFunctionType type : TYPES) {
-                    learningModule.onePlot(lrates, type, combination);
-                    learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
+                if (combination[1]==14) {
+                    for (TransferFunctionType type : TYPES) {
+                        learningModule.onePlot(lrates, type, combination);
+                        learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
+                    }
+                    System.out.println("Finished " + Arrays.toString(combination));
+
                 }
-                System.out.println("Finished " + Arrays.toString(combination));
 
             }
 
@@ -248,7 +247,7 @@ public class Main {
     private static void networkTest(String fileRoute, Problem problem, String saveRoute) {
         NeurophModule learningModule = new NeurophModule();
         DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
-        
+
         try {
             FileWriter fw = new FileWriter(saveRoute, false);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -271,7 +270,7 @@ public class Main {
                 pw.println(";" + ERROR_DF.format(deseado) + ";" + ERROR_DF.format(calculado) + ";" + ERROR_DF.format(error) + ";");
 
             }
-            
+
             pw.close();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
