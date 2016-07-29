@@ -41,10 +41,10 @@ public class Main {
         Solution sol = new Solution(problem);
         sol.solve();
 
-        fullSearch(problem);
+        //fullSearch(problem);
         //findBestNetwork1(problem);
-        //String fileRoute = "Net.nnet";
-        //networkTest(fileRoute, problem, "FinalNnetOut.csv");
+        String fileRoute = "Net.nnet";
+        networkTest(fileRoute, problem, "FinalNnetOut.csv");
     }
 
     private static void fullSearch(Problem problem) {
@@ -200,7 +200,7 @@ public class Main {
     private static void findBestNetwork1(Problem problem) {
         NeurophModule learningModule = new NeurophModule();
         DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
-        String networkDir = "NetworkSaves/";
+        String networkDir = "TemporalNets/";
         File folder = new File(networkDir);
         File[] listOfFiles = folder.listFiles();
         String bestNetworkFile = "";
@@ -210,6 +210,8 @@ public class Main {
             Double networkSumError = 0.0;
             Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
             NeuralNetwork neuralNetwork = NeuralNetwork.load(f.toString());
+            //Para sacar el test de cada uno
+            //networkTest(f.toString(), problem, f.getName().substring(0, f.getName().length()-5) + ".csv");
             for (DataSetRow dataRow : allDataset.getRows()) {
                 neuralNetwork.setInput(dataRow.getInput());
                 neuralNetwork.calculate();
