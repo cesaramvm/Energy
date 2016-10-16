@@ -1,10 +1,13 @@
+package Models;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package energytfg;
 
+
+import Util.Normalizer;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Cesar
  */
-class Problem {
+public class Problem {
 
     private HashMap<Integer, YearInfo> years = new HashMap<>();
     private static int numParams;
@@ -72,10 +75,8 @@ class Problem {
             b.close();
         } catch (FileNotFoundException ex) {
             System.err.println("File not Found EXCEPTION");
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             System.err.println("IoEXCEPTION");
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Normalizer norm = new Normalizer(numParams+1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);

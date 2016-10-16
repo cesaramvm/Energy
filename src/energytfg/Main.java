@@ -1,11 +1,15 @@
 package energytfg;
 
+import Exceptions.NotOddNumberException;
+import Metaheuristic.MetaSearch;
+import Models.Problem;
+import NeuralNetwork.NeurophModule;
+import Util.Normalizer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.Math.abs;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +19,10 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
+import static java.lang.Math.abs;
+import static java.lang.Math.abs;
+import static java.lang.Math.abs;
+import static java.lang.Math.abs;
 
 /**
  *
@@ -31,20 +39,23 @@ public class Main {
             TransferFunctionType.GAUSSIAN
     ));
     private static ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
-    //FALTAN RAMP STEP TRAPEZOID SGN LOG 
-    //Linear baja pero se queda en 0.003 COMO MUCHO
-    //Sigmoid sube por lo general
 
     public static void main(String[] args) {
-        Problem problem = new Problem("ProjectData/O-data.txt");
-        problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-        Solution sol = new Solution(problem);
-        sol.solve();
+        try {
+            Problem problem = new Problem("ProjectData/O-data.txt");
+            problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
+            int searchBranches = 2;
+            int branchIterations = 5000;
 
-        //fullSearch(problem);
-        //findBestNetwork1(problem);
-        String fileRoute = "Net.nnet";
-        networkTest(fileRoute, problem, "FinalNnetOut.csv");
+            MetaSearch meta = new MetaSearch(problem, searchBranches, branchIterations);
+
+            //fullSearch(problem);
+            //findBestNetwork1(problem);
+//        String fileRoute = "Net.nnet";
+//        networkTest(fileRoute, problem, "FinalNnetOut.csv");
+        } catch (NotOddNumberException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private static void fullSearch(Problem problem) {
@@ -74,7 +85,7 @@ public class Main {
                 for (int j = 1; j < i + 2 - 1; j++) {
                     combination[j] = comb[j - 1];
                 }
-                if (combination[1]==14) {
+                if (combination[1] == 14) {
                     for (TransferFunctionType type : TYPES) {
                         learningModule.onePlot(lrates, type, combination);
                         learningModule.writeTable(NeurophModule.TEST, "AllTest.csv", appendTable);
@@ -125,7 +136,7 @@ public class Main {
     private static void lastMain() {
 //        Problem problem = new Problem("ProjectData/O-data.txt");
 //        problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-//        Solution sol = new Solution(problem);
+//        HeuristicModule sol = new HeuristicModule(problem);
 //        sol.solve();
 //        boolean showTrainGraph = false;
 //        boolean showGraphs = false;

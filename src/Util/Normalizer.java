@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package energytfg;
+package Util;
 
+import Models.YearInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 

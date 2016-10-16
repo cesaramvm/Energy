@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package energytfg;
+package NeuralNetwork;
 
+import Util.Normalizer;
+import ChartPackage.LineChartSample;
+import ChartPackage.ChartData;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -66,7 +69,7 @@ public class NeurophModule {
         normalizer = norm;
     }
 
-    NeurophModule(){
+    public NeurophModule(){
         trainingDataSet = null;
         testingDataSet = null;
         normalizer = null;
