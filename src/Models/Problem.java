@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class Problem {
 
     private HashMap<Integer, YearInfo> years = new HashMap<>();
-    private static int numParams;
+    private int numParams;
     private static Normalizer normalizer;
     //1 MEANS: KEEPING PROPORCIONALITY IN RANGE (0,1]
     //0 MEANS: NOT KEEPING PROPORCIONALITY IN RANGE [0,1] Abraham

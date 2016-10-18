@@ -5,7 +5,6 @@
  */
 package Metaheuristic;
 
-import Exceptions.NotOddNumberException;
 import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
@@ -22,17 +21,22 @@ import java.util.Random;
 public class MetaSolution extends Thread {
 
     private final Problem problem;
-    private Solution solution;
     private final int branchIterations;
+    private final int parts;
+    private final ArrayList<Double> newValueList;
+    private final ArrayList<Double> newEpsilonList;
+
     private Double evaluation;
-    private int parts;
+    private Solution solution;
     private boolean done;
 
-    public MetaSolution(Problem pro, int branchIt, int newParts) throws NotOddNumberException {
-        if (!((parts & 1) == 0)) {
-            throw new NotOddNumberException("Las partes deben ser un numero impar");
+    public MetaSolution(Problem pro, int branchIt, int newParts) throws Exception {
+        if (((newParts & 1) == 0)) {
+            throw new Exception("Las partes deben ser impar");
         }
         parts = newParts;
+        newValueList = this.newRandomList(1.0, newParts);
+        newEpsilonList = this.newRandomList(5.0, newParts);
         problem = pro;
         branchIterations = branchIt;
     }
@@ -46,9 +50,9 @@ public class MetaSolution extends Thread {
             newSolVariables.put(j, new ProblemVariable());
         }
         Double newEpsilon = -5 + (Math.random() * 10);
-        solution = new Solution(newEpsilon, newSolVariables);
 
-        evaluation = this.evaluate(solution.getProbVariables(), solution.getEpsilon());
+        evaluation = this.evaluate(newSolVariables, newEpsilon);
+        solution = new Solution(newEpsilon, newSolVariables);
         this.solve();
     }
 
@@ -61,26 +65,27 @@ public class MetaSolution extends Thread {
     }
 
     private void improveSolution() {
-        //Min + (int)(Math.random() * ((Max - Min) + 1))
-        int selectedChange = 0 + (int) (Math.random() * ((14 - 0) + 1));
+        //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
+        int selectedChange = (int) (Math.random() * 15);
         Double newEpsilon;
         HashMap<Integer, ProblemVariable> newProbVariables;
-        double newEvaluation;
+
         if (selectedChange == 14) {
             newProbVariables = solution.getProbVariables();
-            newEpsilon = this.newValue(5.0);
+            newEpsilon = this.getNewEpsilon();
         } else {
             newEpsilon = solution.getEpsilon();
             newProbVariables = (HashMap<Integer, ProblemVariable>) solution.getProbVariables().clone();
-            Double newValue = this.newValue(1.0);
+            Double newValue = this.getNewValue();
             Boolean changeAlpha = new Random().nextBoolean();
             if (changeAlpha) {
                 newProbVariables.get(selectedChange).setAlfa(newValue);
             } else {
                 newProbVariables.get(selectedChange).setBeta(newValue);
             }
+
         }
-        newEvaluation = this.evaluate(newProbVariables, newEpsilon);
+        double newEvaluation = this.evaluate(newProbVariables, newEpsilon);
         if (newEvaluation < evaluation) {
             this.evaluation = newEvaluation;
             this.solution.setEpsilon(newEpsilon);
@@ -141,7 +146,20 @@ public class MetaSolution extends Thread {
 
     // </editor-fold>
 // </editor-fold>
-    private Double newValue(Double value) {
+//    private Double newValue(Double value) {
+//        ArrayList<Double> numbers = new ArrayList<>();
+//        numbers.add(0.0);
+//        double aux = (parts - 1) / 2;
+//        double part = value / aux;
+//        for (int i = 1; i <= aux; i++) {
+//            numbers.add(i * part);
+//            numbers.add(-(i * part));
+//        }
+//        long seed = System.nanoTime();
+//        Collections.shuffle(numbers, new Random(seed));
+//        return numbers.get(0);
+//    }
+    private ArrayList<Double> newRandomList(Double value, int parts) {
         ArrayList<Double> numbers = new ArrayList<>();
         numbers.add(0.0);
         double aux = (parts - 1) / 2;
@@ -152,6 +170,15 @@ public class MetaSolution extends Thread {
         }
         long seed = System.nanoTime();
         Collections.shuffle(numbers, new Random(seed));
-        return numbers.get(0);
+        return numbers;
     }
+
+    private Double getNewEpsilon() {
+        return newEpsilonList.get((new Random()).nextInt(parts));
+    }
+
+    private Double getNewValue() {
+        return newValueList.get((new Random()).nextInt(parts));
+    }
+
 }

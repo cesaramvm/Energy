@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Exceptions;
+package Metaheuristic;
 
 /**
  *
  * @author Cesar
  */
-public class NotOddNumberException extends Exception {
-
-    public NotOddNumberException(String msg) {
-        super(msg);
-    }
+public class MyEventListener {
     
 }

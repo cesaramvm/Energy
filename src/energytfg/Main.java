@@ -1,8 +1,8 @@
 package energytfg;
 
-import Exceptions.NotOddNumberException;
 import Metaheuristic.MetaSearch;
 import Models.Problem;
+import Models.Solution;
 import NeuralNetwork.NeurophModule;
 import Util.Normalizer;
 import java.io.BufferedWriter;
@@ -19,9 +19,6 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
-import static java.lang.Math.abs;
-import static java.lang.Math.abs;
-import static java.lang.Math.abs;
 import static java.lang.Math.abs;
 
 /**
@@ -41,19 +38,22 @@ public class Main {
     private static ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 
     public static void main(String[] args) {
-        try {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-            int searchBranches = 2;
-            int branchIterations = 5000;
+            int searchBranches = 10000;
+            int branchIterations = 10000;
 
             MetaSearch meta = new MetaSearch(problem, searchBranches, branchIterations);
+            meta.search();
+        try {
+            Solution sol = meta.findBestSolution();
+            System.out.println(sol.toString());
 
             //fullSearch(problem);
             //findBestNetwork1(problem);
 //        String fileRoute = "Net.nnet";
 //        networkTest(fileRoute, problem, "FinalNnetOut.csv");
-        } catch (NotOddNumberException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -77,7 +77,7 @@ public class Main {
             if (i == 3) {
                 usedNeurons = possible3Neurons;
             }
-            createCombinations(i, usedNeurons, new ArrayList<Integer>());
+            createCombinations(i, usedNeurons, new ArrayList<>());
             int[] combination = new int[i + 2];
             combination[0] = 14;
             combination[i + 2 - 1] = 1;
@@ -124,9 +124,9 @@ public class Main {
 
             // Else add each letter from the alphabet to new strings and process these new strings again
         } else {
-            for (int i = 0; i < possibleNeurons.length; i++) {
+            for (Integer possibleNeuron : possibleNeurons) {
                 ArrayList<Integer> oldCurr = (ArrayList<Integer>) curr.clone();
-                curr.add(possibleNeurons[i]);
+                curr.add(possibleNeuron);
                 createCombinations(maxLength, possibleNeurons, curr);
                 curr = oldCurr;
             }

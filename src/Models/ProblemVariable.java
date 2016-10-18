@@ -23,6 +23,12 @@ public class ProblemVariable {
         alfa = -1 + (Math.random() * 2);
         beta = -1 + (Math.random() * 2);
     }
+    
+    public ProblemVariable(double number) {
+//        selected=true;
+        alfa = number;
+        beta = number;
+    }
     // </editor-fold>
 
     // <editor-fold desc="Getters & Setters">

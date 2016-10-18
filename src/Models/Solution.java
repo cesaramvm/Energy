@@ -20,6 +20,14 @@ public class Solution {
         this.epsilon = epsilon;
         this.probVariables = probVariables;
     }
+    
+    public Solution(int probVariablesSize){
+        epsilon=0.0;
+        for (int i=0; i<probVariablesSize; i++){
+            probVariables.put(i, new ProblemVariable(0.0));
+            
+        }
+    }
 
     public double getEpsilon() {
         return epsilon;
