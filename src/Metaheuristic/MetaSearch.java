@@ -41,6 +41,13 @@ public class MetaSearch {
             for (int i = 0; i < numBranches; i++) {
 
                 int parts = 9;
+                //ExecutorService
+                //raul cabido
+                //juanjo
+                //montemayor
+                //jose velez
+                //buenaposada
+                
                 MetaSolution ms = new MetaSolution(problem, branchIterations, parts);
                 ms.start();
                 threads.add(ms);
