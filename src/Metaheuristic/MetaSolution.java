@@ -9,6 +9,8 @@ package Metaheuristic;
 // </editor-fold>
 import Models.Problem;
 import Models.Solution;
+import Optimizers.EvaluationOptimizer;
+import Optimizers.RandomEvaluationOptimizer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,7 +47,8 @@ public class MetaSolution {
         try {
             for (int i = 0; i < numBranches; i++) {
                 int parts = 999;
-                futures.add(es.submit(new MetaSearch(problem, branchIterations, parts)));
+                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem);
+                futures.add(es.submit(new MetaSearch(problem, branchIterations, eo)));
             }
             for (Future f : futures){
                 Solution s = (Solution) f.get();
