@@ -8,15 +8,9 @@ package Metaheuristic;
 import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
-import Models.YearInfo;
-import Optimizers.EvaluationOptimizer;
-import java.util.ArrayList;
-import java.util.Collections;
+import Util.Optimizers.EvaluationOptimizer;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -54,7 +48,9 @@ public class MetaSearch implements Callable<Solution> {
 
     public Solution solve() {
         for (int i = 0; i < branchIterations; i++) {
+            System.out.println(solution);
             optimizer.optimize(solution);
+            System.out.println(solution);
         }
         return solution;
 //        System.err.println("        " + Thread.currentThread().getId() + " END");

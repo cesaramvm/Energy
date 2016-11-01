@@ -6,7 +6,7 @@
 package NeuralNetwork;
 
 import Models.Problem;
-import Util.Normalizer;
+import Util.Normalizers.Normalizer;
 import energytfg.Main;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,7 +30,7 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeurophSolution {
 
-    private static ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
+    private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
     private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(Arrays.asList(
             TransferFunctionType.SIN,
             TransferFunctionType.TANH,

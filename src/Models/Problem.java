@@ -7,7 +7,7 @@ package Models;
  */
 
 
-import Util.Normalizer;
+import Util.Normalizers.Normalizer;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

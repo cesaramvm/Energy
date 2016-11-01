@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Optimizers;
+package Util.Optimizers;
 
 import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

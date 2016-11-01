@@ -5,7 +5,7 @@
  */
 package NeuralNetwork;
 
-import Util.Normalizer;
+import Util.Normalizers.Normalizer;
 import ChartPackage.LineChartSample;
 import ChartPackage.ChartData;
 import java.io.BufferedWriter;

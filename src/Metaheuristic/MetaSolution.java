@@ -9,9 +9,10 @@ package Metaheuristic;
 // </editor-fold>
 import Models.Problem;
 import Models.Solution;
-import Optimizers.EvaluationOptimizer;
-import Optimizers.RandomEvaluationOptimizer;
+import Util.Optimizers.EvaluationOptimizer;
+import Util.Optimizers.RandomEvaluationOptimizer;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -54,7 +55,7 @@ public class MetaSolution {
                 Solution s = (Solution) f.get();
                 soluciones.add(s);
             }
-        } catch (Exception ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Logger.getLogger(MetaSolution.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             es.shutdown();
@@ -64,7 +65,7 @@ public class MetaSolution {
 
     public Solution findBestSolution(){
 
-        if (soluciones.size() != 0) {
+        if (!soluciones.isEmpty()) {
             return this.bestSolution();
         } else {
             return null;
