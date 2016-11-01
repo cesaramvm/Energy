@@ -10,6 +10,8 @@ package Metaheuristic;
 import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
+import Util.Optimizers.LSBIEvaluationOptimizer;
+import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -48,7 +50,9 @@ public class MetaSolution {
         try {
             for (int i = 0; i < numBranches; i++) {
                 int parts = 999;
-                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem);
+//                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem);
+                EvaluationOptimizer eo = new LSFIEvaluationOptimizer(parts, problem);
+//                EvaluationOptimizer eo = new LSBIEvaluationOptimizer(parts, problem);
                 futures.add(es.submit(new MetaSearch(problem, branchIterations, eo)));
             }
             for (Future f : futures){

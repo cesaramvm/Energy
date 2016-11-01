@@ -28,8 +28,8 @@ public class Main {
     public static void main(String[] args) {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-            int searchBranches = 1;
-            int branchIterations = 1;
+            int searchBranches = 50;
+            int branchIterations = 5;
 
             MetaSolution metaSol = new MetaSolution(problem, searchBranches, branchIterations);
             Long start = System.currentTimeMillis();

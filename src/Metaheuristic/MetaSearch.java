@@ -48,9 +48,9 @@ public class MetaSearch implements Callable<Solution> {
 
     public Solution solve() {
         for (int i = 0; i < branchIterations; i++) {
-            System.out.println(solution);
+//            System.out.println(solution);
             optimizer.optimize(solution);
-            System.out.println(solution);
+//            System.out.println(solution);
         }
         return solution;
 //        System.err.println("        " + Thread.currentThread().getId() + " END");

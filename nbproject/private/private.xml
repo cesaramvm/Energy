@@ -3,8 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Usuario/Energy/src/NeuralNetwork/NeurophModule.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/NeuralNetwork/NeurophSearch.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Util/Optimizers/Optimizer.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Util/Optimizers/EvaluationOptimizer.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Models/YearInfo.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/NeuralNetwork/NeurophSolution.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Util/Normalizers/Normalizer.java</file>
             <file>file:/C:/Users/Usuario/Energy/src/energytfg/Main.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Models/ProblemVariable.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Util/Optimizers/RandomEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Models/Problem.java</file>
+            <file>file:/C:/Users/Usuario/Energy/src/Models/Solution.java</file>
         </group>
     </open-files>
 </project-private>

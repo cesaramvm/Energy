@@ -24,14 +24,14 @@ import java.util.logging.Logger;
 public abstract class EvaluationOptimizer implements Optimizer {
 
     protected Problem problem;
-    protected final ArrayList<Double> newValueList;
-    protected final ArrayList<Double> newEpsilonList;
+    protected final ArrayList<Double> valueList;
+    protected final ArrayList<Double> epsilonList;
     protected final int parts;
 
     protected EvaluationOptimizer(int newParts, Problem problem) {
 
-        newValueList = this.newRandomList(1.0, newParts);
-        newEpsilonList = this.newRandomList(5.0, newParts);
+        valueList = this.newRandomList(1.0, newParts);
+        epsilonList = this.newRandomList(5.0, newParts);
         this.parts = newParts;
         this.problem = problem;
 
@@ -86,11 +86,11 @@ public abstract class EvaluationOptimizer implements Optimizer {
     }
 
     protected Double getNewEpsilon() {
-        return newEpsilonList.get((new Random()).nextInt(parts));
+        return epsilonList.get((new Random()).nextInt(parts));
     }
 
     protected Double getNewValue() {
-        return newValueList.get((new Random()).nextInt(parts));
+        return valueList.get((new Random()).nextInt(parts));
     }
 
     @Override
