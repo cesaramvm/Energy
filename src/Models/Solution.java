@@ -15,10 +15,12 @@ public class Solution {
     
     private double epsilon;
     private HashMap<Integer, ProblemVariable> probVariables = new HashMap<>();
+    private double evaluation;
 
-    public Solution(double epsilon,  HashMap<Integer, ProblemVariable> probVariables) {
+    public Solution(double epsilon,  HashMap<Integer, ProblemVariable> probVariables, double evaluation) {
         this.epsilon = epsilon;
         this.probVariables = probVariables;
+        this.evaluation = evaluation;
     }
     
     public Solution(int probVariablesSize){
@@ -45,9 +47,17 @@ public class Solution {
         this.probVariables = probVariables;
     }
 
+    public double getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(double evaluation) {
+        this.evaluation = evaluation;
+    }
+    
     @Override
     public String toString() {
-        return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + '}';
+        return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + '}' + '\n' + "Evaluation: " + evaluation + '\n';
     }
     
 }

@@ -32,7 +32,7 @@ import org.neuroph.util.TransferFunctionType;
  *
  * @author portatil
  */
-public class NeurophModule {
+public class NeurophSearch {
 
     private final static int INPUT = 14;
     private final static int OUTPUT = 1;
@@ -59,7 +59,7 @@ public class NeurophModule {
     private ChartData chartTestData;
     private ChartData chartTrainingData;
 
-    public NeurophModule(int iterations, int propType, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
+    public NeurophSearch(int iterations, int propType, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
         MAXITERATIONS = iterations;
         propagationType = propType;
         showTrainGraph = trainGraphShow;
@@ -69,7 +69,7 @@ public class NeurophModule {
         normalizer = norm;
     }
 
-    public NeurophModule(){
+    public NeurophSearch(){
         trainingDataSet = null;
         testingDataSet = null;
         normalizer = null;
@@ -166,7 +166,7 @@ public class NeurophModule {
             PrintWriter pw = new PrintWriter(bw);
             write(pw, graphToBePrinted, existance);
         } catch (IOException ex) {
-            Logger.getLogger(NeurophModule.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
