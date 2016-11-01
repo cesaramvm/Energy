@@ -12,7 +12,10 @@ import Models.YearInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -55,7 +58,7 @@ public abstract class EvaluationOptimizer implements Optimizer {
 
         return result;
     }
-
+    
     protected final ArrayList<Double> newRandomList(Double value, int parts) {
         ArrayList<Double> numbers = new ArrayList<>();
         numbers.add(0.0);
@@ -68,6 +71,18 @@ public abstract class EvaluationOptimizer implements Optimizer {
         long seed = System.nanoTime();
         Collections.shuffle(numbers, new Random(seed));
         return numbers;
+    }
+
+    protected final HashMap<Integer, ProblemVariable> cloneMap(HashMap<Integer, ProblemVariable> original) {
+        HashMap<Integer, ProblemVariable> clone = new HashMap<Integer, ProblemVariable>();
+        for (Map.Entry<Integer, ProblemVariable> entry : original.entrySet()) {
+                try {
+                    clone.put(entry.getKey(), (ProblemVariable) entry.getValue().clone());
+                } catch (CloneNotSupportedException ex) {
+                    Logger.getLogger(RandomEvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        return clone;
     }
 
     protected Double getNewEpsilon() {

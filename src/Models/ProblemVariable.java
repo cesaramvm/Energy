@@ -9,7 +9,7 @@ package Models;
  *
  * @author Cesar
  */
-public class ProblemVariable {
+public class ProblemVariable implements Cloneable{
 
     // <editor-fold desc="Class Variables">
 //    boolean selected; 
@@ -71,4 +71,11 @@ public class ProblemVariable {
     }
     // </editor-fold>
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
 }

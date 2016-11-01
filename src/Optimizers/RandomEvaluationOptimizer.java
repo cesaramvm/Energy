@@ -9,7 +9,10 @@ import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,14 +37,12 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
             newEpsilon = this.getNewEpsilon();
         } else {
             newEpsilon = solution.getEpsilon();
-            newProbVariables = new HashMap<Integer, ProblemVariable>(solution.getProbVariables());
+            newProbVariables = this.cloneMap(solution.getProbVariables());
             Double newValue = this.getNewValue();
             Boolean changeAlpha = new Random().nextBoolean();
             if (changeAlpha) {
-                System.out.println(newProbVariables.get(selectedChange) == solution.getProbVariables().get(selectedChange));
                 newProbVariables.get(selectedChange).setAlfa(newValue);
             } else {
-                System.out.println(newProbVariables.get(selectedChange) == solution.getProbVariables().get(selectedChange));
                 newProbVariables.get(selectedChange).setBeta(newValue);
             }
 
