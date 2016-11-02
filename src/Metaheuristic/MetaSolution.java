@@ -33,13 +33,15 @@ public class MetaSolution {
     private final Problem problem;
     private final int numBranches;
     private final int branchIterations;
+    private final int parts;
 // <editor-fold desc="Constructor">
 
-    public MetaSolution(Problem pro, int numBranches, int branchIterations) {
+    public MetaSolution(Problem pro, int numBranches, int branchIterations, int parts) {
 
         this.problem = pro;
         this.numBranches = numBranches;
         this.branchIterations = branchIterations;
+        this.parts = parts;
 
     }
 
@@ -51,7 +53,6 @@ public class MetaSolution {
         try {
             for (int i = 0; i < numBranches; i++) {
                 Random r = new Random(i);
-                int parts = 999;
 //                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem, r);
                 EvaluationOptimizer eo = new LSFIEvaluationOptimizer(parts, problem, r);
 //                EvaluationOptimizer eo = new LSBIEvaluationOptimizer(parts, problem, r);

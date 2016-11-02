@@ -28,17 +28,18 @@ public class Main {
     public static void main(String[] args) {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-            int searchBranches = 50;
-            int branchIterations = 5;
+            int searchBranches = 20;
+            int branchIterations = 500;
+            int parts = 999;
 
-            MetaSolution metaSol = new MetaSolution(problem, searchBranches, branchIterations);
+            MetaSolution metaSol = new MetaSolution(problem, searchBranches, branchIterations, parts);
             Long start = System.currentTimeMillis();
             metaSol.search();
             Long end = System.currentTimeMillis();
             System.out.println("Tiempo: " + (end-start));
             
             Solution bestSol = metaSol.findBestSolution();
-//            System.out.println(bestSol);
+            System.out.println(bestSol);
             
         try {
 //            Solution sol = metaSol.findBestSolution();
