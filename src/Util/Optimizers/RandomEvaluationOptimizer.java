@@ -17,15 +17,15 @@ import java.util.Random;
  */
 public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 
-    public RandomEvaluationOptimizer(int parts, Problem problem) {
-        super(parts, problem);
+    public RandomEvaluationOptimizer(int parts, Problem problem, Random r) {
+        super(parts, problem, r);
     }
 
     @Override
     public void optimize(Solution solution) {
 
         //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-        int selectedChange = (int) (Math.random() * 15);
+        int selectedChange = (int) (random.nextDouble() * 15);
         Double newEpsilon;
         HashMap<Integer, ProblemVariable> newProbVariables;
 
@@ -36,7 +36,7 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
             newEpsilon = solution.getEpsilon();
             newProbVariables = this.cloneMap(solution.getProbVariables());
             Double newValue = this.getNewValue();
-            Boolean changeAlpha = new Random().nextBoolean();
+            Boolean changeAlpha = random.nextBoolean();
             if (changeAlpha) {
                 newProbVariables.get(selectedChange).setAlfa(newValue);
             } else {

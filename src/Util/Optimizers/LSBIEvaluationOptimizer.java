@@ -19,8 +19,8 @@ import java.util.Random;
  */
 public class LSBIEvaluationOptimizer extends EvaluationOptimizer {
 
-    public LSBIEvaluationOptimizer(int parts, Problem problem) {
-        super(parts, problem);
+    public LSBIEvaluationOptimizer(int parts, Problem problem, Random r) {
+        super(parts, problem, r);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LSBIEvaluationOptimizer extends EvaluationOptimizer {
         ArrayList<Double> evaluations = new ArrayList<>();
         Double newEvaluation;
         //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-        int selectedChange = (int) (Math.random() * 15);
+        int selectedChange = (int) (random.nextDouble() * 15);
         Double newEpsilon = solution.getEpsilon();;
         HashMap<Integer, ProblemVariable> newProbVariables = solution.getProbVariables();;
 
@@ -41,7 +41,7 @@ public class LSBIEvaluationOptimizer extends EvaluationOptimizer {
             newEpsilon = epsilonList.get(minIndex);
         } else {
             newProbVariables = this.cloneMap(solution.getProbVariables());
-            Boolean changeAlpha = new Random().nextBoolean();
+            Boolean changeAlpha = random.nextBoolean();
             if (changeAlpha) {
                 for (Double alpha : valueList) {
                     newProbVariables.get(selectedChange).setAlfa(alpha);

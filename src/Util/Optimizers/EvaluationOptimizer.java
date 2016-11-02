@@ -27,14 +27,15 @@ public abstract class EvaluationOptimizer implements Optimizer {
     protected final ArrayList<Double> valueList;
     protected final ArrayList<Double> epsilonList;
     protected final int parts;
+    protected final Random random;
 
-    protected EvaluationOptimizer(int newParts, Problem problem) {
+    protected EvaluationOptimizer(int newParts, Problem problem, Random r) {
 
-        valueList = this.newRandomList(1.0, newParts);
-        epsilonList = this.newRandomList(5.0, newParts);
         this.parts = newParts;
         this.problem = problem;
-
+        this.random = r;
+        valueList = this.newRandomList(1.0, newParts);
+        epsilonList = this.newRandomList(5.0, newParts);
     }
 
     @Override
@@ -68,8 +69,7 @@ public abstract class EvaluationOptimizer implements Optimizer {
             numbers.add(i * part);
             numbers.add(-(i * part));
         }
-        long seed = System.nanoTime();
-        Collections.shuffle(numbers, new Random(seed));
+        Collections.shuffle(numbers, random);
         return numbers;
     }
 
@@ -86,11 +86,11 @@ public abstract class EvaluationOptimizer implements Optimizer {
     }
 
     protected Double getNewEpsilon() {
-        return epsilonList.get((new Random()).nextInt(parts));
+        return epsilonList.get(random.nextInt(parts));
     }
 
     protected Double getNewValue() {
-        return valueList.get((new Random()).nextInt(parts));
+        return valueList.get(random.nextInt(parts));
     }
 
     @Override

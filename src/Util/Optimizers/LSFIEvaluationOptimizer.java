@@ -21,8 +21,8 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
     private ArrayList<Double> valueListCopy;
     private ArrayList<Double> epsilonListCopy;
 
-    public LSFIEvaluationOptimizer(int parts, Problem problem) {
-        super(parts, problem);
+    public LSFIEvaluationOptimizer(int parts, Problem problem, Random r) {
+        super(parts, problem, r);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
         epsilonListCopy = (ArrayList<Double>) epsilonList.clone();
         double newEvaluation = solution.getEvaluation();
         //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-        int selectedChange = (int) (Math.random() * 15);
+        int selectedChange = (int) (random.nextDouble() * 15);
         Double newEpsilon = solution.getEpsilon();;
         HashMap<Integer, ProblemVariable> newProbVariables = solution.getProbVariables();;
         if (selectedChange != 14) {
@@ -43,7 +43,7 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
                 newEpsilon = this.getNewEpsilon();
             } else {
                 Double newValue = this.getNewValue();
-                Boolean changeAlpha = new Random().nextBoolean();
+                Boolean changeAlpha = random.nextBoolean();
                 if (changeAlpha) {
                     newProbVariables.get(selectedChange).setAlfa(newValue);
                 } else {
@@ -64,14 +64,14 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
 
     @Override
     protected Double getNewEpsilon() {
-        Double newEpsilon = epsilonListCopy.get((new Random()).nextInt(epsilonListCopy.size()));
+        Double newEpsilon = epsilonListCopy.get(random.nextInt(epsilonListCopy.size()));
         epsilonListCopy.remove(newEpsilon);
         return newEpsilon;
     }
 
     @Override
     protected Double getNewValue() {
-        Double newValue =  valueListCopy.get((new Random()).nextInt(valueListCopy.size()));
+        Double newValue =  valueListCopy.get(random.nextInt(valueListCopy.size()));
         valueListCopy.remove(newValue);
         return newValue;
     }

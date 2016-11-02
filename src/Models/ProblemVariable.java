@@ -5,6 +5,8 @@
  */
 package Models;
 
+import java.util.Random;
+
 /**
  *
  * @author Cesar
@@ -18,10 +20,10 @@ public class ProblemVariable implements Cloneable{
     // </editor-fold>
 
     // <editor-fold desc="Constructor">
-    public ProblemVariable() {
+    public ProblemVariable(Random r) {
 //        selected=true;
-        alfa = -1 + (Math.random() * 2);
-        beta = -1 + (Math.random() * 2);
+        alfa = -1 + (r.nextDouble() * 2);
+        beta = -1 + (r.nextDouble() * 2);
     }
     
     public ProblemVariable(double number) {
