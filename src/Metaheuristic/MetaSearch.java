@@ -22,12 +22,13 @@ public class MetaSearch implements Callable<Solution> {
     private final Problem problem;
     private final int branchIterations;
     private final EvaluationOptimizer optimizer;
+    private final Long startTime;
 
     private Solution solution;
-    private boolean done;
     private final Random random;
 
     public MetaSearch(Problem pro, int branchIt, EvaluationOptimizer eo, Random r) {
+        startTime = System.currentTimeMillis();
         this.optimizer = eo;
         problem = pro;
         branchIterations = branchIt;
@@ -53,6 +54,8 @@ public class MetaSearch implements Callable<Solution> {
         for (int i = 0; i < branchIterations; i++) {
             optimizer.optimize(solution);
         }
+        Long elapsedTime = System.currentTimeMillis() - startTime;
+        solution.setExecutionTime(elapsedTime);
         return solution;
     }
 

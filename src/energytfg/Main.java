@@ -1,6 +1,7 @@
 package energytfg;
 
-import Metaheuristic.MetaSolution;
+import Metaheuristic.MetaSolver;
+import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
 import NeuralNetwork.NeurophSolution;
@@ -28,19 +29,21 @@ public class Main {
     public static void main(String[] args) {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-            int searchBranches = 10;
-            int branchIterations = 50;
-            int parts = 999;
+            int searchBranches = 5;
+            int branchIterations = 100;
+            int parts = 10001;
 
-            MetaSolution metaSol = new MetaSolution(problem, searchBranches, branchIterations, parts);
-            Long start = System.currentTimeMillis();
+            MetaSolver metaSol = new MetaSolver(problem, searchBranches, branchIterations, parts);
             metaSol.search();
-            Long end = System.currentTimeMillis();
+            MetaResults results = metaSol.getResults();
             
-            
-            Solution bestSol = metaSol.findBestSolution();
-            System.out.println(bestSol);
-            System.out.println("Tiempo: " + (end-start));
+            System.out.println(results.getBestSolution());
+            System.out.println("Secuencial: " + results.getTotalSecuentialTime());
+            System.out.println("Concurrent: " + results.getTotalConcurrentTime());
+            System.out.println("Avg Error :" + results.getAvgError());
+            System.out.println("Avg Time  :" + results.getAvgTime());
+//            System.out.println(solution);
+//            System.out.println("Tiempo de busqueda " + );
             
         try {
 //            Solution sol = metaSol.findBestSolution();

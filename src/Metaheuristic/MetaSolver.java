@@ -7,6 +7,7 @@ package Metaheuristic;
 
 // <editor-fold desc="">
 // </editor-fold>
+import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
@@ -26,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author Cesar
  */
-public class MetaSolution {
+public class MetaSolver {
 
     private final ArrayList<Future> futures = new ArrayList<>();
     private final ArrayList<Solution> soluciones = new ArrayList<>();
@@ -34,9 +35,11 @@ public class MetaSolution {
     private final int numBranches;
     private final int branchIterations;
     private final int parts;
-// <editor-fold desc="Constructor">
+    private Long totalConcurrentTime;
+    private MetaResults results;
 
-    public MetaSolution(Problem pro, int numBranches, int branchIterations, int parts) {
+// <editor-fold desc="Constructor">
+    public MetaSolver(Problem pro, int numBranches, int branchIterations, int parts) {
 
         this.problem = pro;
         this.numBranches = numBranches;
@@ -49,64 +52,60 @@ public class MetaSolution {
         futures.clear();
         soluciones.clear();
         ExecutorService es = Executors.newCachedThreadPool();
-
         try {
+            totalConcurrentTime = System.currentTimeMillis();
             for (int i = 0; i < numBranches; i++) {
-                int seed = i+5;
+                int seed = i + 5;
                 Random r = new Random(seed);
 //                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem, r);
                 EvaluationOptimizer eo = new LSFIEvaluationOptimizer(parts, problem, r);
 //                EvaluationOptimizer eo = new LSBIEvaluationOptimizer(parts, problem, r);
                 futures.add(es.submit(new MetaSearch(problem, branchIterations, eo, r)));
             }
-            for (Future f : futures){
+            for (Future f : futures) {
                 Solution s = (Solution) f.get();
                 soluciones.add(s);
             }
+            totalConcurrentTime = System.currentTimeMillis() - totalConcurrentTime;
         } catch (InterruptedException | ExecutionException ex) {
-            Logger.getLogger(MetaSolution.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             es.shutdown();
+            
+
         }
 
     }
 
-    public Solution findBestSolution(){
+    public MetaResults getResults() {
+        if (results == null) {
+            Solution bestSolution = soluciones.get(0);
+            Long totalSecuentialTime = 0L;
+            Double avgErrorAux = 0.0;
 
-        if (!soluciones.isEmpty()) {
-            return this.bestSolution();
-        } else {
-            return null;
+            for (Solution sol : soluciones) {
+                if (sol.getEvaluation() < bestSolution.getEvaluation()) {
+                    bestSolution = sol;
+                }
+                totalSecuentialTime += sol.getExecutionTime();
+                avgErrorAux += sol.getEvaluation();
+            }
+            Long avgTime = totalSecuentialTime/soluciones.size();
+            Double avgError = avgErrorAux/soluciones.size();
+            results = new MetaResults(bestSolution, totalSecuentialTime, totalConcurrentTime, avgTime, avgError);
         }
-    }
-// </editor-fold>
 
-    private Solution meanSolution() {
-        Solution finalSolution = new Solution(14);
+        return results;
+    }
+
+    private Solution findBestSolution() {
+        Solution bestSol = soluciones.get(0);
         for (Solution sol : soluciones) {
-            double lastEpsilon = finalSolution.getEpsilon();
-            finalSolution.setEpsilon(lastEpsilon + sol.getEpsilon() / numBranches);
-            for (int i = 0; i < sol.getProbVariables().size(); i++) {
-                double newAlpha = sol.getProbVariables().get(i).getAlfa();
-                double newBeta = sol.getProbVariables().get(i).getBeta();
-                double lastAlpha = finalSolution.getProbVariables().get(i).getAlfa();
-                double lastBeta = finalSolution.getProbVariables().get(i).getBeta();
-                finalSolution.getProbVariables().get(i).setAlfa(lastAlpha + newAlpha / numBranches);
-                finalSolution.getProbVariables().get(i).setBeta(lastBeta + newBeta / numBranches);
+            if (sol.getEvaluation() < bestSol.getEvaluation()) {
+                bestSol = sol;
             }
         }
-
-        return finalSolution;
-    }
-
-    private Solution bestSolution() {
-        Solution bestSol = soluciones.get(0);
-         for (Solution sol : soluciones) {
-             if(sol.getEvaluation() < bestSol.getEvaluation()){
-                 bestSol = sol;
-             }
-         }
-         return bestSol;
+        return bestSol;
     }
 
 }

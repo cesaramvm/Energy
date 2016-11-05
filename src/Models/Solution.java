@@ -16,6 +16,7 @@ public class Solution {
     private double epsilon;
     private HashMap<Integer, ProblemVariable> probVariables = new HashMap<>();
     private double evaluation;
+    private Long executionTime;
 
     public Solution(double epsilon,  HashMap<Integer, ProblemVariable> probVariables, double evaluation) {
         this.epsilon = epsilon;
@@ -54,10 +55,18 @@ public class Solution {
     public void setEvaluation(double evaluation) {
         this.evaluation = evaluation;
     }
-    
+
+    public Long getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Long executionTime) {
+        this.executionTime = executionTime;
+    }
+
     @Override
     public String toString() {
-        return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + '}' + '\n' + "Evaluation: " + evaluation + '\n';
+        return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + ", evaluation=" + evaluation + ", executionTime=" + executionTime + '}';
     }
     
 }
