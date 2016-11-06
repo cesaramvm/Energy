@@ -90,11 +90,11 @@ public class NeurophSearch {
 
         if (showGraph) {
             String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName);
+            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName);
+                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 
@@ -110,11 +110,11 @@ public class NeurophSearch {
         }
         if (showGraph) {
             String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName);
+            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName);
+                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 
@@ -131,11 +131,11 @@ public class NeurophSearch {
 
         if (showGraph) {
             String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample((ArrayList<ChartData>) graphTestData.clone(), graphName);
+            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample((ArrayList<ChartData>) graphTrainingData.clone(), graphName);
+                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 

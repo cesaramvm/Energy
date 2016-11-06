@@ -272,7 +272,7 @@ public class NeurophSolution {
             // Else add each letter from the alphabet to new strings and process these new strings again
         } else {
             for (Integer possibleNeuron : possibleNeurons) {
-                ArrayList<Integer> oldCurr = (ArrayList<Integer>) curr.clone();
+                ArrayList<Integer> oldCurr = new ArrayList<>(curr);
                 curr.add(possibleNeuron);
                 createCombinations(maxLength, possibleNeurons, curr);
                 curr = oldCurr;

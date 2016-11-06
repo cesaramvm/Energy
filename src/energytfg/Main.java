@@ -30,7 +30,7 @@ public class Main {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
             int searchBranches = 5;
-            int branchIterations = 100;
+            int branchIterations = 10;
             int parts = 10001;
 
             MetaSolver metaSol = new MetaSolver(problem, searchBranches, branchIterations, parts);

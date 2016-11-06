@@ -28,13 +28,13 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
     @Override
     public void optimize(Solution solution) {
 
-        valueListCopy = (ArrayList<Double>) valueList.clone();
-        epsilonListCopy = (ArrayList<Double>) epsilonList.clone();
+        valueListCopy = new ArrayList<>(valueList);
+        epsilonListCopy = new ArrayList<>(epsilonList);
         double newEvaluation = solution.getEvaluation();
         //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
         int selectedChange = (int) (random.nextDouble() * 15);
-        Double newEpsilon = solution.getEpsilon();;
-        HashMap<Integer, ProblemVariable> newProbVariables = solution.getProbVariables();;
+        Double newEpsilon = solution.getEpsilon();
+        HashMap<Integer, ProblemVariable> newProbVariables = solution.getProbVariables();
         if (selectedChange != 14) {
             newProbVariables = this.cloneMap(solution.getProbVariables());
         }
