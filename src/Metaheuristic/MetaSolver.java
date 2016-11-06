@@ -34,18 +34,19 @@ public class MetaSolver {
     private final Problem problem;
     private final int numBranches;
     private final int branchIterations;
-    private final int parts;
     private Long totalConcurrentTime;
     private MetaResults results;
+    private final EvaluationOptimizer optimizer;
 
 // <editor-fold desc="Constructor">
-    public MetaSolver(Problem pro, int numBranches, int branchIterations, int parts) {
+    public MetaSolver(Problem pro, int numBranches, int branchIterations, int parts, EvaluationOptimizer eo) {
 
         this.problem = pro;
         this.numBranches = numBranches;
         this.branchIterations = branchIterations;
-        this.parts = parts;
-
+        this.optimizer = eo;
+        optimizer.setParts(parts);
+        
     }
 
     public void search() {
@@ -57,10 +58,8 @@ public class MetaSolver {
             for (int i = 0; i < numBranches; i++) {
                 int seed = i + 5;
                 Random r = new Random(seed);
-//                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem, r);
-                EvaluationOptimizer eo = new LSFIEvaluationOptimizer(parts, problem, r);
-//                EvaluationOptimizer eo = new LSBIEvaluationOptimizer(parts, problem, r);
-                futures.add(es.submit(new MetaSearch(problem, branchIterations, eo, r)));
+                optimizer.setRandom(r);
+                futures.add(es.submit(new MetaSearch(problem, branchIterations, optimizer, r)));
             }
             for (Future f : futures) {
                 Solution s = (Solution) f.get();

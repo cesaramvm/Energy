@@ -19,8 +19,8 @@ import java.util.Random;
  */
 public class LSBIEvaluationOptimizer extends EvaluationOptimizer {
 
-    public LSBIEvaluationOptimizer(int parts, Problem problem, Random r) {
-        super(parts, problem, r);
+    public LSBIEvaluationOptimizer(Problem problem) {
+        super(problem);
     }
 
     @Override

@@ -23,19 +23,16 @@ import java.util.logging.Logger;
  */
 public abstract class EvaluationOptimizer implements Optimizer {
 
-    protected Problem problem;
-    protected final ArrayList<Double> valueList;
-    protected final ArrayList<Double> epsilonList;
-    protected final int parts;
-    protected final Random random;
+    protected final Problem problem;
+    protected ArrayList<Double> valueList;
+    protected ArrayList<Double> epsilonList;
+    protected int parts;
+    protected Random random;
 
-    protected EvaluationOptimizer(int newParts, Problem problem, Random r) {
+    protected EvaluationOptimizer(Problem problem) {
 
-        this.parts = newParts;
         this.problem = problem;
-        this.random = r;
-        valueList = this.newRandomList(1.0, newParts);
-        epsilonList = this.newRandomList(5.0, newParts);
+
     }
 
     @Override
@@ -59,7 +56,7 @@ public abstract class EvaluationOptimizer implements Optimizer {
 
         return result;
     }
-    
+
     protected final ArrayList<Double> newRandomList(Double value, int parts) {
         ArrayList<Double> numbers = new ArrayList<>();
         numbers.add(0.0);
@@ -76,12 +73,12 @@ public abstract class EvaluationOptimizer implements Optimizer {
     protected final HashMap<Integer, ProblemVariable> cloneMap(HashMap<Integer, ProblemVariable> original) {
         HashMap<Integer, ProblemVariable> clone = new HashMap<Integer, ProblemVariable>();
         for (Map.Entry<Integer, ProblemVariable> entry : original.entrySet()) {
-                try {
-                    clone.put(entry.getKey(), (ProblemVariable) entry.getValue().clone());
-                } catch (CloneNotSupportedException ex) {
-                    Logger.getLogger(RandomEvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                clone.put(entry.getKey(), (ProblemVariable) entry.getValue().clone());
+            } catch (CloneNotSupportedException ex) {
+                Logger.getLogger(RandomEvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         return clone;
     }
 
@@ -91,6 +88,16 @@ public abstract class EvaluationOptimizer implements Optimizer {
 
     protected Double getNewValue() {
         return valueList.get(random.nextInt(parts));
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
+    public void setParts(int parts) {
+        this.parts = parts;
+        valueList = this.newRandomList(1.0, parts);
+        epsilonList = this.newRandomList(5.0, parts);
     }
 
     @Override

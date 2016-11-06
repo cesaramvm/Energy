@@ -21,8 +21,8 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
     private ArrayList<Double> valueListCopy;
     private ArrayList<Double> epsilonListCopy;
 
-    public LSFIEvaluationOptimizer(int parts, Problem problem, Random r) {
-        super(parts, problem, r);
+    public LSFIEvaluationOptimizer(Problem problem) {
+        super(problem);
     }
 
     @Override
