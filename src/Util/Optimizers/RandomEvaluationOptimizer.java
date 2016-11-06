@@ -17,8 +17,8 @@ import java.util.Random;
  */
 public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 
-    public RandomEvaluationOptimizer(Problem problem) {
-        super(problem);
+    public RandomEvaluationOptimizer(int parts, Problem problem, Random r) {
+        super(parts, problem, r);
     }
 
     @Override

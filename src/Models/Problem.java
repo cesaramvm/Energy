@@ -79,8 +79,9 @@ public class Problem {
             System.err.println("IoEXCEPTION");
         }
 
-        normalizer = new Normalizer(numParams+1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);
-        years = normalizer.normalizeData(auxYears, maxs, mins);
+        Normalizer norm = new Normalizer(numParams+1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);
+        years = norm.normalizeData(auxYears, maxs, mins);
+        normalizer = norm;
         
 //        System.out.println(auxYears.get(2000));
 //        System.out.println(years.get(2000));
