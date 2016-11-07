@@ -41,11 +41,11 @@ public class Main {
             for (int iterations : numIterations) {
                 for (int branches : numBranches) {
                     for (Class optimizer : optimizers) {
-                        System.out.println(optimizer.getCanonicalName());
                         MetaSolver metaSol = new MetaSolver(problem, branches, iterations, part);
                         metaSol.setEvaluationClass(optimizer);
                         metaSol.search();
                         MetaResults results = metaSol.getResults();
+                        System.out.println(optimizer.getCanonicalName());
                         metaSol.writeTable("MetaData.csv", true);
                     }
                 }
