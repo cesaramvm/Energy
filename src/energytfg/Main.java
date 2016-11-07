@@ -37,8 +37,9 @@ public class Main {
         //RandomEvaluationOptimizer
         //LSFIEvaluationOptimizer
         //LSBIEvaluationOptimizer
-        metaSol.search(RandomEvaluationOptimizer.class);
+        metaSol.search();
         MetaResults results = metaSol.getResults();
+        metaSol.writeTable("MetaData.csv", true);
 
         System.out.println(results.getBestSolution());
         System.out.println("Secuencial: " + results.getTotalSecuentialTime());
