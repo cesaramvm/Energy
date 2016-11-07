@@ -14,6 +14,8 @@ import Util.Optimizers.EvaluationOptimizer;
 import Util.Optimizers.LSBIEvaluationOptimizer;
 import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -48,7 +50,8 @@ public class MetaSolver {
 
     }
 
-    public void search() {
+    public void search(Class c) {
+
         futures.clear();
         soluciones.clear();
         ExecutorService es = Executors.newCachedThreadPool();
@@ -57,9 +60,8 @@ public class MetaSolver {
             for (int i = 0; i < numBranches; i++) {
                 int seed = i + 5;
                 Random r = new Random(seed);
-//                EvaluationOptimizer eo = new RandomEvaluationOptimizer(parts, problem, r);
-                EvaluationOptimizer eo = new LSFIEvaluationOptimizer(parts, problem, r);
-//                EvaluationOptimizer eo = new LSBIEvaluationOptimizer(parts, problem, r);
+                Constructor<?> cons = c.getConstructor(int.class, Problem.class, Random.class);
+                EvaluationOptimizer eo = (EvaluationOptimizer) cons.newInstance(parts, problem, r);
                 futures.add(es.submit(new MetaSearch(problem, branchIterations, eo, r)));
             }
             for (Future f : futures) {
@@ -67,11 +69,10 @@ public class MetaSolver {
                 soluciones.add(s);
             }
             totalConcurrentTime = System.currentTimeMillis() - totalConcurrentTime;
-        } catch (InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             es.shutdown();
-            
 
         }
 
@@ -90,8 +91,8 @@ public class MetaSolver {
                 totalSecuentialTime += sol.getExecutionTime();
                 avgErrorAux += sol.getEvaluation();
             }
-            Long avgTime = totalSecuentialTime/soluciones.size();
-            Double avgError = avgErrorAux/soluciones.size();
+            Long avgTime = totalSecuentialTime / soluciones.size();
+            Double avgError = avgErrorAux / soluciones.size();
             results = new MetaResults(bestSolution, totalSecuentialTime, totalConcurrentTime, avgTime, avgError);
         }
 

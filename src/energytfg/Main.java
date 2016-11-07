@@ -5,6 +5,9 @@ import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
 import NeuralNetwork.NeurophSolution;
+import Util.Optimizers.LSBIEvaluationOptimizer;
+import Util.Optimizers.LSFIEvaluationOptimizer;
+import Util.Optimizers.RandomEvaluationOptimizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,11 +33,14 @@ public class Main {
             Problem problem = new Problem("ProjectData/O-data.txt");
             problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
             int searchBranches = 5;
-            int branchIterations = 10;
+            int branchIterations = 100;
             int parts = 10001;
 
             MetaSolver metaSol = new MetaSolver(problem, searchBranches, branchIterations, parts);
-            metaSol.search();
+            //RandomEvaluationOptimizer
+            //LSFIEvaluationOptimizer
+            //LSBIEvaluationOptimizer
+            metaSol.search(RandomEvaluationOptimizer.class);
             MetaResults results = metaSol.getResults();
             
             System.out.println(results.getBestSolution());

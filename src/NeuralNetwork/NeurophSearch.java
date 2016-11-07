@@ -42,8 +42,8 @@ public class NeurophSearch {
     private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
     public final static int BPROP = 0;
     public final static int RPROP = 1;
-    public final static int TRAINING = 0;
-    public final static int TEST = 1;
+    public final static int TRAINING_GRAPH = 0;
+    public final static int TEST_GRAPH = 1;
 
     private final DataSet trainingDataSet;
     private final DataSet testingDataSet;
@@ -146,10 +146,10 @@ public class NeurophSearch {
         String realpath = "NetworkSaves/";
         realpath += path;
         switch (tableType) {
-            case TRAINING:
+            case TRAINING_GRAPH:
                 graphToBePrinted = graphTrainingData;
                 break;
-            case TEST:
+            case TEST_GRAPH:
                 graphToBePrinted = graphTestData;
                 break;
             default:

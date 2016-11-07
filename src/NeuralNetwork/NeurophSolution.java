@@ -76,7 +76,7 @@ public class NeurophSolution {
                 if (combination[1] == 14) {
                     for (TransferFunctionType type : TYPES) {
                         learningModule.onePlot(lrates, type, combination);
-                        learningModule.writeTable(NeurophSearch.TEST, "AllTest.csv", appendTable);
+                        learningModule.writeTable(NeurophSearch.TEST_GRAPH, "AllTest.csv", appendTable);
                     }
                     System.out.println("Finished " + Arrays.toString(combination));
 
@@ -96,7 +96,7 @@ public class NeurophSolution {
         boolean appendTable = true;
         int[] combination = {14, 7, 7, 1};
         learningModule.onePlot(20, 0.3, TransferFunctionType.TANH, combination);
-        learningModule.writeTable(NeurophSearch.TEST, "FullTA77.csv", appendTable);
+        learningModule.writeTable(NeurophSearch.TEST_GRAPH, "FullTA77.csv", appendTable);
 
     }
 
