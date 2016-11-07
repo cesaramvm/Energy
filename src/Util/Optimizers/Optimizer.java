@@ -14,6 +14,8 @@ import java.util.HashMap;
  * @author Usuario
  */
 public interface Optimizer {
+
     abstract public void optimize(Solution solution);
+
     abstract public double evaluate(HashMap<Integer, ProblemVariable> variables, Double epsi);
 }

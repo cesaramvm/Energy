@@ -73,7 +73,7 @@ public class ChartData implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new Error();
         }
-        
+
         return clone;
 
     }

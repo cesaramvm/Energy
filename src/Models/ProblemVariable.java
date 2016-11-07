@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Cesar
  */
-public class ProblemVariable implements Cloneable{
+public class ProblemVariable implements Cloneable {
 
     // <editor-fold desc="Class Variables">
 //    boolean selected; 
@@ -25,7 +25,7 @@ public class ProblemVariable implements Cloneable{
         alfa = -1 + (r.nextDouble() * 2);
         beta = -1 + (r.nextDouble() * 2);
     }
-    
+
     public ProblemVariable(double number) {
 //        selected=true;
         alfa = number;
@@ -78,6 +78,4 @@ public class ProblemVariable implements Cloneable{
         return super.clone(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-    
 }

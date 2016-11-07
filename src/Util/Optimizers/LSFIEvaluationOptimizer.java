@@ -71,7 +71,7 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
 
     @Override
     protected Double getNewValue() {
-        Double newValue =  valueListCopy.get(random.nextInt(valueListCopy.size()));
+        Double newValue = valueListCopy.get(random.nextInt(valueListCopy.size()));
         valueListCopy.remove(newValue);
         return newValue;
     }

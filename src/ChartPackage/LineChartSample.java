@@ -64,7 +64,7 @@ public class LineChartSample {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyChar() == 'q') {
                     frame.dispose();
-                }else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.exit(0);
                 }
             }
@@ -127,8 +127,6 @@ public class LineChartSample {
 
         return (scene);
     }
-
-
 
     public static final void makeScreenshot(JFrame argFrame) {
         Rectangle rec = argFrame.getBounds();

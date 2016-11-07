@@ -10,7 +10,7 @@ package Models;
  * @author Usuario
  */
 public class MetaResults {
-    
+
     private final Solution bestSolution;
     private final Long totalSecuentialTime;
     private final Long totalConcurrentTime;
@@ -24,8 +24,6 @@ public class MetaResults {
         this.avgError = avgError;
         this.avgTime = avgTime;
     }
-
-    
 
     public Solution getBestSolution() {
         return bestSolution;
@@ -51,5 +49,5 @@ public class MetaResults {
     public String toString() {
         return "MetaResults{" + "bestSolution=" + bestSolution + ", totalSecuentialTime=" + totalSecuentialTime + ", totalThreadedTime=" + totalConcurrentTime + ", avgError=" + avgError + ", avgTime=" + avgTime + '}';
     }
-    
+
 }

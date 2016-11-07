@@ -12,23 +12,23 @@ import java.util.HashMap;
  * @author Cesar
  */
 public class Solution {
-    
+
     private double epsilon;
     private HashMap<Integer, ProblemVariable> probVariables = new HashMap<>();
     private double evaluation;
     private Long executionTime;
 
-    public Solution(double epsilon,  HashMap<Integer, ProblemVariable> probVariables, double evaluation) {
+    public Solution(double epsilon, HashMap<Integer, ProblemVariable> probVariables, double evaluation) {
         this.epsilon = epsilon;
         this.probVariables = probVariables;
         this.evaluation = evaluation;
     }
-    
-    public Solution(int probVariablesSize){
-        epsilon=0.0;
-        for (int i=0; i<probVariablesSize; i++){
+
+    public Solution(int probVariablesSize) {
+        epsilon = 0.0;
+        for (int i = 0; i < probVariablesSize; i++) {
             probVariables.put(i, new ProblemVariable(0.0));
-            
+
         }
     }
 
@@ -68,5 +68,5 @@ public class Solution {
     public String toString() {
         return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + ", evaluation=" + evaluation + ", executionTime=" + executionTime + '}';
     }
-    
+
 }

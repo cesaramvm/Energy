@@ -15,7 +15,7 @@ import org.neuroph.util.TransferFunctionType;
  * @author sobremesa
  */
 public class help {
-    
+
 //    public void testPerceptron() {
 //
 //        System.out.println("-----PERCEPTRON-----");
@@ -69,5 +69,4 @@ public class help {
 //        }
 //
 //    }
-    
 }

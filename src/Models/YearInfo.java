@@ -12,18 +12,17 @@ import java.util.ArrayList;
  * @author Cesar
  */
 public class YearInfo {
-    
+
     private int year;
     private double obj;
     private ArrayList<Double> data = new ArrayList<>();
 
-    
-    
     //----------------CONSTRUCTOR------------------
     public YearInfo(int year, Double obj) {
         this.year = year;
         this.obj = obj;
     }
+
     //-------------GETTERS & SETTERS---------------
     public int getYear() {
         return year;
@@ -44,10 +43,12 @@ public class YearInfo {
     public void setFullData(ArrayList<Double> data) {
         this.data = data;
     }
-      
-    public void setData (int n, Double newData){
-      data.set(n, newData);
-    };
+
+    public void setData(int n, Double newData) {
+        data.set(n, newData);
+    }
+
+    ;
 
     public double getObj() {
         return obj;
@@ -56,16 +57,18 @@ public class YearInfo {
     public void setObj(double obj) {
         this.obj = obj;
     }
-    
+
     //----------METODO INSERTAR DATOS-------------
-    public void insertData (Double newData){
-      data.add(newData);
-    };
+    public void insertData(Double newData) {
+        data.add(newData);
+    }
+
+    ;
 
 
     @Override
     public String toString() {
         return "YearInfo{" + "year=" + year + ", obj=" + obj + ", data=" + data.toString() + "}" + "\n";
     }
-    
+
 }

@@ -41,8 +41,8 @@ public class Normalizer {
         for (YearInfo auxYear : auxYears.values()) {
             double objNormaliation = normalizeOne(auxYear.getObj(), maxs.get(0), mins.get(0));
             auxYear.setObj(objNormaliation);
-            for (int i = 0; i < num_Params-1; i++) {
-                double normalization = normalizeOne(auxYear.getData(i), maxs.get(i+1), mins.get(i+1));
+            for (int i = 0; i < num_Params - 1; i++) {
+                double normalization = normalizeOne(auxYear.getData(i), maxs.get(i + 1), mins.get(i + 1));
                 auxYear.setData(i, normalization);
             }
 
@@ -55,7 +55,7 @@ public class Normalizer {
     public double denormalizeObjective(double normalizedObjective) {
 
         return deNormalizeOne(normalizedObjective, maxs.get(0), mins.get(0));
-        
+
     }
 
     private double normalizeOne(double data, double max, double min) {
@@ -73,7 +73,7 @@ public class Normalizer {
     private double deNormalizeOne(double normalizedData, double max, double min) {
         if (norm_Type == 1) {
 
-            return (normalizedData * max - normalizedData * min)+min;
+            return (normalizedData * max - normalizedData * min) + min;
 
         } else {
 

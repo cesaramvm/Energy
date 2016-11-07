@@ -5,8 +5,6 @@ package Models;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import Util.Normalizers.Normalizer;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -79,10 +77,10 @@ public class Problem {
             System.err.println("IoEXCEPTION");
         }
 
-        Normalizer norm = new Normalizer(numParams+1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);
+        Normalizer norm = new Normalizer(numParams + 1, NORMALIZATION_TYPE, NORMALIZATION_RANGE_PERCENTAGE);
         years = norm.normalizeData(auxYears, maxs, mins);
         normalizer = norm;
-        
+
 //        System.out.println(auxYears.get(2000));
 //        System.out.println(years.get(2000));
 //        System.out.println(normalizer.denormalizeObjective(years.get(2000).getObj()));
@@ -112,8 +110,6 @@ public class Problem {
     public void setNormalizer(Normalizer normalizer) {
         Problem.normalizer = normalizer;
     }
-    
-    
 
     public void saveNormalizedData(String full, String train, String test) {
 

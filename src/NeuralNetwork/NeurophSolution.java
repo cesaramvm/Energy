@@ -259,9 +259,7 @@ public class NeurophSolution {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
+
     private void createCombinations(int maxLength, Integer[] possibleNeurons, ArrayList<Integer> curr) {
 
         // If the current string has reached it's maximum length
