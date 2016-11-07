@@ -112,6 +112,9 @@ public class MetaSolver {
     }
 
     private Solution findBestSolution() {
+        if(soluciones.isEmpty()){
+            this.search();
+        }
         Solution bestSol = soluciones.get(0);
         for (Solution sol : soluciones) {
             if (sol.getEvaluation() < bestSol.getEvaluation()) {
@@ -125,6 +128,9 @@ public class MetaSolver {
     
     
     public void writeTable(String path, boolean append) {
+        if (results == null) {
+            findBestSolution();
+        }
         String realpath = "MetaSolutions/";
         realpath += path;
         

@@ -111,7 +111,7 @@ public class Problem {
         Problem.normalizer = normalizer;
     }
 
-    public void saveNormalizedData(String full, String train, String test) {
+    public Problem saveNormalizedData(String full, String train, String test) {
 
         try {
             PrintWriter fullwriter = new PrintWriter(full, "UTF-8");
@@ -148,6 +148,8 @@ public class Problem {
 
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             Logger.getLogger(Problem.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return this;
         }
 
     }
