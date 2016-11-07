@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,17 +42,15 @@ public class NeurophSearch {
     private final static DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
     private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
     private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
-    public final static int BPROP = 0;
-    public final static int RPROP = 1;
     public final static int TRAINING_GRAPH = 0;
     public final static int TEST_GRAPH = 1;
 
     private final DataSet trainingDataSet;
     private final DataSet testingDataSet;
     private final Normalizer normalizer;
+    private final Class propagationClass;
 
     private final int MAXITERATIONS;
-    private final int propagationType;
     private final boolean showTrainGraph;
     private final boolean showGraph;
 
@@ -59,31 +59,31 @@ public class NeurophSearch {
     private ChartData chartTestData;
     private ChartData chartTrainingData;
 
-    public NeurophSearch(int iterations, int propType, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
+    public NeurophSearch(int iterations, Class newPropagationClass, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
         MAXITERATIONS = iterations;
-        propagationType = propType;
         showTrainGraph = trainGraphShow;
         showGraph = graphShow;
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
         normalizer = norm;
+        propagationClass = newPropagationClass;
     }
 
-    public NeurophSearch(){
+    public NeurophSearch() {
         trainingDataSet = null;
         testingDataSet = null;
         normalizer = null;
         MAXITERATIONS = 0;
-        propagationType = 0;
+        propagationClass = ResilientPropagation.class;
         showGraph = false;
-        showTrainGraph = false;               
-        
+        showTrainGraph = false;
+
     }
 
     public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers) {
         clearAll();
         for (int i = 0; i < linesNum; i++) {
-            train(learningRate, transferType, layers, propagationType);
+            train(learningRate, transferType, layers);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
         }
@@ -103,7 +103,7 @@ public class NeurophSearch {
     public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int[] layers) {
         clearAll();
         for (Double learningRate : learningRates) {
-            train(learningRate, transferType, layers, propagationType);
+            train(learningRate, transferType, layers);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
 
@@ -123,7 +123,7 @@ public class NeurophSearch {
     public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers, boolean block) {
         clearAll();
         for (TransferFunctionType transferType : transferTypes) {
-            train(learningRate, transferType, layers, propagationType);
+            train(learningRate, transferType, layers);
             graphTestData.add(chartTestData);
             graphTrainingData.add(chartTrainingData);
 
@@ -200,32 +200,28 @@ public class NeurophSearch {
 
     }
 
-    private void train(Double learningRate, TransferFunctionType transferType, int[] layers, int propagationType) {
-        NeuralNetwork neuralNetwork;
+    private void train(Double learningRate, TransferFunctionType transferType, int[] layers) {
+        try {
 
-        if (layers.length == 0 || learningRate == 0) {
-            throw new Error("Learning rate can't be 0 and layers must contain something");
+            if (layers.length == 0 || learningRate == 0) {
+                throw new Error("Learning rate can't be 0 and layers must contain something");
+            }
+            NeuralNetwork neuralNetwork = new MultiLayerPerceptron(transferType, layers);
+
+            Constructor<?> cons = propagationClass.getConstructor();
+            LMS rule = (LMS) cons.newInstance();
+            LearningEventListener listener = createListener(neuralNetwork, learningRate, transferType.toString(), layers);
+            rule.addListener(listener);
+            rule.setMaxError(0);
+            rule.setMaxIterations(MAXITERATIONS);
+            rule.setLearningRate(learningRate);
+            neuralNetwork.learn(trainingDataSet, rule);
+            Double mse = netWorkMSE(neuralNetwork, testingDataSet);
+            neuralNetwork.save("NetworkSaves/Networks/" + ERROR_DF.format(mse) + "-Network-" + transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers) + ".nnet");
+
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
-        neuralNetwork = new MultiLayerPerceptron(transferType, layers);
-        LMS rule;
-        switch (propagationType) {
-            case BPROP:
-                rule = new BackPropagation();
-                break;
-            case RPROP:
-                rule = new ResilientPropagation();
-                break;
-            default:
-                throw new Error("Unknown propagation type");
-        }
-        LearningEventListener listener = createListener(neuralNetwork, learningRate, transferType.toString(), layers);
-        rule.addListener(listener);
-        rule.setMaxError(0);
-        rule.setMaxIterations(MAXITERATIONS);
-        rule.setLearningRate(learningRate);
-        neuralNetwork.learn(trainingDataSet, rule);
-        Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-        neuralNetwork.save("NetworkSaves/Networks/" + ERROR_DF.format(mse) + "-Network-" + transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers) + ".nnet");
     }
 
     private LearningEventListener createListener(NeuralNetwork neuralNetwork, Double learningRate, String transferType, int[] layers) {

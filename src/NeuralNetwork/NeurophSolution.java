@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
 
 /**
@@ -49,7 +50,8 @@ public class NeurophSolution {
     public void fullSearch(Problem problem) {
         boolean showTrainGraph = false;
         boolean showGraphs = true;
-        NeurophSearch learningModule = new NeurophSearch(15000, NeurophSearch.RPROP, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
+        //BackPropagation or ResilientPropagation
+        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
         boolean blockWindow = false;
@@ -90,7 +92,8 @@ public class NeurophSolution {
     public void testSearch(Problem problem) {
         boolean showTrainGraph = false;
         boolean showGraphs = false;
-        NeurophSearch learningModule = new NeurophSearch(15000, NeurophSearch.RPROP, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
+        //BackPropagation or ResilientPropagation
+        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         boolean blockWindow = false;
         boolean appendTable = true;
