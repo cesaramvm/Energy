@@ -112,7 +112,7 @@ public class MetaSolver {
     }
 
     private Solution findBestSolution() {
-        if(soluciones.isEmpty()){
+        if (soluciones.isEmpty()) {
             this.search();
         }
         Solution bestSol = soluciones.get(0);
@@ -121,19 +121,20 @@ public class MetaSolver {
                 bestSol = sol;
             }
         }
+
+        if (bestSol.getEvaluation() > 3000) {
+            System.out.println("HOSTIAS");
+        }
         return bestSol;
     }
-    
-    
-    
-    
+
     public void writeTable(String path, boolean append) {
         if (results == null) {
             findBestSolution();
         }
         String realpath = "MetaSolutions/";
         realpath += path;
-        
+
         try {
             boolean existance = false;
             File f = new File(realpath);
@@ -152,7 +153,7 @@ public class MetaSolver {
     private void write(PrintWriter fullwriter, boolean existance) {
 
         ArrayList<String> columns = new ArrayList<>();
-        columns.addAll(Arrays.asList("Eval", "Branches", "Iterations", "Parts", "min MAE","real Time","sum Time","avg Mae","avg Time"));
+        columns.addAll(Arrays.asList("Eval", "Branches", "Iterations", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));
         if (!existance) {
             String firstRow = "";
             for (String columnName : columns) {
@@ -162,14 +163,16 @@ public class MetaSolver {
         }
 
         String evalName = evaluationClass.getName();
-        
-        String nextRow = evalName.substring(evalName.lastIndexOf(".")+1, evalName.indexOf("E"))+ ";" + numBranches + ";" + branchIterations + ";" + parts + ";";
-        nextRow += results.getBestSolution().getEvaluation() + ";";
+
+        String nextRow = evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")) + ";" + numBranches + ";" + branchIterations + ";" + parts + ";";
+        Double minMAe = results.getBestSolution().getEvaluation();
+        Double avgMae = results.getAvgError();
+        nextRow +=  minMAe.toString().replace('.', ',') + ";";
         nextRow += results.getTotalConcurrentTime() + ";";
         nextRow += results.getTotalSecuentialTime() + ";";
-        nextRow += results.getAvgError() + ";";
+        nextRow += avgMae.toString().replace('.', ',') + ";";
         nextRow += results.getAvgTime() + ";";
-        
+
         fullwriter.println(nextRow);
 //        for (int j = 0; j < graphToBePrinted.size(); j++) {
 //            ChartData trainChart = graphToBePrinted.get(j);
