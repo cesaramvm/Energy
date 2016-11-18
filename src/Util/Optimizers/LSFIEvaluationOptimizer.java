@@ -52,13 +52,11 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
 
             }
             newEvaluation = this.evaluate(newProbVariables, newEpsilon);
-            if (newEvaluation < solution.getEvaluation()) {
-                solution.setEpsilon(newEpsilon);
-                solution.setProbVariables(newProbVariables);
-                solution.setEvaluation(newEvaluation);
-                break;
-            }
         }
+
+        solution.setEpsilon(newEpsilon);
+        solution.setProbVariables(newProbVariables);
+        solution.setEvaluation(newEvaluation);
 
     }
 

@@ -8,6 +8,7 @@ import NeuralNetwork.NeurophSolution;
 import Util.Optimizers.LSBIEvaluationOptimizer;
 import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -30,36 +31,50 @@ public class Main {
     private static final Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
 
     public static void main(String[] args) {
+        try {
+            ArrayList<Class> optimizers = new ArrayList<>(Arrays.asList(RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class, LSBIEvaluationOptimizer.class));
 
-        ArrayList<Class> optimizers = new ArrayList<>(Arrays.asList(RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class, LSBIEvaluationOptimizer.class));
+            ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(499, 999, 3999));
+            ArrayList<Integer> numIterations = new ArrayList<>(Arrays.asList(1000, 5000, 10000));
+            ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(4, 8, 16, 32));
 
-        ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(4, 8, 16, 32));
-        ArrayList<Integer> numIterations = new ArrayList<>(Arrays.asList(1000, 5000, 10000));
-        ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(499, 999, 3999));
+            boolean continuar = false;
 
-        for (int part : parts) {
-            for (int iterations : numIterations) {
-                for (int branches : numBranches) {
-                    for (Class optimizer : optimizers) {
-                        MetaSolver metaSol = new MetaSolver(problem, branches, iterations, part);
-                        metaSol.setEvaluationClass(optimizer);
-                        metaSol.search();
-                        MetaResults results = metaSol.getResults();
-                        System.out.println(optimizer.getCanonicalName());
-                        metaSol.writeTable("MetaData.csv", true);
+            for (int part : parts) {
+                for (int iterations : numIterations) {
+                    for (int branches : numBranches) {
+                        for (Class optimizer : optimizers) {
+//                            if (part == 3999 && iterations == 10000 && branches == 32 && optimizer == LSBIEvaluationOptimizer.class) {
+//                                continuar = true;
+//                            }
+//                            if (continuar) {
+
+                                MetaSolver metaSol = new MetaSolver(problem, branches, iterations, part);
+                                metaSol.setEvaluationClass(optimizer);
+                                metaSol.search();
+                                MetaResults results = metaSol.getResults();
+//                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
+                                metaSol.writeTable("MetaData.csv", true);
+                                
+//                                Runtime runtime = Runtime.getRuntime();
+//                                Process proc = runtime.exec("shutdown -s -t 0");
+//                                System.exit(0);
+
+//                            }
+                        }
                     }
                 }
             }
+
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
 //        easy();
-
 //            NeurophSolution ns = new NeurophSolution(FULLPATH, TRAINPATH, TESTPATH);
 //            ns.fullSearch(problem);
 //            ns.findBestNetwork1(problem);
 //            String fileRoute = "Net.nnet";
 //            ns.networkTest(fileRoute, problem, "FinalNnetOut.csv");
-
     }
 
     private static void easy() {
