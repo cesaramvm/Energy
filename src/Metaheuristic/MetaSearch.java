@@ -60,6 +60,8 @@ public class MetaSearch implements Callable<Solution> {
             optimizer.optimize(sol);
             sol.setExecutionTime(System.currentTimeMillis() - startTime);
         }
+        System.out.println(solutions);
+        System.out.println("\n\n\nMIN: " + Collections.min(solutions)+ "\n\n");
         return Collections.min(solutions);
     }
 

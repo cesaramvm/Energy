@@ -23,32 +23,34 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 
     @Override
     public void optimize(Solution solution) {
+        Long start = System.currentTimeMillis();
+        while (System.currentTimeMillis()-start < 2000){
+            //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
+            int selectedChange = (int) (random.nextDouble() * 15);
+            Double newEpsilon;
+            HashMap<Integer, ProblemVariable> newProbVariables;
 
-        //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-        int selectedChange = (int) (random.nextDouble() * 15);
-        Double newEpsilon;
-        HashMap<Integer, ProblemVariable> newProbVariables;
-
-        if (selectedChange == 14) {
-            newProbVariables = solution.getProbVariables();
-            newEpsilon = this.getNewEpsilon();
-        } else {
-            newEpsilon = solution.getEpsilon();
-            newProbVariables = this.cloneMap(solution.getProbVariables());
-            Double newValue = this.getNewValue();
-            Boolean changeAlpha = random.nextBoolean();
-            if (changeAlpha) {
-                newProbVariables.get(selectedChange).setAlfa(newValue);
+            if (selectedChange == 14) {
+                newProbVariables = solution.getProbVariables();
+                newEpsilon = this.getNewEpsilon();
             } else {
-                newProbVariables.get(selectedChange).setBeta(newValue);
-            }
+                newEpsilon = solution.getEpsilon();
+                newProbVariables = this.cloneMap(solution.getProbVariables());
+                Double newValue = this.getNewValue();
+                Boolean changeAlpha = random.nextBoolean();
+                if (changeAlpha) {
+                    newProbVariables.get(selectedChange).setAlfa(newValue);
+                } else {
+                    newProbVariables.get(selectedChange).setBeta(newValue);
+                }
 
-        }
-        double newEvaluation = this.evaluate(newProbVariables, newEpsilon);
-        if (newEvaluation < solution.getEvaluation()) {
-            solution.setEpsilon(newEpsilon);
-            solution.setProbVariables(newProbVariables);
-            solution.setEvaluation(newEvaluation);
+            }
+            double newEvaluation = this.evaluate(newProbVariables, newEpsilon);
+            if (newEvaluation < solution.getEvaluation()) {
+                solution.setEpsilon(newEpsilon);
+                solution.setProbVariables(newProbVariables);
+                solution.setEvaluation(newEvaluation);
+            }
         }
 
     }
