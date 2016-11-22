@@ -26,16 +26,13 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
         Long start = System.currentTimeMillis();
         while (System.currentTimeMillis()-start < 2000){
             //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-            int selectedChange = (int) (random.nextDouble() * 15);
-            Double newEpsilon;
-            HashMap<Integer, ProblemVariable> newProbVariables;
+            int selectedChange = (int) (random.nextDouble() * (problem.getNumParams()+1));
+            Double newEpsilon = solution.getEpsilon();
+            HashMap<Integer, ProblemVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
 
-            if (selectedChange == 14) {
-                newProbVariables = solution.getProbVariables();
+            if (selectedChange == problem.getNumParams()) {
                 newEpsilon = this.getNewEpsilon();
             } else {
-                newEpsilon = solution.getEpsilon();
-                newProbVariables = this.cloneMap(solution.getProbVariables());
                 Double newValue = this.getNewValue();
                 Boolean changeAlpha = random.nextBoolean();
                 if (changeAlpha) {

@@ -10,13 +10,15 @@ import Models.ProblemVariable;
 import Models.Solution;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
  *
  * @author Usuario
  */
-public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
+public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 
     private ArrayList<Double> valueListCopy;
     private ArrayList<Double> epsilonListCopy;
@@ -27,36 +29,44 @@ public class LSFIEvaluationOptimizer extends EvaluationOptimizer {
 
     @Override
     public void optimize(Solution solution) {
-
-        valueListCopy = new ArrayList<>(valueList);
-        epsilonListCopy = new ArrayList<>(epsilonList);
         double newEvaluation = solution.getEvaluation();
-        //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-        int selectedChange = (int) (random.nextDouble() * 15);
-        Double newEpsilon = solution.getEpsilon();
-        HashMap<Integer, ProblemVariable> newProbVariables = solution.getProbVariables();
-        if (selectedChange != 14) {
-            newProbVariables = this.cloneMap(solution.getProbVariables());
-        }
-        while (newEvaluation >= solution.getEvaluation() && (!valueListCopy.isEmpty() && !epsilonListCopy.isEmpty())) {
-            if (selectedChange == 14) {
-                newEpsilon = this.getNewEpsilon();
-            } else {
-                Double newValue = this.getNewValue();
-                Boolean changeAlpha = random.nextBoolean();
-                if (changeAlpha) {
-                    newProbVariables.get(selectedChange).setAlfa(newValue);
+        
+        while (!paramsIndex.isEmpty()) {
+            valueListCopy = new ArrayList<>(valueList);
+            epsilonListCopy = new ArrayList<>(epsilonList);
+
+            Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
+            Double newEpsilon = solution.getEpsilon();
+            HashMap<Integer, ProblemVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
+
+            while (newEvaluation >= solution.getEvaluation() && !valueListCopy.isEmpty() && !epsilonListCopy.isEmpty()) {
+                if (selectedChange == 14) {
+                    newEpsilon = this.getNewEpsilon();
                 } else {
-                    newProbVariables.get(selectedChange).setBeta(newValue);
+                    Double newValue = this.getNewValue();
+                    Boolean changeAlpha = random.nextBoolean();
+                    if (changeAlpha) {
+                        newProbVariables.get(selectedChange).setAlfa(newValue);
+                    } else {
+                        newProbVariables.get(selectedChange).setBeta(newValue);
+                    }
                 }
-
+                newEvaluation = this.evaluate(newProbVariables, newEpsilon);
             }
-            newEvaluation = this.evaluate(newProbVariables, newEpsilon);
-        }
 
-        solution.setEpsilon(newEpsilon);
-        solution.setProbVariables(newProbVariables);
-        solution.setEvaluation(newEvaluation);
+            if (newEvaluation < solution.getEvaluation()) {
+                solution.setEpsilon(newEpsilon);
+                solution.setProbVariables(newProbVariables);
+                solution.setEvaluation(newEvaluation);
+                System.out.println(paramsIndex);
+                this.restoreParamsIndex();
+//                System.out.println(paramsIndex);
+            } else {
+                paramsIndex.remove(selectedChange);
+            }
+            System.out.println(paramsIndex);
+
+        }
 
     }
 

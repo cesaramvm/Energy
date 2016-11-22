@@ -11,8 +11,6 @@ import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
-import Util.Optimizers.LSBIEvaluationOptimizer;
-import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
 import java.io.BufferedWriter;
 import java.io.File;
