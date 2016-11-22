@@ -35,17 +35,18 @@ public class Main {
 
             int searchBranches = 1;
             int leaves = 1;
-            int parts = 1001;
+            int parts = 3501;
 
             MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts);
             //RandomEvaluationOptimizer
             //LSFIEvaluationOptimizer
             //LSBIEvaluationOptimizer
-            metaSol.setEvaluationClass(LSFIEvaluationOptimizer.class);
+            metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
 //            metaSol.setEvaluationClass(LSFIEvaluationOptimizer.class);
 //        metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
             metaSol.search();
-//            MetaResults results = metaSol.getResults();
+            MetaResults results = metaSol.getResults();
+            System.out.println(results);
 
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

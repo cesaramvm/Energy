@@ -58,14 +58,11 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
                 solution.setEpsilon(newEpsilon);
                 solution.setProbVariables(newProbVariables);
                 solution.setEvaluation(newEvaluation);
-                System.out.println(paramsIndex);
                 this.restoreParamsIndex();
-//                System.out.println(paramsIndex);
             } else {
                 paramsIndex.remove(selectedChange);
             }
             System.out.println(paramsIndex);
-
         }
 
     }
