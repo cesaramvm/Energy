@@ -9,6 +9,8 @@ import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -20,43 +22,45 @@ import java.util.concurrent.Callable;
 public class MetaSearch implements Callable<Solution> {
 
     private final Problem problem;
-    private final int branchIterations;
+    private final int leaves;
     private final EvaluationOptimizer optimizer;
-    private final Long startTime;
+    private Long startTime;
 
-    private Solution solution;
+    private ArrayList<Solution> solutions = new ArrayList<>();
     private final Random random;
 
-    public MetaSearch(Problem pro, int branchIt, EvaluationOptimizer eo, Random r) {
-        startTime = System.currentTimeMillis();
+    public MetaSearch(Problem pro, int leaves, EvaluationOptimizer eo, Random r) {
         this.optimizer = eo;
-        problem = pro;
-        branchIterations = branchIt;
+        this.problem = pro;
+        this.leaves = leaves;
         this.random = r;
     }
 
     @Override
     public Solution call() throws Exception {
         //System.err.println("Thread # " + Thread.currentThread().getId() + " is doing this task");
+        for (int i = 0; i < leaves; i++) {
+            HashMap<Integer, ProblemVariable> newSolVariables = new HashMap<>();
+            for (int j = 0; j < problem.getNumParams(); j++) {
+                newSolVariables.put(j, new ProblemVariable(random));
+            }
+            Double newEpsilon = -5 + (random.nextDouble() * 10);
 
-        HashMap<Integer, ProblemVariable> newSolVariables = new HashMap<>();
-        for (int j = 0; j < problem.getNumParams(); j++) {
-            newSolVariables.put(j, new ProblemVariable(random));
+            Double evaluation = optimizer.evaluate(newSolVariables, newEpsilon);
+            Solution solution = new Solution(newEpsilon, newSolVariables, evaluation);
+            solutions.add(solution);
         }
-        Double newEpsilon = -5 + (random.nextDouble() * 10);
 
-        Double evaluation = optimizer.evaluate(newSolVariables, newEpsilon);
-        solution = new Solution(newEpsilon, newSolVariables, evaluation);
         return this.solve();
     }
 
     public Solution solve() {
-        for (int i = 0; i < branchIterations; i++) {
-            optimizer.optimize(solution);
+        for (Solution sol : solutions) {
+            this.startTime = System.currentTimeMillis();
+            optimizer.optimize(sol);
+            sol.setExecutionTime(System.currentTimeMillis() - startTime);
         }
-        Long elapsedTime = System.currentTimeMillis() - startTime;
-        solution.setExecutionTime(elapsedTime);
-        return solution;
+        return Collections.min(solutions);
     }
 
 }

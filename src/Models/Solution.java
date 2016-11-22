@@ -11,7 +11,7 @@ import java.util.HashMap;
  *
  * @author Cesar
  */
-public class Solution {
+public class Solution implements Comparable{
 
     private double epsilon;
     private HashMap<Integer, ProblemVariable> probVariables = new HashMap<>();
@@ -67,6 +67,12 @@ public class Solution {
     @Override
     public String toString() {
         return "Solution{" + "epsilon=" + epsilon + ", probVariables=" + probVariables + ", evaluation=" + evaluation + ", executionTime=" + executionTime + '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Solution other = (Solution) o;
+        return Double.compare(this.getEvaluation(), other.getEvaluation());
     }
 
 }

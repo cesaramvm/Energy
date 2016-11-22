@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -41,21 +42,19 @@ public class MetaSolver {
     private final ArrayList<Solution> soluciones = new ArrayList<>();
     private final Problem problem;
     private final int numBranches;
-    private final int branchIterations;
+    private final int branchLeaves;
     private final int parts;
-    private Class evaluationClass;
+    private Class evaluationClass = RandomEvaluationOptimizer.class;
     private Long totalConcurrentTime;
     private MetaResults results;
 
 // <editor-fold desc="Constructor">
-    public MetaSolver(Problem pro, int numBranches, int branchIterations, int parts) {
+    public MetaSolver(Problem pro, int numBranches, int numLeaves, int parts) {
 
         this.problem = pro;
         this.numBranches = numBranches;
-        this.branchIterations = branchIterations;
+        this.branchLeaves = numLeaves;
         this.parts = parts;
-        this.evaluationClass = RandomEvaluationOptimizer.class;
-
     }
 
     public void setEvaluationClass(Class evaluationClass) {
@@ -74,7 +73,7 @@ public class MetaSolver {
                 Random r = new Random(seed);
                 Constructor<?> cons = evaluationClass.getConstructor(int.class, Problem.class, Random.class);
                 EvaluationOptimizer eo = (EvaluationOptimizer) cons.newInstance(parts, problem, r);
-                futures.add(es.submit(new MetaSearch(problem, branchIterations, eo, r)));
+                futures.add(es.submit(new MetaSearch(problem, branchLeaves, eo, r)));
             }
             for (Future f : futures) {
                 Solution s = (Solution) f.get();
@@ -91,6 +90,9 @@ public class MetaSolver {
     }
 
     public MetaResults getResults() {
+        if(soluciones.isEmpty()){
+            this.search();
+        }
         if (results == null) {
             Solution bestSolution = soluciones.get(0);
             Long totalSecuentialTime = 0L;
@@ -115,22 +117,12 @@ public class MetaSolver {
         if (soluciones.isEmpty()) {
             this.search();
         }
-        Solution bestSol = soluciones.get(0);
-        for (Solution sol : soluciones) {
-            if (sol.getEvaluation() < bestSol.getEvaluation()) {
-                bestSol = sol;
-            }
-        }
-
-        if (bestSol.getEvaluation() > 3000) {
-            System.out.println("HOSTIAS");
-        }
-        return bestSol;
+        return Collections.min(soluciones);
     }
 
     public void writeTable(String path, boolean append) {
         if (results == null) {
-            findBestSolution();
+            getResults();
         }
         String realpath = "MetaSolutions/";
         realpath += path;
@@ -153,7 +145,7 @@ public class MetaSolver {
     private void write(PrintWriter fullwriter, boolean existance) {
 
         ArrayList<String> columns = new ArrayList<>();
-        columns.addAll(Arrays.asList("Eval", "Branches", "Iterations", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));
+        columns.addAll(Arrays.asList("Eval", "Branches", "Leaves", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));
         if (!existance) {
             String firstRow = "";
             for (String columnName : columns) {
@@ -164,7 +156,7 @@ public class MetaSolver {
 
         String evalName = evaluationClass.getName();
 
-        String nextRow = evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")) + ";" + numBranches + ";" + branchIterations + ";" + parts + ";";
+        String nextRow = evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")) + ";" + numBranches + ";" + branchLeaves + ";" + parts + ";";
         Double minMAe = results.getBestSolution().getEvaluation();
         Double avgMae = results.getAvgError();
         nextRow +=  minMAe.toString().replace('.', ',') + ";";
