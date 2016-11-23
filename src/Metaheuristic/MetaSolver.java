@@ -88,7 +88,7 @@ public class MetaSolver {
     }
 
     public MetaResults getResults() {
-        if(soluciones.isEmpty()){
+        if (soluciones.isEmpty()) {
             this.search();
         }
         if (results == null) {
@@ -157,7 +157,7 @@ public class MetaSolver {
         String nextRow = evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")) + ";" + numBranches + ";" + branchLeaves + ";" + parts + ";";
         Double minMAe = results.getBestSolution().getEvaluation();
         Double avgMae = results.getAvgError();
-        nextRow +=  minMAe.toString().replace('.', ',') + ";";
+        nextRow += minMAe.toString().replace('.', ',') + ";";
         nextRow += results.getTotalConcurrentTime() + ";";
         nextRow += results.getTotalSecuentialTime() + ";";
         nextRow += avgMae.toString().replace('.', ',') + ";";

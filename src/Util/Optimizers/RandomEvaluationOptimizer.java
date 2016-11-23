@@ -24,9 +24,9 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
     @Override
     public void optimize(Solution solution) {
         Long start = System.currentTimeMillis();
-        while (System.currentTimeMillis()-start < 2000){
+        while (System.currentTimeMillis() - start < 2000) {
             //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
-            int selectedChange = (int) (random.nextDouble() * (problem.getNumParams()+1));
+            int selectedChange = (int) (random.nextDouble() * (problem.getNumParams() + 1));
             Double newEpsilon = solution.getEpsilon();
             HashMap<Integer, ProblemVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
 

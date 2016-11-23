@@ -10,8 +10,6 @@ import Models.ProblemVariable;
 import Models.Solution;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -30,7 +28,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
     @Override
     public void optimize(Solution solution) {
         double newEvaluation = solution.getEvaluation();
-        
+
         while (!paramsIndex.isEmpty()) {
             valueListCopy = new ArrayList<>(valueList);
             epsilonListCopy = new ArrayList<>(epsilonList);

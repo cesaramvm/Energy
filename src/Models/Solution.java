@@ -11,7 +11,7 @@ import java.util.HashMap;
  *
  * @author Cesar
  */
-public class Solution implements Comparable{
+public class Solution implements Comparable {
 
     private double epsilon;
     private HashMap<Integer, ProblemVariable> probVariables = new HashMap<>();
