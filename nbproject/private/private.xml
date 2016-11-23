@@ -3,11 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/cvaldes/Energy/src/Models/ProblemVariable.java</file>
             <file>file:/C:/Users/cvaldes/Energy/src/energytfg/Main.java</file>
-            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/LSBIEvaluationOptimizer.java</file>
-            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/LSFIEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Models/MetaResults.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/LSEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/ChartPackage/ChartData.java</file>
             <file>file:/C:/Users/cvaldes/Energy/src/Metaheuristic/MetaSearch.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/LSFIEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/NeuralNetwork/NeurophSolution.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Models/Problem.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Metaheuristic/MetaSolver.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/NeuralNetwork/NeurophSearch.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/LSBIEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/Optimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/ChartPackage/LineChartSample.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Models/Solution.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/EvaluationOptimizer.java</file>
             <file>file:/C:/Users/cvaldes/Energy/src/Util/Optimizers/RandomEvaluationOptimizer.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Models/YearInfo.java</file>
+            <file>file:/C:/Users/cvaldes/Energy/src/Util/Normalizers/Normalizer.java</file>
         </group>
     </open-files>
 </project-private>

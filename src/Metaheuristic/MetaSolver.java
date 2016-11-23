@@ -12,6 +12,7 @@ import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
+import Util.Writers.CSVTableWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -118,63 +119,46 @@ public class MetaSolver {
         return Collections.min(soluciones);
     }
 
-    public void writeTable(String path, boolean append) {
+    public void writeRow(CSVTableWriter tw) {
         if (results == null) {
             getResults();
         }
-        String realpath = "MetaSolutions/";
-        realpath += path;
-
         try {
-            boolean existance = false;
-            File f = new File(realpath);
-            if (f.exists() && !f.isDirectory()) {
-                existance = true;
-            }
-            FileWriter fw = new FileWriter(realpath, append);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-            write(pw, existance);
-        } catch (IOException ex) {
-            Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
+            ArrayList<String> nextRow = new ArrayList<>();
+            String evalName = evaluationClass.getName();
+            Double minMAe = results.getBestSolution().getEvaluation();
+            Double avgMae = results.getAvgError();
+
+            nextRow.add(evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")));
+            nextRow.add(String.valueOf(numBranches));
+            nextRow.add(String.valueOf(branchLeaves));
+            nextRow.add(String.valueOf(parts));
+            nextRow.add(minMAe.toString().replace('.', ','));
+            nextRow.add(String.valueOf(results.getTotalConcurrentTime()));
+            nextRow.add(String.valueOf(results.getTotalSecuentialTime()));
+            nextRow.add(avgMae.toString().replace('.', ','));
+            nextRow.add(String.valueOf(results.getAvgTime()));
+
+            tw.printRow(nextRow);
+
+        } catch (Exception e) {
+            System.err.println("EXCEPCION CAPTURADA");
         }
     }
 
-    private void write(PrintWriter fullwriter, boolean existance) {
-
-        ArrayList<String> columns = new ArrayList<>();
-        columns.addAll(Arrays.asList("Eval", "Branches", "Leaves", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));
-        if (!existance) {
-            String firstRow = "";
-            for (String columnName : columns) {
-                firstRow = firstRow + columnName + ";";
-            }
-            fullwriter.println(firstRow);
+    public static CSVTableWriter initTableWriter(String path) {
+        String realpath = "MetaSolutions/";
+        realpath += path;
+        ArrayList<String> tableHeaders = new ArrayList<>();
+        tableHeaders.addAll(Arrays.asList("Eval", "Branches", "Leaves", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));
+        CSVTableWriter tw = null;
+        try{
+            tw = new CSVTableWriter(realpath, tableHeaders);
+        }catch (Exception e){
+            
         }
-
-        String evalName = evaluationClass.getName();
-
-        String nextRow = evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")) + ";" + numBranches + ";" + branchLeaves + ";" + parts + ";";
-        Double minMAe = results.getBestSolution().getEvaluation();
-        Double avgMae = results.getAvgError();
-        nextRow += minMAe.toString().replace('.', ',') + ";";
-        nextRow += results.getTotalConcurrentTime() + ";";
-        nextRow += results.getTotalSecuentialTime() + ";";
-        nextRow += avgMae.toString().replace('.', ',') + ";";
-        nextRow += results.getAvgTime() + ";";
-
-        fullwriter.println(nextRow);
-//        for (int j = 0; j < graphToBePrinted.size(); j++) {
-//            ChartData trainChart = graphToBePrinted.get(j);
-//            String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";" + Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
-//            for (Integer columnIndex : columns) {
-//                String error = ERROR_DF.format(trainChart.get(columnIndex));
-//                nextRow += error + ";";
-//            }
-//            fullwriter.println(nextRow);
-//        }
-        fullwriter.close();
-
+        
+        return tw;
     }
 
 }

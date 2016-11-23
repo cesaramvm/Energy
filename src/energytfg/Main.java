@@ -6,6 +6,7 @@ import Models.Problem;
 import Util.Optimizers.LSBIEvaluationOptimizer;
 import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
+import Util.Writers.CSVTableWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -29,8 +30,8 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-//            easy();
-            advanced();
+            easy();
+//            advanced();
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -45,7 +46,7 @@ public class Main {
 
         int searchBranches = 1;
         int leaves = 1;
-        int parts = 501;
+        int parts = 3;
 
         MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts);
         //RandomEvaluationOptimizer
@@ -55,8 +56,10 @@ public class Main {
 //        metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
         metaSol.search();
         MetaResults results = metaSol.getResults();
-//        metaSol.writeTable("MetaData.csv", true);
-
+        CSVTableWriter tw = MetaSolver.initTableWriter("test.csv");
+        metaSol.writeRow(tw);
+        tw.close();
+        
         System.out.println(results.getBestSolution());
         System.out.println("Secuencial: " + results.getTotalSecuentialTime());
         System.out.println("Concurrent: " + results.getTotalConcurrentTime());
@@ -75,15 +78,11 @@ public class Main {
         ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(50, 100, 500));
         ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(1, 2, 4, 8));
 
-//            boolean continuar = false;
+        CSVTableWriter tw = MetaSolver.initTableWriter("test.csv");
         for (int part : parts) {
             for (int branches : numBranches) {
                 for (int leaves : numLeaves) {
                     for (Class optimizer : optimizers) {
-//                            if (part == 3999 && iterations == 10000 && branches == 32 && optimizer == LSBIEvaluationOptimizer.class) {
-//                                continuar = true;
-//                            }
-//                            if (continuar) {
 
                         MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
                         metaSol.setEvaluationClass(optimizer);
@@ -95,7 +94,7 @@ public class Main {
                         System.out.println("Avg Error :" + results.getAvgError());
                         System.out.println("Avg Time  :" + results.getAvgTime());
 //                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-//                                metaSol.writeTable("MetaData.csv", true);
+                        metaSol.writeRow(tw);
 
 //                                Runtime runtime = Runtime.getRuntime();
 //                                Process proc = runtime.exec("shutdown -s -t 0");
@@ -105,6 +104,7 @@ public class Main {
                 }
             }
         }
+        tw.close();
 
     }
 
