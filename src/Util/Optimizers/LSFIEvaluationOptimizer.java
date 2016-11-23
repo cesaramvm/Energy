@@ -60,7 +60,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
             } else {
                 paramsIndex.remove(selectedChange);
             }
-            System.out.println(paramsIndex);
+//            System.out.println(paramsIndex);
         }
 
     }
