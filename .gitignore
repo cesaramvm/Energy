@@ -24,6 +24,7 @@ $RECYCLE.BIN/
 ### Eclipse ###
 
 .metadata
+target/*
 bin/
 tmp/
 *.tmp
