@@ -56,6 +56,7 @@ public class CSVTableWriter {
             headers = headers + columnName + ";";
         }
         pw.println(headers);
+        pw.flush();
     }
     
     public void printRow(ArrayList<String> lista) throws Exception{
@@ -71,6 +72,7 @@ public class CSVTableWriter {
             rowData = rowData + columnName + ";";
         }
         pw.println(rowData);
+        pw.flush();
         
     }
     

@@ -31,8 +31,8 @@ public class Principal {
 
     public static void main(String[] args) {
         try {
-            easy();
-//            advanced();
+//            easy();
+            advanced();
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,24 +77,24 @@ public class Principal {
         ArrayList<Class<? extends Object>> optimizers = new ArrayList<>(Arrays.asList(RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class, LSBIEvaluationOptimizer.class));
 
         ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(99, 499, 999, 2999));
-        ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(50, 100, 500));
         ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(1, 2, 4, 8));
+        ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(5, 50, 100));
 
-        CSVTableWriter tw = MetaSolver.initTableWriter("test.csv");
+        CSVTableWriter tw = MetaSolver.initTableWriter("0812.csv");
         for (int part : parts) {
             for (int branches : numBranches) {
                 for (int leaves : numLeaves) {
                     for (Class<? extends Object> optimizer : optimizers) {
-
+                    	System.out.println(optimizer.toString() + " - parts: " + part + " branches: " + branches + " leaves: " + leaves);
                         MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
                         metaSol.setEvaluationClass(optimizer);
                         metaSol.search();
                         MetaResults results = metaSol.getResults();
-                        System.out.println(results.getBestSolution());
-                        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
-                        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
-                        System.out.println("Avg Error :" + results.getAvgError());
-                        System.out.println("Avg Time  :" + results.getAvgTime());
+//                        System.out.println(results.getBestSolution());
+//                        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
+//                        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
+//                        System.out.println("Avg Error :" + results.getAvgError());
+//                        System.out.println("Avg Time  :" + results.getAvgTime());
 //                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
                         metaSol.writeRow(tw);
 

@@ -74,7 +74,7 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
 
             //System.out.println(paramsIndex);
         }
-
+        this.restoreParamsIndex();
     }
 
 }

@@ -62,7 +62,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
             }
 //            System.out.println(paramsIndex);
         }
-
+        this.restoreParamsIndex();
     }
 
     @Override
