@@ -46,26 +46,26 @@ public class Principal {
     private static void easy() {
 
         int searchBranches = 1;
-        int leaves = 1;
-        int parts = 3;
+        int leaves = 5;
+        int parts = 99;
 
         MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts);
         //RandomEvaluationOptimizer
         //LSFIEvaluationOptimizer
         //LSBIEvaluationOptimizer
-        metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
+        metaSol.setEvaluationClass(RandomEvaluationOptimizer.class);
 //        metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
         metaSol.search();
         MetaResults results = metaSol.getResults();
-        CSVTableWriter tw = MetaSolver.initTableWriter("test.csv");
+        CSVTableWriter tw = MetaSolver.initTableWriter("testingLSFI.csv");
         metaSol.writeRow(tw);
         tw.close();
         
-        System.out.println(results.getBestSolution());
-        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
-        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
-        System.out.println("Avg Error :" + results.getAvgError());
-        System.out.println("Avg Time  :" + results.getAvgTime());
+//        System.out.println(results.getBestSolution());
+//        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
+//        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
+//        System.out.println("Avg Error :" + results.getAvgError());
+//        System.out.println("Avg Time  :" + results.getAvgTime());
 //            System.out.println(solution);
 //            System.out.println("Tiempo de busqueda " + );
 
@@ -76,32 +76,39 @@ public class Principal {
 
         ArrayList<Class<? extends Object>> optimizers = new ArrayList<>(Arrays.asList(RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class, LSBIEvaluationOptimizer.class));
 
-        ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(99, 499, 999, 2999));
+        ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(99, 499, 999/*, 2999*/));
         ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(1, 2, 4, 8));
-        ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(5, 50, 100));
+        ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(/*1, 5, 50,*/ 100));
 
-        CSVTableWriter tw = MetaSolver.initTableWriter("0812.csv");
-        for (int part : parts) {
-            for (int branches : numBranches) {
-                for (int leaves : numLeaves) {
+        boolean keepGoing = true;
+        CSVTableWriter tw = MetaSolver.initTableWriter("niceOrder.csv");
+        for (int leaves : numLeaves) {
+        	for (int part : parts) {
+        		for (int branches : numBranches) {
                     for (Class<? extends Object> optimizer : optimizers) {
-                    	System.out.println(optimizer.toString() + " - parts: " + part + " branches: " + branches + " leaves: " + leaves);
-                        MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
-                        metaSol.setEvaluationClass(optimizer);
-                        metaSol.search();
-                        MetaResults results = metaSol.getResults();
-//                        System.out.println(results.getBestSolution());
-//                        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
-//                        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
-//                        System.out.println("Avg Error :" + results.getAvgError());
-//                        System.out.println("Avg Time  :" + results.getAvgTime());
-//                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-                        metaSol.writeRow(tw);
-
-//                                Runtime runtime = Runtime.getRuntime();
-//                                Process proc = runtime.exec("shutdown -s -t 0");
-//                                System.exit(0);
-//                            }
+                    	if(optimizer == LSBIEvaluationOptimizer.class && branches == 8 && leaves ==100 && part == 999){
+                    		keepGoing = false;
+                    	}
+                    	if(!keepGoing){
+	                    	
+	                        MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
+	                        metaSol.setEvaluationClass(optimizer);
+	                        metaSol.search();
+	                        MetaResults results = metaSol.getResults();
+	//                        System.out.println(results.getBestSolution());
+	//                        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
+	//                        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
+	//                        System.out.println("Avg Error :" + results.getAvgError());
+	//                        System.out.println("Avg Time  :" + results.getAvgTime());
+	//                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
+	                        metaSol.writeRow(tw);
+	
+	//                                Runtime runtime = Runtime.getRuntime();
+	//                                Process proc = runtime.exec("shutdown -s -t 0");
+	//                                System.exit(0);
+	                            }
+	                        System.out.println(optimizer.toString() + " - parts: " + part + " branches: " + branches + " leaves: " + leaves);
+//                    	}
                     }
                 }
             }

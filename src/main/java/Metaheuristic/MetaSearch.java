@@ -12,6 +12,7 @@ import Util.Optimizers.EvaluationOptimizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.Callable;
  *
  * @author Cesar
  */
-public class MetaSearch implements Callable<Solution> {
+public class MetaSearch implements Callable<List<Solution>> {
 
     private final Problem problem;
     private final int leaves;
@@ -37,7 +38,7 @@ public class MetaSearch implements Callable<Solution> {
     }
 
     @Override
-    public Solution call() throws Exception {
+    public List<Solution> call() throws Exception {
         //System.err.println("Thread # " + Thread.currentThread().getId() + " is doing this task");
         for (int i = 0; i < leaves; i++) {
             HashMap<Integer, ProblemVariable> newSolVariables = new HashMap<>();
@@ -54,13 +55,13 @@ public class MetaSearch implements Callable<Solution> {
         return this.solve();
     }
 
-    public Solution solve() {
+    public List<Solution> solve() {
         for (Solution sol : solutions) {
             this.startTime = System.currentTimeMillis();
             optimizer.optimize(sol);
             sol.setExecutionTime(System.currentTimeMillis() - startTime);
         }
-        return Collections.min(solutions);
+        return solutions;
     }
 
 }

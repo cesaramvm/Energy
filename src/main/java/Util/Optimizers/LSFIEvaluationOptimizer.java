@@ -28,8 +28,10 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
     @Override
     public void optimize(Solution solution) {
         double newEvaluation = solution.getEvaluation();
+        int i= 0;
 
         while (!paramsIndex.isEmpty()) {
+        	i++;
             valueListCopy = new ArrayList<>(valueList);
             epsilonListCopy = new ArrayList<>(epsilonList);
 
@@ -60,7 +62,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
             } else {
                 paramsIndex.remove(selectedChange);
             }
-//            System.out.println(paramsIndex);
+//            System.out.println("LSFI " + i + " it - " + paramsIndex);
         }
         this.restoreParamsIndex();
     }

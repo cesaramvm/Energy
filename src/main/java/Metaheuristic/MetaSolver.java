@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,7 @@ import Util.Writers.CSVTableWriter;
  */
 public class MetaSolver {
 
-    private final ArrayList<Future<Solution>> futures = new ArrayList<>();
+    private final ArrayList<Future<List<Solution>>> futures = new ArrayList<>();
     private final ArrayList<Solution> soluciones = new ArrayList<>();
     private final Problem problem;
     private final int numBranches;
@@ -70,9 +71,9 @@ public class MetaSolver {
                 EvaluationOptimizer eo = (EvaluationOptimizer) cons.newInstance(parts, problem, r);
                 futures.add(es.submit(new MetaSearch(problem, branchLeaves, eo, r)));
             }
-            for (Future<Solution> f : futures) {
-                Solution s = f.get();
-                soluciones.add(s);
+            for (Future<List<Solution>> f : futures) {
+                List<Solution> s = f.get();
+                soluciones.addAll(s);
             }
             totalConcurrentTime = System.currentTimeMillis() - totalConcurrentTime;
         } catch (InterruptedException | ExecutionException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {

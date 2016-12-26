@@ -23,8 +23,9 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 
     @Override
     public void optimize(Solution solution) {
-        Long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < 2000) {
+        int i = 0;
+        while (i<35000) {
+        	i++;
             //Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
             int selectedChange = (int) (random.nextDouble() * (problem.getNumParams() + 1));
             Double newEpsilon = solution.getEpsilon();

@@ -26,8 +26,9 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
     @Override
     public void optimize(Solution solution) {
         Double newEvaluation;
-
+        int i = 0;
         while (!paramsIndex.isEmpty()) {
+        	i++;
             ArrayList<Double> evaluations = new ArrayList<>();
             Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
             Double newEpsilon = solution.getEpsilon();
@@ -72,7 +73,7 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
                 paramsIndex.remove(selectedChange);
             }
 
-            //System.out.println(paramsIndex);
+//            System.out.println("LSBI " + i + " it - " + paramsIndex);
         }
         this.restoreParamsIndex();
     }
