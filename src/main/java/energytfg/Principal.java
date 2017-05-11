@@ -1,19 +1,15 @@
 package energytfg;
 
-import Metaheuristic.MetaSolver;
-import Models.MetaResults;
-import Models.Problem;
-import Util.Optimizers.LSBIEvaluationOptimizer;
-import Util.Optimizers.LSFIEvaluationOptimizer;
-import Util.Optimizers.RandomEvaluationOptimizer;
-import Util.Writers.CSVTableWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import GUI.MainWindow;
 
 /**
- *
  * @author Cesar
  */
 //raul cabido
@@ -23,98 +19,28 @@ import java.util.logging.Logger;
 //buenaposada
 //TODO QUITAR SuppressWarnings
 public class Principal {
-
-    private static final String FULLPATH = "ProjectData/N-fulldataset.csv";
-    private static final String TRAINPATH = "ProjectData/N-train.csv";
-    private static final String TESTPATH = "ProjectData/N-test.csv";
-    private static final Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-
     public static void main(String[] args) {
-        try {
-//            easy();
-            advanced();
-        } catch (Exception ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//            NeurophSolution ns = new NeurophSolution(FULLPATH, TRAINPATH, TESTPATH);
-//            ns.fullSearch(problem);
-//            ns.findBestNetwork1(problem);
-//            String fileRoute = "Net.nnet";
-//            ns.networkTest(fileRoute, problem, "FinalNnetOut.csv");
-    }
-
-    private static void easy() {
-
-        int searchBranches = 1;
-        int leaves = 5;
-        int parts = 99;
-
-        MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts);
-        //RandomEvaluationOptimizer
-        //LSFIEvaluationOptimizer
-        //LSBIEvaluationOptimizer
-        metaSol.setEvaluationClass(RandomEvaluationOptimizer.class);
-//        metaSol.setEvaluationClass(LSBIEvaluationOptimizer.class);
-        metaSol.search();
-        MetaResults results = metaSol.getResults();
-        CSVTableWriter tw = MetaSolver.initTableWriter("testingLSFI.csv");
-        metaSol.writeRow(tw);
-        tw.close();
-        
-//        System.out.println(results.getBestSolution());
-//        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
-//        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
-//        System.out.println("Avg Error :" + results.getAvgError());
-//        System.out.println("Avg Time  :" + results.getAvgTime());
-//            System.out.println(solution);
-//            System.out.println("Tiempo de busqueda " + );
-
-    }
-
-    @SuppressWarnings("unused")
-	private static void advanced() {
-
-        ArrayList<Class<? extends Object>> optimizers = new ArrayList<>(Arrays.asList(RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class, LSBIEvaluationOptimizer.class));
-
-        ArrayList<Integer> parts = new ArrayList<>(Arrays.asList(99, 499, 999/*, 2999*/));
-        ArrayList<Integer> numBranches = new ArrayList<>(Arrays.asList(1, 2, 4, 8));
-        ArrayList<Integer> numLeaves = new ArrayList<>(Arrays.asList(/*1, 5, 50,*/ 100));
-
-        boolean keepGoing = true;
-        CSVTableWriter tw = MetaSolver.initTableWriter("niceOrder.csv");
-        for (int leaves : numLeaves) {
-        	for (int part : parts) {
-        		for (int branches : numBranches) {
-                    for (Class<? extends Object> optimizer : optimizers) {
-                    	if(optimizer == LSBIEvaluationOptimizer.class && branches == 8 && leaves ==100 && part == 999){
-                    		keepGoing = false;
-                    	}
-                    	if(!keepGoing){
-	                    	
-	                        MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
-	                        metaSol.setEvaluationClass(optimizer);
-	                        metaSol.search();
-	                        MetaResults results = metaSol.getResults();
-	//                        System.out.println(results.getBestSolution());
-	//                        System.out.println("Secuencial: " + results.getTotalSecuentialTime());
-	//                        System.out.println("Concurrent: " + results.getTotalConcurrentTime());
-	//                        System.out.println("Avg Error :" + results.getAvgError());
-	//                        System.out.println("Avg Time  :" + results.getAvgTime());
-	//                                System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-	                        metaSol.writeRow(tw);
-	
-	//                                Runtime runtime = Runtime.getRuntime();
-	//                                Process proc = runtime.exec("shutdown -s -t 0");
-	//                                System.exit(0);
-	                            }
-	                        System.out.println(optimizer.toString() + " - parts: " + part + " branches: " + branches + " leaves: " + leaves);
-//                    	}
-                    }
-                }
+    	//Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                //Turn off metal's use of bold fonts
+		UIManager.put("swing.boldMetal", Boolean.FALSE);
+		createAndShowGUI();
             }
-        }
-        tw.close();
-
+        });
     }
-
+    
+    private static void createAndShowGUI() {
+        //Create and set up the window.
+        JFrame frame = new JFrame("TabbedPaneDemo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(400, 300));
+        //Add content to the window.
+        frame.add(new MainWindow(), BorderLayout.CENTER);
+        
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
 }

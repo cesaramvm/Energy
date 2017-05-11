@@ -28,7 +28,7 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
         Double newEvaluation;
         int i = 0;
         while (!paramsIndex.isEmpty()) {
-        	i++;
+        	i = i+1; //No uso i++ para evitar un warning de Unused variable i (bug)
             ArrayList<Double> evaluations = new ArrayList<>();
             Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
             Double newEpsilon = solution.getEpsilon();

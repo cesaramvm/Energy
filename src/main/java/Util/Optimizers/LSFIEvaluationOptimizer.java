@@ -29,9 +29,8 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
     public void optimize(Solution solution) {
         double newEvaluation = solution.getEvaluation();
         int i= 0;
-
         while (!paramsIndex.isEmpty()) {
-        	i++;
+        	i = i+1; //No uso i++ para evitar un warning de Unused variable i (bug)
             valueListCopy = new ArrayList<>(valueList);
             epsilonListCopy = new ArrayList<>(epsilonList);
 
