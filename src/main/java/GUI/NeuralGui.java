@@ -14,7 +14,7 @@ import NeuralNetwork.NeurophSolver;
 public class NeuralGui extends DefaultTab implements ActionListener{
 	
 	private JButton bt1, bt2;
-	private NeurophSolver neurophSolver = new NeurophSolver(FULLPATH, TRAINPATH, TESTPATH);
+	private NeurophSolver neurophSolver = new NeurophSolver();
 	
 	protected NeuralGui() {
 		super("Redes", "Modo Redes Neuronales");
@@ -53,10 +53,10 @@ public class NeuralGui extends DefaultTab implements ActionListener{
 
     private void neuralSearch(){
     	
-      neurophSolver.fullSearch(problem);
-      neurophSolver.findBestNetwork1(problem);
+      neurophSolver.fullSearch();
+      neurophSolver.findBestNetwork1();
       String fileRoute = "Net.nnet";
-      neurophSolver.networkTest(fileRoute, problem, "FinalNnetOut.csv");
+      neurophSolver.networkTest(fileRoute, "FinalNnetOut.csv");
     	
     }
 

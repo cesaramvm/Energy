@@ -2,6 +2,7 @@ package NeuralNetwork;
 
 import Models.Problem;
 import Util.Normalizers.Normalizer;
+import energytfg.GlobalConstants;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -22,27 +23,18 @@ import org.neuroph.util.TransferFunctionType;
 /**
  * @author César Valdés
  */
-public class NeurophSolver {
+public class NeurophSolver implements GlobalConstants {
 
 	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
-	private final String fullPath;
-	private final String trainPath;
-	private final String testPath;
 
-	public NeurophSolver(String FULLPATH, String TRAINPATH, String TESTPATH) {
-		this.fullPath = FULLPATH;
-		this.trainPath = TRAINPATH;
-		this.testPath = TESTPATH;
-	}
-
-	public void fullSearch(Problem problem) {
+	public void fullSearch() {
 		boolean showTrainGraph = false;
 		boolean showGraphs = true;
 		// BackPropagation or ResilientPropagation
 		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
-				trainPath, testPath);
+				TRAINPATH, TESTPATH);
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
@@ -80,12 +72,12 @@ public class NeurophSolver {
 		}
 	}
 
-	public void testSearch(Problem problem) {
+	public void testSearch() {
 		boolean showTrainGraph = false;
 		boolean showGraphs = false;
 		// BackPropagation or ResilientPropagation
 		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
-				trainPath, testPath);
+				TRAINPATH, TESTPATH);
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		boolean appendTable = true;
@@ -97,13 +89,13 @@ public class NeurophSolver {
 
 	public void lastMain() {
 		// Problem problem = new Problem("ProjectData/O-data.txt");
-		// problem.saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
+		// problem.saveNormalizedData(FULLPATH, Constants.TRAINPATH, Constants.TESTPATH);
 		// HeuristicModule sol = new HeuristicModule(problem);
 		// sol.solve();
 		// boolean showTrainGraph = false;
 		// boolean showGraphs = false;
 		// NeurophModule neurophSearch = new NeurophModule(15000,
-		// NeurophModule.RPROP, showTrainGraph, showGraphs, TRAINPATH, TESTPATH,
+		// NeurophModule.RPROP, showTrainGraph, showGraphs, Constants.TRAINPATH, Constants.TESTPATH,
 		// problem.getNormalizer());
 		//// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
@@ -183,8 +175,8 @@ public class NeurophSolver {
 		// NeurophModule.RPROP, blockWindow);
 	}
 
-	public void findBestNetwork1(Problem problem) {
-		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
+	public void findBestNetwork1() {
+		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
 		String networkDir = "TemporalNets/";
 		File folder = new File(networkDir);
 		File[] listOfFiles = folder.listFiles();
@@ -232,8 +224,8 @@ public class NeurophSolver {
 		System.out.println(minMeanError);
 	}
 
-	public void networkTest(String fileRoute, Problem problem, String saveRoute) {
-		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
+	public void networkTest(String fileRoute, String saveRoute) {
+		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
 
 		try {
 			FileWriter fw = new FileWriter(saveRoute, false);

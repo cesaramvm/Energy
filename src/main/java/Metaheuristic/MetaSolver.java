@@ -17,11 +17,12 @@ import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.Optimizer;
 import Util.Writers.CSVTableWriter;
+import energytfg.GlobalConstants;
 
 /**
  * @author César Valdés
  */
-public class MetaSolver {
+public class MetaSolver implements GlobalConstants {
 
     private final ArrayList<Future<List<Solution>>> futures = new ArrayList<>();
     private final ArrayList<Solution> soluciones = new ArrayList<>();
@@ -40,7 +41,7 @@ public class MetaSolver {
         this.evaluationClass = evaluationClass;
     }
 
-    public void search(Problem problem) {
+    public void search() {
 
         futures.clear();
         soluciones.clear();
