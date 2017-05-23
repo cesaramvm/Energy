@@ -34,7 +34,6 @@ public class MetaSolver {
 
     private final ArrayList<Future<List<Solution>>> futures = new ArrayList<>();
     private final ArrayList<Solution> soluciones = new ArrayList<>();
-    private final Problem problem;
     private final int numBranches;
     private final int branchLeaves;
     private final int parts;
@@ -43,16 +42,15 @@ public class MetaSolver {
     private MetaResults results;
 
 // <editor-fold desc="Constructor">
-    public MetaSolver(Problem pro, int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
-
-        this.problem = pro;
+    public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
+    	
         this.numBranches = numBranches;
         this.branchLeaves = numLeaves;
         this.parts = parts;
         this.evaluationClass = evaluationClass;
     }
 
-    public void search() {
+    public void search(Problem problem) {
 
         futures.clear();
         soluciones.clear();
@@ -82,7 +80,7 @@ public class MetaSolver {
 
     public MetaResults getResults() {
         if (soluciones.isEmpty()) {
-            this.search();
+            throw new Error("Search still not done");
         }
         if (results == null) {
             Solution bestSolution = soluciones.get(0);
