@@ -46,7 +46,6 @@ public class NeurophSolution {
 		// learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
-		boolean blockWindow = false;
 		boolean appendTable = true;
 
 		Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
@@ -69,7 +68,7 @@ public class NeurophSolution {
 				}
 				if (combination[1] == 14) {
 					for (TransferFunctionType type : TYPES) {
-						learningModule.onePlot(lrates, type, combination);
+						learningModule.onePlotLRs(lrates, type, combination);
 						learningModule.writeTable(NeurophSearch.TEST_GRAPH, "AllTest.csv", appendTable);
 					}
 					System.out.println("Finished " + Arrays.toString(combination));
@@ -89,10 +88,9 @@ public class NeurophSolution {
 				trainPath, testPath);
 		// learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
-		boolean blockWindow = false;
 		boolean appendTable = true;
 		int[] combination = { 14, 7, 7, 1 };
-		learningModule.onePlot(20, 0.3, TransferFunctionType.TANH, combination);
+		learningModule.singlePlot(20, 0.3, TransferFunctionType.TANH, combination);
 		learningModule.writeTable(NeurophSearch.TEST_GRAPH, "FullTA77.csv", appendTable);
 
 	}
@@ -186,7 +184,6 @@ public class NeurophSolution {
 	}
 
 	public void findBestNetwork1(Problem problem) {
-		NeurophSearch learningModule = new NeurophSearch();
 		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
 		String networkDir = "TemporalNets/";
 		File folder = new File(networkDir);
@@ -236,7 +233,6 @@ public class NeurophSolution {
 	}
 
 	public void networkTest(String fileRoute, Problem problem, String saveRoute) {
-		NeurophSearch learningModule = new NeurophSearch();
 		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
 
 		try {

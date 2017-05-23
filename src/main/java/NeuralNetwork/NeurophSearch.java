@@ -32,8 +32,8 @@ public class NeurophSearch {
 
 	private final static int INPUT = 14;
 	private final static int OUTPUT = 1;
-	private final static DecimalFormat LEARNING_RATE_DF = new DecimalFormat("0.00");
-	private final static DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
+	private final static DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
+	private final static DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
 	private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
 	private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
 	public final static int TRAINING_GRAPH = 0;
@@ -72,7 +72,7 @@ public class NeurophSearch {
 
 	}
 
-	public void onePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers) {
+	public void singlePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers) {
 		clearAll();
 		for (int i = 0; i < linesNum; i++) {
 			this.train(learningRate, transferType, layers);
@@ -94,7 +94,7 @@ public class NeurophSearch {
 
 	}
 
-	public void onePlot(ArrayList<Double> learningRates, TransferFunctionType transferType, int[] layers) {
+	public void onePlotLRs(ArrayList<Double> learningRates, TransferFunctionType transferType, int[] layers) {
 		clearAll();
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
@@ -114,7 +114,7 @@ public class NeurophSearch {
 
 	}
 
-	public void onePlot(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers) {
+	public void onePlotTFs(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers) {
 		clearAll();
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
@@ -186,7 +186,7 @@ public class NeurophSearch {
 			String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";"
 					+ Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
 			for (Integer columnIndex : columns) {
-				String error = ERROR_DF.format(trainChart.get(columnIndex));
+				String error = ERROR_FORMAT.format(trainChart.get(columnIndex));
 				nextRow += error + ";";
 			}
 			fullwriter.println(nextRow);
@@ -213,7 +213,7 @@ public class NeurophSearch {
 			rule.setLearningRate(learningRate);
 			neuralNetwork.learn(trainingDataSet);
 			Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-			neuralNetwork.save("NetworkSaves/Networks/" + ERROR_DF.format(mse) + "-Network-"
+			neuralNetwork.save("NetworkSaves/Networks/" + ERROR_FORMAT.format(mse) + "-Network-"
 					+ transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers)
 					+ ".nnet");
 
@@ -225,8 +225,8 @@ public class NeurophSearch {
 
 	private LearningEventListener createListener(NeuralNetwork<? extends LearningRule> neuralNetwork,
 			Double learningRate, String transferType, int[] layers) {
-		chartTestData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType, layers);
-		chartTrainingData = new ChartData(LEARNING_RATE_DF.format(learningRate), transferType, layers);
+		chartTestData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
+		chartTrainingData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
 		LearningEventListener listener = (LearningEvent le) -> {
 			if (le.getEventType() == EPOCH_ENDED) {
 				mseToChartData(neuralNetwork, testingDataSet, chartTestData);
