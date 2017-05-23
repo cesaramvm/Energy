@@ -7,7 +7,6 @@ package NeuralNetwork;
 
 import Models.Problem;
 import Util.Normalizers.Normalizer;
-import energytfg.Principal;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -260,7 +259,7 @@ public class NeurophSolution {
 
             pw.close();
         } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NeurophSolution.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

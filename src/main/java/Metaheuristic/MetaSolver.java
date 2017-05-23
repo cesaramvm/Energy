@@ -24,7 +24,6 @@ import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.EvaluationOptimizer;
-import Util.Optimizers.RandomEvaluationOptimizer;
 import Util.Writers.CSVTableWriter;
 
 /**
@@ -39,20 +38,17 @@ public class MetaSolver {
     private final int numBranches;
     private final int branchLeaves;
     private final int parts;
-    private Class<? extends Object> evaluationClass = RandomEvaluationOptimizer.class;
+    private Class<? extends Object> evaluationClass;
     private Long totalConcurrentTime;
     private MetaResults results;
 
 // <editor-fold desc="Constructor">
-    public MetaSolver(Problem pro, int numBranches, int numLeaves, int parts) {
+    public MetaSolver(Problem pro, int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
 
         this.problem = pro;
         this.numBranches = numBranches;
         this.branchLeaves = numLeaves;
         this.parts = parts;
-    }
-
-    public void setEvaluationClass(Class<? extends Object> evaluationClass) {
         this.evaluationClass = evaluationClass;
     }
 

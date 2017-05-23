@@ -5,7 +5,6 @@
  */
 package Util.Writers;
 
-import Metaheuristic.MetaSolver;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +35,7 @@ public class CSVTableWriter {
             BufferedWriter bw = new BufferedWriter(fw);
             newPw = new PrintWriter(bw);
         } catch (IOException ex) {
-            Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CSVTableWriter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.pw = newPw;
             this.tableColumns = headers.size();

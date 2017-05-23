@@ -79,7 +79,7 @@ public abstract class EvaluationOptimizer implements Optimizer {
             try {
                 clone.put(entry.getKey(), (ProblemVariable) entry.getValue().clone());
             } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(RandomEvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return clone;

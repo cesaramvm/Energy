@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -26,7 +25,6 @@ import Util.Optimizers.LSBIEvaluationOptimizer;
 import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
 import Util.Writers.CSVTableWriter;
-import energytfg.Principal;
 
 public class MetaGui extends DefaultTab implements ActionListener{
 
@@ -59,7 +57,7 @@ public class MetaGui extends DefaultTab implements ActionListener{
 //          easy();
 //          advanced();
       } catch (Exception ex) {
-          Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(MetaGui.class.getName()).log(Level.SEVERE, null, ex);
       }
 
     	if(e.getSource()==bt1){//podemos comparar por el contenido del boton
@@ -169,8 +167,7 @@ public class MetaGui extends DefaultTab implements ActionListener{
 	
 	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer) {
 
-        MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts);
-        metaSol.setEvaluationClass(optimizer);
+        MetaSolver metaSol = new MetaSolver(problem, searchBranches, leaves, parts, optimizer);
         metaSol.search();
         MetaResults results = metaSol.getResults();
         CSVTableWriter tw = MetaSolver.initTableWriter("testingLSFI.csv");
@@ -201,8 +198,7 @@ public class MetaGui extends DefaultTab implements ActionListener{
                     	}
                     	if(!keepGoing){
 	                    	
-	                        MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part);
-	                        metaSol.setEvaluationClass(optimizer);
+	                        MetaSolver metaSol = new MetaSolver(problem, branches, leaves, part, optimizer);
 	                        metaSol.search();
 	                        MetaResults results = metaSol.getResults();
 	//                        System.out.println(results.getBestSolution());
