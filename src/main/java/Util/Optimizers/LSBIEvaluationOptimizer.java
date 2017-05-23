@@ -72,8 +72,6 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
             } else {
                 paramsIndex.remove(selectedChange);
             }
-
-//            System.out.println("LSBI " + i + " it - " + paramsIndex);
         }
         this.restoreParamsIndex();
     }

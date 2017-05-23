@@ -33,7 +33,7 @@ public class Principal {
     
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("TabbedPaneDemo");
+        JFrame frame = new JFrame("Energy Problem TFG");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(400, 300));
         //Add content to the window.

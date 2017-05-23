@@ -61,7 +61,6 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
             } else {
                 paramsIndex.remove(selectedChange);
             }
-//            System.out.println("LSFI " + i + " it - " + paramsIndex);
         }
         this.restoreParamsIndex();
     }

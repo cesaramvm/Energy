@@ -45,16 +45,12 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
 public class MainWindow extends JPanel {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public MainWindow() {
         super(new GridLayout(1, 1));
         
         JTabbedPane tabbedPane = new JTabbedPane();
-        //ImageIcon icon = createImageIcon("images/middle.gif");
         ImageIcon icon = null;
         
         MetaGui metaG = new MetaGui();
@@ -66,13 +62,6 @@ public class MainWindow extends JPanel {
         tabbedPane.addTab(neuralG.getTitle(), icon, neuralG.getTabContent(),
         		neuralG.getMouseOver());
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-        
-        /*
-        OptionsGui optionsG = new OptionsGui();
-        tabbedPane.addTab(optionsG.getTitle(), icon, optionsG.getTabContent(),
-        		optionsG.getMouseOver());
-        tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
-        */
         
         tabbedPane.addTab("Salir", icon, new JPanel(),
         		"Pulse para salir");
@@ -94,45 +83,5 @@ public class MainWindow extends JPanel {
 			}
         });
     }
-    /*
-    protected JComponent makeTextPanel(String text) {
-        JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout(1, 1));
-        //JLabel filler = new JLabel(text);
-        //filler.setHorizontalAlignment(JLabel.CENTER);
-        //panel.setLayout(new GridLayout(1, 1));
-        //panel.add(filler);
-        //return panel;
-        
-        JButton bt2 = new JButton("Entrenamiento avanzado");
-        JButton bt3 = new JButton("Imprimir en excel"); //creamos el boton con una imagen
-        bt2.setMargin(new Insets(1, 1, 1, 1));
-      //color de texto para el boton
-        bt2.setForeground(Color.blue);
-        JButton bt4 = new JButton("asd"); //creamos el boton con una imagen
-        //Instanciando botones con texto
-        JButton bt1 = new JButton("Entrenamiento simple");
-        //margenes para texto en boton
-        bt1.setMargin(new Insets(3, 5, 3, 5));
-        //color de fondo del boton
-        bt1.setBackground(Color.orange);
-        panel.add(bt1);
-        panel.add(bt2);
-        panel.add(bt3);
-        panel.add(bt4);
-        return panel;
-        
-    }
-    */
-    /** Returns an ImageIcon, or null if the path was invalid.
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = MainWindow.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    } */
     
 }
