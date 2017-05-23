@@ -275,12 +275,9 @@ public class NeurophSearch {
 			// System.out.println("Input: " +
 			// Arrays.toString(dataRow.getInput()));
 			// System.out.println(" Output: " + networkOutput[0]);
-			// TODO CALCULAR MSE Y CERCIORARSE DE QUE SEA EL MISMO QUE USA
-			// NEUROPH
 		}
 
-		return sumatorio / (2 * INPUT); // Así lo hace neuroph
-		// return sumatorio / (INPUT);
+		return sumatorio / (2 * INPUT);
 
 	}
 

@@ -22,7 +22,7 @@ import org.neuroph.util.TransferFunctionType;
 /**
  * @author César Valdés
  */
-public class NeurophSolution {
+public class NeurophSolver {
 
 	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
@@ -31,7 +31,7 @@ public class NeurophSolution {
 	private final String trainPath;
 	private final String testPath;
 
-	public NeurophSolution(String FULLPATH, String TRAINPATH, String TESTPATH) {
+	public NeurophSolver(String FULLPATH, String TRAINPATH, String TESTPATH) {
 		this.fullPath = FULLPATH;
 		this.trainPath = TRAINPATH;
 		this.testPath = TESTPATH;
@@ -41,9 +41,9 @@ public class NeurophSolution {
 		boolean showTrainGraph = false;
 		boolean showGraphs = true;
 		// BackPropagation or ResilientPropagation
-		NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
+		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
 				trainPath, testPath);
-		// learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
+		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
 		boolean appendTable = true;
@@ -68,8 +68,8 @@ public class NeurophSolution {
 				}
 				if (combination[1] == 14) {
 					for (TransferFunctionType type : TYPES) {
-						learningModule.onePlotLRs(lrates, type, combination);
-						learningModule.writeTable(NeurophSearch.TEST_GRAPH, "AllTest.csv", appendTable);
+						neurophSearch.onePlotLRs(lrates, type, combination);
+						neurophSearch.writeTable(NeurophSearch.TEST_GRAPH, "AllTest.csv", appendTable);
 					}
 					System.out.println("Finished " + Arrays.toString(combination));
 
@@ -84,14 +84,14 @@ public class NeurophSolution {
 		boolean showTrainGraph = false;
 		boolean showGraphs = false;
 		// BackPropagation or ResilientPropagation
-		NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
+		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
 				trainPath, testPath);
-		// learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
+		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		boolean appendTable = true;
 		int[] combination = { 14, 7, 7, 1 };
-		learningModule.singlePlot(20, 0.3, TransferFunctionType.TANH, combination);
-		learningModule.writeTable(NeurophSearch.TEST_GRAPH, "FullTA77.csv", appendTable);
+		neurophSearch.singlePlot(20, 0.3, TransferFunctionType.TANH, combination);
+		neurophSearch.writeTable(NeurophSearch.TEST_GRAPH, "FullTA77.csv", appendTable);
 
 	}
 
@@ -102,10 +102,10 @@ public class NeurophSolution {
 		// sol.solve();
 		// boolean showTrainGraph = false;
 		// boolean showGraphs = false;
-		// NeurophModule learningModule = new NeurophModule(15000,
+		// NeurophModule neurophSearch = new NeurophModule(15000,
 		// NeurophModule.RPROP, showTrainGraph, showGraphs, TRAINPATH, TESTPATH,
 		// problem.getNormalizer());
-		//// learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
+		//// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		// ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3,
 		// 0.4));
@@ -126,9 +126,9 @@ public class NeurophSolution {
 		// layersNeurons[1] = i;
 		// layersNeurons[2] = j;
 		// System.out.println(Arrays.toString(layersNeurons));
-		// learningModule.onePlot(lrates, TransferFunctionType.GAUSSIAN,
+		// neurophSearch.onePlot(lrates, TransferFunctionType.GAUSSIAN,
 		// layersNeurons, blockWindow);
-		// learningModule.writeTable(NeurophModule.TEST, "test.csv",
+		// neurophSearch.writeTable(NeurophModule.TEST, "test.csv",
 		// appendTable);
 		// }
 		// }
@@ -136,13 +136,13 @@ public class NeurophSolution {
 		// //BY LEARNING RATE
 		// for (int i = 5; i < 14; i++) {
 		// for (Double d : lrates) {
-		// learningModule.onePlot(d, TYPES, i, 0, blockWindow);
+		// neurophSearch.onePlot(d, TYPES, i, 0, blockWindow);
 		// }
 		// }
 		// for (int i = 5; i < 10; i++) {
 		// for (int j = 3; j < 5; j++) {
 		// for (Double d : lrates) {
-		// learningModule.onePlot(d, TYPES, i, j, blockWindow);
+		// neurophSearch.onePlot(d, TYPES, i, j, blockWindow);
 		// }
 		// }
 		//
@@ -150,36 +150,36 @@ public class NeurophSolution {
 		// //BY TRANSFER FUCTION
 		// for (int i = 5; i < 14; i++) {
 		// for (TransferFunctionType t : TYPES) {
-		// learningModule.onePlot(lrates, t, i, 0, blockWindow);
+		// neurophSearch.onePlot(lrates, t, i, 0, blockWindow);
 		// }
 		// }
 		//
 		// for (int i = 6; i < 10; i++) {
 		// for (int j = 3; j < 8; j++) {
 		// for (TransferFunctionType t : TYPES) {
-		// learningModule.onePlot(lrates, t, i, j, blockWindow);
+		// neurophSearch.onePlot(lrates, t, i, j, blockWindow);
 		// }
 		// }
 		//
 		// }
-		// learningModule.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3,
+		// neurophSearch.onePlot(1, 0.3, TransferFunctionType.GAUSSIAN, 6, 3,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.createTrainingTable(TRAININGTABLEPATH);
-		// learningModule.createTestTable(TESTTABLEPATH);
-		// learningModule.appendTestTable();
+		// neurophSearch.createTrainingTable(TRAININGTABLEPATH);
+		// neurophSearch.createTestTable(TESTTABLEPATH);
+		// neurophSearch.appendTestTable();
 		// boolean append = false;
-		// learningModule.writeTable(NeurophModule.TRAINING, append);
-		// learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 6, 3,
+		// neurophSearch.writeTable(NeurophModule.TRAINING, append);
+		// neurophSearch.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 6, 3,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 10, 0,
+		// neurophSearch.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 10, 0,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 10, 0,
+		// neurophSearch.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 10, 0,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 10, 0,
+		// neurophSearch.onePlot(10, 0.4, TransferFunctionType.GAUSSIAN, 10, 0,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 14, 0,
+		// neurophSearch.onePlot(10, 0.2, TransferFunctionType.GAUSSIAN, 14, 0,
 		// NeurophModule.RPROP, blockWindow);
-		// learningModule.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 14, 0,
+		// neurophSearch.onePlot(10, 0.3, TransferFunctionType.GAUSSIAN, 14, 0,
 		// NeurophModule.RPROP, blockWindow);
 	}
 
@@ -261,7 +261,7 @@ public class NeurophSolution {
 
 			pw.close();
 		} catch (IOException ex) {
-			Logger.getLogger(NeurophSolution.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(NeurophSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

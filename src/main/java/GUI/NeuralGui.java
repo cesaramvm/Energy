@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import NeuralNetwork.NeurophSolution;
+import NeuralNetwork.NeurophSolver;
 
 /**
  * @author César Valdés
@@ -14,7 +14,7 @@ import NeuralNetwork.NeurophSolution;
 public class NeuralGui extends DefaultTab implements ActionListener{
 	
 	private JButton bt1, bt2;
-	private NeurophSolution ns = new NeurophSolution(FULLPATH, TRAINPATH, TESTPATH);
+	private NeurophSolver neurophSolver = new NeurophSolver(FULLPATH, TRAINPATH, TESTPATH);
 	
 	protected NeuralGui() {
 		super("Redes", "Modo Redes Neuronales");
@@ -53,10 +53,10 @@ public class NeuralGui extends DefaultTab implements ActionListener{
 
     private void neuralSearch(){
     	
-      ns.fullSearch(problem);
-      ns.findBestNetwork1(problem);
+      neurophSolver.fullSearch(problem);
+      neurophSolver.findBestNetwork1(problem);
       String fileRoute = "Net.nnet";
-      ns.networkTest(fileRoute, problem, "FinalNnetOut.csv");
+      neurophSolver.networkTest(fileRoute, problem, "FinalNnetOut.csv");
     	
     }
 
