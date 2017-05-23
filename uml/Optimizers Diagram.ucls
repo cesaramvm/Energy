@@ -22,7 +22,7 @@
   </class>  
   <interface id="3" language="java" name="Util.Optimizers.Optimizer" project="Energy" 
     file="/Energy/src/main/java/Util/Optimizers/Optimizer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="633" y="-384"/>    
+    <position height="-1" width="-1" x="656" y="-400"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -40,7 +40,7 @@
   </class>  
   <class id="5" language="java" name="Util.Optimizers.LSFIEvaluationOptimizer" project="Energy" 
     file="/Energy/src/main/java/Util/Optimizers/LSFIEvaluationOptimizer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="405" y="279"/>    
+    <position height="-1" width="-1" x="405" y="282"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -61,20 +61,20 @@
     <end type="TARGET" refId="3"/>  
   </realization>  
   <generalization id="8">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
   </generalization>  
   <generalization id="9">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="10">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
   <generalization id="11">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

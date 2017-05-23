@@ -8,7 +8,7 @@ package Metaheuristic;
 import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
-import Util.Optimizers.EvaluationOptimizer;
+import Util.Optimizers.Optimizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,13 +23,13 @@ public class MetaSearch implements Callable<List<Solution>> {
 
     private final Problem problem;
     private final int leaves;
-    private final EvaluationOptimizer optimizer;
+    private final Optimizer optimizer;
     private Long startTime;
 
     private ArrayList<Solution> solutions = new ArrayList<>();
     private final Random random;
 
-    public MetaSearch(Problem pro, int leaves, EvaluationOptimizer eo, Random r) {
+    public MetaSearch(Problem pro, int leaves, Optimizer eo, Random r) {
         this.optimizer = eo;
         this.problem = pro;
         this.leaves = leaves;

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
-import Util.Optimizers.EvaluationOptimizer;
+import Util.Optimizers.Optimizer;
 import Util.Writers.CSVTableWriter;
 
 /**
@@ -61,7 +61,7 @@ public class MetaSolver {
                 int seed = i + 5;
                 Random r = new Random(seed);
                 Constructor<?> cons = evaluationClass.getConstructor(int.class, Problem.class, Random.class);
-                EvaluationOptimizer eo = (EvaluationOptimizer) cons.newInstance(parts, problem, r);
+                Optimizer eo = (Optimizer) cons.newInstance(parts, problem, r);
                 futures.add(es.submit(new MetaSearch(problem, branchLeaves, eo, r)));
             }
             for (Future<List<Solution>> f : futures) {
