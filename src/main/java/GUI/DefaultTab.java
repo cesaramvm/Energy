@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import javax.swing.JComponent;
-
 import Models.Problem;
 
 /**
- *
- * @author Usuario
+ * @author César Valdés
  */
 public abstract class DefaultTab {
 	protected static final String FULLPATH = "ProjectData/N-fulldataset.csv";

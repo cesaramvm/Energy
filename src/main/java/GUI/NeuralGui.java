@@ -4,12 +4,13 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import NeuralNetwork.NeurophSolution;
 
+/**
+ * @author César Valdés
+ */
 public class NeuralGui extends DefaultTab implements ActionListener{
 	
 	private JButton bt1, bt2;

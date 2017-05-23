@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Metaheuristic;
 
 import java.lang.reflect.Constructor;
@@ -17,9 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-// <editor-fold desc="">
-// </editor-fold>
 import Models.MetaResults;
 import Models.Problem;
 import Models.Solution;
@@ -27,8 +19,7 @@ import Util.Optimizers.Optimizer;
 import Util.Writers.CSVTableWriter;
 
 /**
- *
- * @author Cesar
+ * @author César Valdés
  */
 public class MetaSolver {
 
@@ -41,7 +32,6 @@ public class MetaSolver {
     private Long totalConcurrentTime;
     private MetaResults results;
 
-// <editor-fold desc="Constructor">
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
     	
         this.numBranches = numBranches;

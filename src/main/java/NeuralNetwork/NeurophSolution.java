@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package NeuralNetwork;
 
 import Models.Problem;
@@ -26,8 +21,7 @@ import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
 
 /**
- *
- * @author Usuario
+ * @author César Valdés
  */
 @SuppressWarnings("unused")
 public class NeurophSolution {
@@ -52,7 +46,7 @@ public class NeurophSolution {
         boolean showTrainGraph = false;
         boolean showGraphs = true;
         //BackPropagation or ResilientPropagation
-        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
+        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath);
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
         boolean blockWindow = false;
@@ -94,7 +88,7 @@ public class NeurophSolution {
         boolean showTrainGraph = false;
         boolean showGraphs = false;
         //BackPropagation or ResilientPropagation
-        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath, problem.getNormalizer());
+        NeurophSearch learningModule = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs, trainPath, testPath);
 //        learningModule.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0, NeurophModule.Rprop);
         boolean blockWindow = false;
         boolean appendTable = true;
@@ -191,8 +185,7 @@ public class NeurophSolution {
         for (File f : listOfFiles) {
             Double networkSumError = 0.0;
             Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
-            @SuppressWarnings("unchecked") //Necesario
-            NeuralNetwork<? extends LearningRule> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
+            NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
             //Para sacar el test de cada uno
             //networkTest(f.toString(), problem, f.getName().substring(0, f.getName().length()-5) + ".csv");
             for (DataSetRow dataRow : allDataset.getRows()) {
@@ -238,8 +231,7 @@ public class NeurophSolution {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
             pw.println("TABLA FINAL; OBJETIVO; RESULTADO; ERROR");
-            @SuppressWarnings("unchecked") //Necesario
-            NeuralNetwork<? extends LearningRule> neuralNetwork = NeuralNetwork.createFromFile(fileRoute);
+            NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(fileRoute);
             for (DataSetRow dataRow : allDataset.getRows()) {
                 neuralNetwork.setInput(dataRow.getInput());
                 neuralNetwork.calculate();

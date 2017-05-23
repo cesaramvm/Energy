@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import Metaheuristic.MetaSolver;
 import Models.MetaResults;
 import Util.Optimizers.LSBIEvaluationOptimizer;
@@ -26,6 +25,9 @@ import Util.Optimizers.LSFIEvaluationOptimizer;
 import Util.Optimizers.RandomEvaluationOptimizer;
 import Util.Writers.CSVTableWriter;
 
+/**
+ * @author César Valdés
+ */
 public class MetaGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton, advancedButton;

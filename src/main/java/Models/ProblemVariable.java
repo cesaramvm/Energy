@@ -1,25 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Models;
 
 import java.util.Random;
 
 /**
- *
- * @author Cesar
+ * @author César Valdés
  */
 public class ProblemVariable implements Cloneable {
-
-    // <editor-fold desc="Class Variables">
 //    boolean selected; 
     private double alfa;
     private double beta;
     // </editor-fold>
 
-    // <editor-fold desc="Constructor">
     public ProblemVariable(Random r) {
 //        selected=true;
         alfa = -1 + (r.nextDouble() * 2);
@@ -31,9 +22,6 @@ public class ProblemVariable implements Cloneable {
         alfa = number;
         beta = number;
     }
-    // </editor-fold>
-
-    // <editor-fold desc="Getters & Setters">
 //    public boolean isSelected() {
 //        return selected;
 //    }
@@ -56,17 +44,11 @@ public class ProblemVariable implements Cloneable {
     public void setBeta(double beta) {
         this.beta = beta;
     }
-    // </editor-fold>
-
-    // <editor-fold desc="Custom Functions">
-    // <editor-fold desc="Private Functions">
 //    private boolean randomBoolean(){
 //        Random random = new Random();
 //        return random.nextBoolean();
 //    }
-    // </editor-fold>
-// </editor-fold>
-    // <editor-fold desc="Overrided">
+    
     @Override
     public String toString() {
         return "SolutionVariable {" + "alfa=" + alfa + ", beta=" + beta + "}\n";

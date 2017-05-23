@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package NeuralNetwork;
 
-import Util.Normalizers.Normalizer;
 import ChartPackage.LineChartSample;
 import ChartPackage.ChartData;
 import java.io.BufferedWriter;
@@ -32,10 +26,8 @@ import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
 
 /**
- *
- * @author portatil
+ * @author César Valdés
  */
-@SuppressWarnings("unused")
 public class NeurophSearch {
 
     private final static int INPUT = 14;
@@ -49,7 +41,6 @@ public class NeurophSearch {
 
     private final DataSet trainingDataSet;
     private final DataSet testingDataSet;
-    private final Normalizer normalizer;
     private final Class<? extends Object> propagationClass;
 
     private final int MAXITERATIONS;
@@ -61,20 +52,18 @@ public class NeurophSearch {
     private ChartData chartTestData;
     private ChartData chartTrainingData;
 
-    public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile, Normalizer norm) {
+    public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean trainGraphShow, boolean graphShow, String trainingFile, String testingFile) {
         MAXITERATIONS = iterations;
         showTrainGraph = trainGraphShow;
         showGraph = graphShow;
         trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
         testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
-        normalizer = norm;
         propagationClass = newPropagationClass;
     }
 
     public NeurophSearch() {
         trainingDataSet = null;
         testingDataSet = null;
-        normalizer = null;
         MAXITERATIONS = 0;
         propagationClass = ResilientPropagation.class;
         showGraph = false;
@@ -92,11 +81,11 @@ public class NeurophSearch {
 
         if (showGraph) {
             String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+            new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+                new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 
@@ -112,11 +101,11 @@ public class NeurophSearch {
         }
         if (showGraph) {
             String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+            new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+                new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 
@@ -133,11 +122,11 @@ public class NeurophSearch {
 
         if (showGraph) {
             String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-            LineChartSample lineTestGraph = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+            new LineChartSample(new ArrayList<>(graphTestData), graphName);
 
             if (showTrainGraph) {
                 graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-                LineChartSample lineTrainGraph = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+                new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
             }
         }
 
