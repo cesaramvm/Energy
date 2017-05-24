@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 /**
  * @author César Valdés
  */
-public class MetaSearch implements Callable<List<Solution>>, GlobalConstants {
+public class MetaSearch extends GlobalConstants implements Callable<List<Solution>> {
 
     private final int leaves;
     private final Optimizer optimizer;

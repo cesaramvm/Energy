@@ -22,7 +22,7 @@ import org.neuroph.util.TransferFunctionType;
 /**
  * @author César Valdés
  */
-public class NeurophSolver implements GlobalConstants {
+public class NeurophSolver extends GlobalConstants {
 
 	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(

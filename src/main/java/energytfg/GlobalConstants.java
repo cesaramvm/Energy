@@ -2,11 +2,11 @@ package energytfg;
 
 import Models.Problem;
 
-public interface GlobalConstants {
+public abstract class GlobalConstants {
 
-	String FULLPATH = "ProjectData/N-fulldataset.csv";
-	String TRAINPATH = "ProjectData/N-train.csv";
-	String TESTPATH = "ProjectData/N-test.csv";
-	Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
+	protected String FULLPATH = "ProjectData/N-fulldataset.csv";
+	protected String TRAINPATH = "ProjectData/N-train.csv";
+	protected String TESTPATH = "ProjectData/N-test.csv";
+	protected Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
 	
 }

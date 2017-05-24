@@ -21,7 +21,7 @@ import energytfg.GlobalConstants;
 /**
  * @author César Valdés
  */
-public class MetaSolver implements GlobalConstants {
+public class MetaSolver extends GlobalConstants {
 
     private final ArrayList<Future<List<Solution>>> futures = new ArrayList<>();
     private final ArrayList<Solution> soluciones = new ArrayList<>();

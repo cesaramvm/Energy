@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * @author César Valdés
  */
-public abstract class EvaluationOptimizer implements Optimizer, GlobalConstants {
+public abstract class EvaluationOptimizer extends GlobalConstants implements Optimizer {
 
     protected final ArrayList<Double> valueList;
     protected final ArrayList<Double> epsilonList;
