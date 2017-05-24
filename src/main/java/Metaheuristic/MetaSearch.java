@@ -4,6 +4,8 @@ import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import Util.Optimizers.Optimizer;
+import energytfg.GlobalConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +15,8 @@ import java.util.concurrent.Callable;
 /**
  * @author César Valdés
  */
-public class MetaSearch implements Callable<List<Solution>> {
+public class MetaSearch implements Callable<List<Solution>>, GlobalConstants {
 
-    private final Problem problem;
     private final int leaves;
     private final Optimizer optimizer;
     private Long startTime;
@@ -23,9 +24,8 @@ public class MetaSearch implements Callable<List<Solution>> {
     private ArrayList<Solution> solutions = new ArrayList<>();
     private final Random random;
 
-    public MetaSearch(Problem pro, int leaves, Optimizer eo, Random r) {
+    public MetaSearch(int leaves, Optimizer eo, Random r) {
         this.optimizer = eo;
-        this.problem = pro;
         this.leaves = leaves;
         this.random = r;
     }

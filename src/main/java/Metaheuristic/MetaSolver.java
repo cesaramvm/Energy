@@ -53,7 +53,7 @@ public class MetaSolver implements GlobalConstants {
                 Random r = new Random(seed);
                 Constructor<?> cons = evaluationClass.getConstructor(int.class, Problem.class, Random.class);
                 Optimizer eo = (Optimizer) cons.newInstance(parts, problem, r);
-                futures.add(es.submit(new MetaSearch(problem, branchLeaves, eo, r)));
+                futures.add(es.submit(new MetaSearch(branchLeaves, eo, r)));
             }
             for (Future<List<Solution>> f : futures) {
                 List<Solution> s = f.get();

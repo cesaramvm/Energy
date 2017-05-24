@@ -1,7 +1,6 @@
 package GUI;
 
 import javax.swing.JComponent;
-import Models.Problem;
 
 /**
  * @author César Valdés

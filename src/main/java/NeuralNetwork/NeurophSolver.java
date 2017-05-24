@@ -1,6 +1,5 @@
 package NeuralNetwork;
 
-import Models.Problem;
 import Util.Normalizers.Normalizer;
 import energytfg.GlobalConstants;
 import java.io.BufferedWriter;
