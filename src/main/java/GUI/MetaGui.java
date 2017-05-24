@@ -175,12 +175,16 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer) {
 
-		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer);
+		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer,"testingLSFI.csv");
 		metaSol.search();
 		MetaResults results = metaSol.getResults();
-		CSVTableWriter tw = MetaSolver.initTableWriter("testingLSFI.csv");
-		metaSol.writeRow(tw);
-		tw.close();
+		try {
+			metaSol.writeRow();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		metaSol.closeTableWriter();
 
 		// System.out.println(results.getBestSolution());
 		// System.out.println("Secuencial: " +
@@ -222,7 +226,13 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							// System.out.println("Avg Time :" +
 							// results.getAvgTime());
 							// System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-							metaSol.writeRow(tw);
+							metaSol.setTableWriter(tw);
+							try {
+								metaSol.writeRow();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 
 							// Runtime runtime = Runtime.getRuntime();
 							// Process proc = runtime.exec("shutdown -s -t 0");

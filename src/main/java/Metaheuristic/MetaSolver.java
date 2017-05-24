@@ -31,13 +31,24 @@ public class MetaSolver {
     private Long totalConcurrentTime;
     private MetaResults results;
     private ArrayList<MetaSearch> metaSearches = new ArrayList<>();
+    private CSVTableWriter tableWriter;
 
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
     	
         this.numBranches = numBranches;
         this.branchLeaves = numLeaves;
         this.parts = parts;
+        this.evaluationClass = evaluationClass;        
+    }
+
+    public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass, String writerPath) {
+    	
+        this.numBranches = numBranches;
+        this.branchLeaves = numLeaves;
+        this.parts = parts;
         this.evaluationClass = evaluationClass;
+        CSVTableWriter writer = initTableWriter(writerPath);
+        this.setTableWriter(writer);
     }
 
     public void search() {
@@ -100,7 +111,20 @@ public class MetaSolver {
 //        return Collections.min(soluciones);
 //    }
 
-    public void writeRow(CSVTableWriter tw) {
+    public void setTableWriter(CSVTableWriter tableWriter) {
+		this.tableWriter = tableWriter;
+	}
+
+	public void closeTableWriter() {
+		tableWriter.close();
+		
+	}
+    
+
+    public void writeRow() throws Exception {
+    	if(tableWriter==null){
+    		throw new Exception("tableWriter cannot be null");
+    	}
         if (results == null) {
             getResults();
         }
@@ -120,14 +144,14 @@ public class MetaSolver {
             nextRow.add(avgMae.toString().replace('.', ','));
             nextRow.add(String.valueOf(results.getAvgTime()));
 
-            tw.printRow(nextRow);
+            tableWriter.printRow(nextRow);
 
         } catch (Exception e) {
             System.err.println("EXCEPCION CAPTURADA");
         }
     }
 
-    public static CSVTableWriter initTableWriter(String path) {
+	public static CSVTableWriter initTableWriter(String path) {
         String realpath = "MetaSolutions/";
         realpath += path;
         ArrayList<String> tableHeaders = new ArrayList<>();
@@ -141,5 +165,6 @@ public class MetaSolver {
         
         return tw;
     }
+
 
 }
