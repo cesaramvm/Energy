@@ -1,4 +1,4 @@
-package Models;
+package Metaheuristic.Models;
 
 import java.util.Random;
 

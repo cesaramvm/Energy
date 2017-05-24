@@ -19,8 +19,8 @@ import java.awt.event.KeyEvent;
  */
 public class MainWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static MetaGui metaG = new MetaGui();
-	private static NeuralGui neuralG = new NeuralGui();
+	private static MetaGui metaGui = new MetaGui();
+	private static NeuralGui neuralGui = new NeuralGui();
 	
 	public MainWindow() {
         super(new GridLayout(1, 1));
@@ -29,13 +29,13 @@ public class MainWindow extends JPanel {
         ImageIcon icon = null;
         
         
-        tabbedPane.addTab(metaG.getTitle(), icon, metaG.getTabContent(),
-        		metaG.getMouseOver());
+        tabbedPane.addTab(metaGui.getTitle(), icon, metaGui.getTabContent(),
+        		metaGui.getMouseOver());
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
         
-        tabbedPane.addTab(neuralG.getTitle(), icon, neuralG.getTabContent(),
-        		neuralG.getMouseOver());
+        tabbedPane.addTab(neuralGui.getTitle(), icon, neuralGui.getTabContent(),
+        		neuralGui.getMouseOver());
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
         tabbedPane.addTab("Salir", icon, new JPanel(),

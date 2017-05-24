@@ -1,8 +1,9 @@
 package Util.Optimizers;
 
-import Models.ProblemVariable;
-import Models.MetaSolution;
 import java.util.HashMap;
+
+import Metaheuristic.Models.MetaSolution;
+import Metaheuristic.Models.ProblemVariable;
 
 /**
  * @author César Valdés

@@ -1,10 +1,5 @@
 package Util.Optimizers;
 
-import Models.ProblemVariable;
-import Models.MetaSolution;
-import Models.YearInfo;
-import Util.GlobalConstants;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +7,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Global.GlobalConstants;
+import Global.YearInfo;
+import Metaheuristic.Models.MetaSolution;
+import Metaheuristic.Models.ProblemVariable;
 
 /**
  * @author César Valdés

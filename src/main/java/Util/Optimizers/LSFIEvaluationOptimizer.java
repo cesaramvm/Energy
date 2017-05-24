@@ -1,10 +1,11 @@
 package Util.Optimizers;
 
-import Models.ProblemVariable;
-import Models.MetaSolution;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import Metaheuristic.Models.MetaSolution;
+import Metaheuristic.Models.ProblemVariable;
 
 /**
  * @author César Valdés

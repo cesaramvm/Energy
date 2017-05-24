@@ -1,4 +1,4 @@
-package ChartPackage;
+package NeuralNetwork.Charts;
 
 import java.util.ArrayList;
 

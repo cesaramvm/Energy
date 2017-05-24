@@ -1,6 +1,4 @@
-package Util;
-
-import Models.Problem;
+package Global;
 
 public abstract class GlobalConstants {
 

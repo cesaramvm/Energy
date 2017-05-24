@@ -1,8 +1,9 @@
 package Util;
 
-import Models.YearInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import Global.YearInfo;
 
 /**
  * @author César Valdés

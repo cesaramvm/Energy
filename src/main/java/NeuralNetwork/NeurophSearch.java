@@ -1,8 +1,7 @@
 package NeuralNetwork;
 
-import ChartPackage.LineChartSample;
 import Util.CSVTableWriter;
-import ChartPackage.ChartData;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
@@ -20,6 +19,9 @@ import org.neuroph.core.learning.LearningRule;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
+
+import NeuralNetwork.Charts.ChartData;
+import NeuralNetwork.Charts.LineChartSample;
 
 /**
  * @author César Valdés
@@ -49,6 +51,8 @@ public class NeurophSearch {
 	private ChartData chartTrainingData;
 	private CSVTableWriter tableWriter;
 	private ArrayList<Integer> columnIndexes = new ArrayList<>();
+	private LineChartSample chartTraining;
+	private LineChartSample chartTesting;
 
 	public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean trainGraphShow,
 			boolean graphShow, String trainingFile, String testingFile, String writerPath) {
@@ -73,12 +77,14 @@ public class NeurophSearch {
 		if (showGraph) {
 			String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 					+ Arrays.toString(layers);
-			new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting.init();
 
 			if (showTrainGraph) {
 				graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 						+ Arrays.toString(layers);
-				new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+				chartTraining = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+				chartTraining.init();
 			}
 		}
 

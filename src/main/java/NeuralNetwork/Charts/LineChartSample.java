@@ -1,4 +1,4 @@
-package ChartPackage;
+package NeuralNetwork.Charts;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -30,12 +30,17 @@ public class LineChartSample {
     private static JFrame frame;
 
     public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
-        try {
-            data = incomingData;
-            mseChartTitle = chartTitle;
+
+        data = incomingData;
+        mseChartTitle = chartTitle;
+    }
+    
+    public void init(){
+    	
+    	try {
 
             SwingUtilities.invokeLater(() -> {
-                initAndShowGUI();
+                showGUI();
             });
 
             Thread.sleep(2000);
@@ -47,7 +52,7 @@ public class LineChartSample {
 
     }
 
-    private void initAndShowGUI() {
+    private void showGUI() {
         // This method is invoked on the EDT thread
         frame = new JFrame(mseChartTitle);
         final JFXPanel fxPanel = new JFXPanel();

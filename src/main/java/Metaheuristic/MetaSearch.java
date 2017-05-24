@@ -1,8 +1,5 @@
 package Metaheuristic;
 
-import Models.ProblemVariable;
-import Models.MetaSolution;
-import Util.GlobalConstants;
 import Util.Optimizers.Optimizer;
 
 import java.util.ArrayList;
@@ -10,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import Global.GlobalConstants;
+import Metaheuristic.Models.MetaSolution;
+import Metaheuristic.Models.ProblemVariable;
 
 /**
  * @author César Valdés

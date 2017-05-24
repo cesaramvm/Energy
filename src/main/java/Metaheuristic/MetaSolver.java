@@ -12,8 +12,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Models.MetaResults;
-import Models.MetaSolution;
+
+import Metaheuristic.Models.MetaResults;
+import Metaheuristic.Models.MetaSolution;
 import Util.CSVTableWriter;
 import Util.Optimizers.Optimizer;
 

@@ -2,8 +2,8 @@
 <class-diagram version="1.2.0" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="Models.YearInfo" project="Energy" 
-    file="/Energy/src/main/java/Models/YearInfo.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="Global.YearInfo" project="Energy" 
+    file="/Energy/src/main/java/Global/YearInfo.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="278" y="726"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -11,7 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="Models.Problem" project="Energy" file="/Energy/src/main/java/Models/Problem.java" 
+  <class id="2" language="java" name="Global.Problem" project="Energy" file="/Energy/src/main/java/Global/Problem.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="484" y="382"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -20,8 +20,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="Util.GlobalConstants" project="Energy" 
-    file="/Energy/src/main/java/Util/GlobalConstants.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="Global.GlobalConstants" project="Energy" 
+    file="/Energy/src/main/java/Global/GlobalConstants.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="484" y="144"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -40,30 +40,38 @@
   </class>  
   <association id="5">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="6" name="normalizer">        
-        <position height="18" width="58" x="558" y="541"/>      
+      <attribute id="6" name="years">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="7" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="8">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="9" name="years"/>      
-      <multiplicity id="10" minimum="0" maximum="2147483647">        
+      <multiplicity id="7" minimum="0" maximum="2147483647">        
         <position height="16" width="21" x="389" y="542"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="11">    
+  <association id="8">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="problem"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+      <attribute id="9" name="problem">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="11">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="12" name="normalizer">        
+        <position height="18" width="58" x="558" y="541"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

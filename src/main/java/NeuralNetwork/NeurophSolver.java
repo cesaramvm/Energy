@@ -1,6 +1,5 @@
 package NeuralNetwork;
 
-import Util.GlobalConstants;
 import Util.Normalizer;
 
 import java.io.BufferedWriter;
@@ -19,6 +18,8 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
+
+import Global.GlobalConstants;
 
 /**
  * @author César Valdés

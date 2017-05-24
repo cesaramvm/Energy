@@ -1,4 +1,4 @@
-package Models;
+package Metaheuristic.Models;
 
 /**
  * @author César Valdés
