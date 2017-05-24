@@ -27,12 +27,13 @@ public class NeurophSolver extends GlobalConstants {
 	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
+	private NeurophSearch neurophSearch;
 
 	public void fullSearch() {
 		boolean showTrainGraph = false;
 		boolean showGraphs = true;
 		// BackPropagation or ResilientPropagation
-		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
+		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
 				TRAINPATH, TESTPATH);
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
@@ -75,7 +76,7 @@ public class NeurophSolver extends GlobalConstants {
 		boolean showTrainGraph = false;
 		boolean showGraphs = false;
 		// BackPropagation or ResilientPropagation
-		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
+		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
 				TRAINPATH, TESTPATH);
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
