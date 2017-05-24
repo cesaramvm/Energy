@@ -147,12 +147,14 @@
     </display>  
   </class>  
   <association id="17">    
+    <bendpoint x="3580" y="529"/>    
+    <bendpoint x="3580" y="458"/>    
     <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="18" name="graphTrainingData">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="96" x="3585" y="476"/>      
       </attribute>      
       <multiplicity id="19" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="16" width="21" x="3554" y="478"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
@@ -183,12 +185,13 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="26">    
+    <bendpoint x="3482" y="512"/>    
     <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="27" name="chartTestData">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="75" x="3411" y="500"/>      
       </attribute>      
       <multiplicity id="28" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="16" width="23" x="3486" y="501"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
@@ -207,12 +210,13 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="32">    
+    <bendpoint x="3353" y="512"/>    
     <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="33" name="chartTrainingData">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="93" x="3260" y="505"/>      
       </attribute>      
       <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="16" width="23" x="3356" y="506"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
@@ -310,12 +314,14 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="61">    
+    <bendpoint x="3245" y="520"/>    
+    <bendpoint x="3245" y="461"/>    
     <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="62" name="graphTestData">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="78" x="3168" y="470"/>      
       </attribute>      
       <multiplicity id="63" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="16" width="21" x="3252" y="470"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    

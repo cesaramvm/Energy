@@ -33,14 +33,6 @@ public class MetaSolver {
     private ArrayList<MetaSearch> metaSearches = new ArrayList<>();
     private CSVTableWriter tableWriter;
 
-    public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
-    	
-        this.numBranches = numBranches;
-        this.branchLeaves = numLeaves;
-        this.parts = parts;
-        this.evaluationClass = evaluationClass;        
-    }
-
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass, String writerPath) {
     	
         this.numBranches = numBranches;
@@ -48,6 +40,15 @@ public class MetaSolver {
         this.parts = parts;
         this.evaluationClass = evaluationClass;
         CSVTableWriter writer = initTableWriter(writerPath);
+        this.setTableWriter(writer);
+    }
+
+    public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass, CSVTableWriter writer) {
+    	
+        this.numBranches = numBranches;
+        this.branchLeaves = numLeaves;
+        this.parts = parts;
+        this.evaluationClass = evaluationClass;
         this.setTableWriter(writer);
     }
 
@@ -101,6 +102,12 @@ public class MetaSolver {
             results = new MetaResults(bestSolution, totalSecuentialTime, totalConcurrentTime, avgTime, avgError);
         }
 
+        try {
+			this.writeRow();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return results;
     }
 //
@@ -121,13 +128,10 @@ public class MetaSolver {
 	}
     
 
-    public void writeRow() throws Exception {
+    private void writeRow() throws Exception {
     	if(tableWriter==null){
     		throw new Exception("tableWriter cannot be null");
     	}
-        if (results == null) {
-            getResults();
-        }
         try {
             ArrayList<String> nextRow = new ArrayList<>();
             String evalName = evaluationClass.getName();

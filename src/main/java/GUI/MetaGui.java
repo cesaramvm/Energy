@@ -178,12 +178,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer,"testingLSFI.csv");
 		metaSol.search();
 		MetaResults results = metaSol.getResults();
-		try {
-			metaSol.writeRow();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		metaSol.closeTableWriter();
 
 		// System.out.println(results.getBestSolution());
@@ -213,7 +207,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						}
 						if (!keepGoing) {
 
-							MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer);
+							MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer, tw);
 							metaSol.search();
 							MetaResults results = metaSol.getResults();
 							// System.out.println(results.getBestSolution());
@@ -226,13 +220,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							// System.out.println("Avg Time :" +
 							// results.getAvgTime());
 							// System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-							metaSol.setTableWriter(tw);
-							try {
-								metaSol.writeRow();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 
 							// Runtime runtime = Runtime.getRuntime();
 							// Process proc = runtime.exec("shutdown -s -t 0");
