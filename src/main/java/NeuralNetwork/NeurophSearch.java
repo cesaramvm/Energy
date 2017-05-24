@@ -1,12 +1,8 @@
 package NeuralNetwork;
 
 import ChartPackage.LineChartSample;
+import Util.CSVTableWriter;
 import ChartPackage.ChartData;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
@@ -51,25 +47,19 @@ public class NeurophSearch {
 	private final ArrayList<ChartData> graphTrainingData = new ArrayList<>();
 	private ChartData chartTestData;
 	private ChartData chartTrainingData;
+	private CSVTableWriter tableWriter;
+	private ArrayList<Integer> columnIndexes = new ArrayList<>();
 
 	public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean trainGraphShow,
-			boolean graphShow, String trainingFile, String testingFile) {
-		MAXITERATIONS = iterations;
-		showTrainGraph = trainGraphShow;
-		showGraph = graphShow;
-		trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
-		testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
-		propagationClass = newPropagationClass;
-	}
-
-	public NeurophSearch() {
-		trainingDataSet = null;
-		testingDataSet = null;
-		MAXITERATIONS = 0;
-		propagationClass = ResilientPropagation.class;
-		showGraph = false;
-		showTrainGraph = false;
-
+			boolean graphShow, String trainingFile, String testingFile, String writerPath) {
+		this.MAXITERATIONS = iterations;
+		this.showTrainGraph = trainGraphShow;
+		this.showGraph = graphShow;
+		this.trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
+		this.testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
+		this.propagationClass = newPropagationClass;
+		CSVTableWriter writer = initTableWriter(writerPath);
+		this.tableWriter = writer;
 	}
 
 	public void singlePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers) {
@@ -132,66 +122,6 @@ public class NeurophSearch {
 				new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
 			}
 		}
-
-	}
-
-	public void writeTable(int tableType, String path, boolean append) {
-		ArrayList<ChartData> graphToBePrinted;
-		String realpath = "NetworkSaves/";
-		realpath += path;
-		switch (tableType) {
-		case TRAINING_GRAPH:
-			graphToBePrinted = graphTrainingData;
-			break;
-		case TEST_GRAPH:
-			graphToBePrinted = graphTestData;
-			break;
-		default:
-			throw new Error("Unknown table type");
-		}
-		try {
-			boolean existance = false;
-			File f = new File(realpath);
-			if (f.exists() && !f.isDirectory()) {
-				existance = true;
-			}
-			FileWriter fw = new FileWriter(realpath, append);
-			BufferedWriter bw = new BufferedWriter(fw);
-			PrintWriter pw = new PrintWriter(bw);
-			write(pw, graphToBePrinted, existance);
-		} catch (IOException ex) {
-			Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	private void write(PrintWriter fullwriter, ArrayList<ChartData> graphToBePrinted, boolean existance) {
-
-		ArrayList<Integer> columns = new ArrayList<>();
-		columns.add(0);
-		int column = MAXITERATIONS / 10;
-		for (int i = 1; i <= 10; i++) {
-			int columnNumber = column * (i) - 1;
-			columns.add(columnNumber);
-		}
-		if (!existance) {
-			String firstRow = ";;";
-			for (Integer columnIndex : columns) {
-				firstRow = firstRow + columnIndex + ";";
-			}
-			fullwriter.println(firstRow);
-		}
-
-		for (int j = 0; j < graphToBePrinted.size(); j++) {
-			ChartData trainChart = graphToBePrinted.get(j);
-			String nextRow = trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate() + ";"
-					+ Arrays.toString(graphToBePrinted.get(0).getLayersConf()) + ";";
-			for (Integer columnIndex : columns) {
-				String error = ERROR_FORMAT.format(trainChart.get(columnIndex));
-				nextRow += error + ";";
-			}
-			fullwriter.println(nextRow);
-		}
-		fullwriter.close();
 
 	}
 
@@ -288,5 +218,72 @@ public class NeurophSearch {
 		graphTestData.clear();
 		graphTrainingData.clear();
 	}
+
+	public void writeRows(int tableType) throws Exception {
+		ArrayList<ChartData> graphToBePrinted;
+		switch (tableType) {
+		case TRAINING_GRAPH:
+			graphToBePrinted = graphTrainingData;
+			break;
+		case TEST_GRAPH:
+			graphToBePrinted = graphTestData;
+			break;
+		default:
+			throw new Error("Unknown table type");
+		}
+
+		for (int j = 0; j < graphToBePrinted.size(); j++) {
+			ChartData trainChart = graphToBePrinted.get(j);
+			ArrayList<String> nextRow = new ArrayList<>();
+			nextRow.add(trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate());
+			nextRow.add(Arrays.toString(graphToBePrinted.get(0).getLayersConf()));
+			
+			for (Integer columnIndex : columnIndexes) {
+				String error = ERROR_FORMAT.format(trainChart.get(columnIndex));
+				nextRow.add(error);
+			}
+			this.writeRow(nextRow);
+		}
+	}
+
+	public void closeTableWriter() {
+		tableWriter.close();
+
+	}
+
+	private void writeRow(ArrayList<String> nextRow) throws Exception {
+		if (tableWriter == null) {
+			throw new Exception("tableWriter cannot be null");
+		}
+		try {
+			tableWriter.printRow(nextRow);
+		} catch (Exception e) {
+			System.err.println("EXCEPCION CAPTURADA");
+		}
+	}
+
+	public CSVTableWriter initTableWriter(String path) {
+		String realpath = "NeurophSolutions/";
+		realpath += path;
+		ArrayList<String> tableHeaders = new ArrayList<>();
+		tableHeaders.addAll(Arrays.asList("Conf", "Neurons"));
+		tableHeaders.add(Integer.toString(0));
+		columnIndexes.add(0);
+		int column = MAXITERATIONS / 10;
+		for (int i = 1; i <= 10; i++) {
+			int columnNumber = column * (i) - 1;
+			tableHeaders.add(Integer.toString(columnNumber));
+			columnIndexes.add(columnNumber);
+		}
+		CSVTableWriter tw = null;
+		try {
+			tw = new CSVTableWriter(realpath, tableHeaders);
+		} catch (Exception e) {
+
+		}
+
+		return tw;
+	}
+
 
 }

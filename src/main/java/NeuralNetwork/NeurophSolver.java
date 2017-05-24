@@ -35,11 +35,10 @@ public class NeurophSolver extends GlobalConstants {
 		boolean showGraphs = true;
 		// BackPropagation or ResilientPropagation
 		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
-				TRAINPATH, TESTPATH);
+				TRAINPATH, TESTPATH, "AllTest.csv");
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
 		ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
-		boolean appendTable = true;
 
 		Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 		Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 };
@@ -62,7 +61,12 @@ public class NeurophSolver extends GlobalConstants {
 				if (combination[1] == 14) {
 					for (TransferFunctionType type : TYPES) {
 						neurophSearch.onePlotLRs(lrates, type, combination);
-						neurophSearch.writeTable(NeurophSearch.TEST_GRAPH, "AllTest.csv", appendTable);
+						try {
+							neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					System.out.println("Finished " + Arrays.toString(combination));
 
@@ -78,13 +82,17 @@ public class NeurophSolver extends GlobalConstants {
 		boolean showGraphs = false;
 		// BackPropagation or ResilientPropagation
 		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
-				TRAINPATH, TESTPATH);
+				TRAINPATH, TESTPATH, "FullTA77.csv");
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
-		boolean appendTable = true;
 		int[] combination = { 14, 7, 7, 1 };
 		neurophSearch.singlePlot(20, 0.3, TransferFunctionType.TANH, combination);
-		neurophSearch.writeTable(NeurophSearch.TEST_GRAPH, "FullTA77.csv", appendTable);
+		try {
+			neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
