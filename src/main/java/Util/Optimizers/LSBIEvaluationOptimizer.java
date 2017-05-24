@@ -1,6 +1,5 @@
 package Util.Optimizers;
 
-import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ import java.util.Random;
  */
 public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
 
-    public LSBIEvaluationOptimizer(int parts, Problem problem, Random r) {
-        super(parts, problem, r);
+    public LSBIEvaluationOptimizer(int parts, Random r) {
+        super(parts, r);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package Util.Optimizers;
 
-import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import Models.YearInfo;
+import energytfg.GlobalConstants;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,18 +16,16 @@ import java.util.logging.Logger;
 /**
  * @author César Valdés
  */
-public abstract class EvaluationOptimizer implements Optimizer {
+public abstract class EvaluationOptimizer implements Optimizer, GlobalConstants {
 
-    protected Problem problem;
     protected final ArrayList<Double> valueList;
     protected final ArrayList<Double> epsilonList;
     protected final int parts;
     protected final Random random;
 
-    protected EvaluationOptimizer(int newParts, Problem problem, Random r) {
+    protected EvaluationOptimizer(int newParts, Random r) {
 
         this.parts = newParts;
-        this.problem = problem;
         this.random = r;
         valueList = this.newRandomList(1.0, newParts);
         epsilonList = this.newRandomList(5.0, newParts);

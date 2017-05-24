@@ -13,7 +13,6 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Models.MetaResults;
-import Models.Problem;
 import Models.Solution;
 import Util.Optimizers.Optimizer;
 import Util.Writers.CSVTableWriter;
@@ -51,8 +50,8 @@ public class MetaSolver implements GlobalConstants {
             for (int i = 0; i < numBranches; i++) {
                 int seed = i + 5;
                 Random r = new Random(seed);
-                Constructor<?> cons = evaluationClass.getConstructor(int.class, Problem.class, Random.class);
-                Optimizer eo = (Optimizer) cons.newInstance(parts, problem, r);
+                Constructor<?> cons = evaluationClass.getConstructor(int.class, Random.class);
+                Optimizer eo = (Optimizer) cons.newInstance(parts, r);
                 futures.add(es.submit(new MetaSearch(branchLeaves, eo, r)));
             }
             for (Future<List<Solution>> f : futures) {

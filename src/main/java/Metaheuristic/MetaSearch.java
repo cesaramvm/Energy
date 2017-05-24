@@ -1,6 +1,5 @@
 package Metaheuristic;
 
-import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import Util.Optimizers.Optimizer;

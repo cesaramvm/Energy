@@ -1,6 +1,5 @@
 package Util.Optimizers;
 
-import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
     private ArrayList<Double> valueListCopy;
     private ArrayList<Double> epsilonListCopy;
 
-    public LSFIEvaluationOptimizer(int parts, Problem problem, Random r) {
-        super(parts, problem, r);
+    public LSFIEvaluationOptimizer(int parts, Random r) {
+        super(parts, r);
     }
 
     @Override

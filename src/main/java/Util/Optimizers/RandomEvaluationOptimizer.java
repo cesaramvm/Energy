@@ -1,6 +1,5 @@
 package Util.Optimizers;
 
-import Models.Problem;
 import Models.ProblemVariable;
 import Models.Solution;
 import java.util.HashMap;
@@ -11,8 +10,8 @@ import java.util.Random;
  */
 public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 
-    public RandomEvaluationOptimizer(int parts, Problem problem, Random r) {
-        super(parts, problem, r);
+    public RandomEvaluationOptimizer(int parts, Random r) {
+        super(parts, r);
     }
 
     @Override
