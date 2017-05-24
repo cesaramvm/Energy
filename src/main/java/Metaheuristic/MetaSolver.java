@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import Models.MetaResults;
 import Models.MetaSolution;
 import Util.CSVTableWriter;
-import Util.GlobalConstants;
 import Util.Optimizers.Optimizer;
 
 /**
