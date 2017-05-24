@@ -51,8 +51,7 @@ public class YearInfo {
     public void setObj(double obj) {
         this.obj = obj;
     }
-
-    //----------METODO INSERTAR DATOS-------------
+    
     public void insertData(Double newData) {
         data.add(newData);
     }

@@ -65,7 +65,6 @@ public class NeurophSolver extends GlobalConstants {
 						try {
 							neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -91,7 +90,6 @@ public class NeurophSolver extends GlobalConstants {
 		try {
 			neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
