@@ -30,6 +30,7 @@ public class MetaSolver {
     private Class<? extends Object> evaluationClass;
     private Long totalConcurrentTime;
     private MetaResults results;
+    private ArrayList<MetaSearch> metaSearches = new ArrayList<>();
 
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass) {
     	
@@ -51,7 +52,8 @@ public class MetaSolver {
                 Random r = new Random(seed);
                 Constructor<?> cons = evaluationClass.getConstructor(int.class, Random.class);
                 Optimizer eo = (Optimizer) cons.newInstance(parts, r);
-                futures.add(es.submit(new MetaSearch(branchLeaves, eo, r)));
+                metaSearches.add(new MetaSearch(branchLeaves, eo, r));
+                futures.add(es.submit(metaSearches.get(i)));
             }
             for (Future<List<MetaSolution>> f : futures) {
                 List<MetaSolution> s = f.get();
