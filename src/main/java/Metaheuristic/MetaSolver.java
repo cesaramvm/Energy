@@ -13,18 +13,18 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Models.MetaResults;
-import Models.Solution;
+import Models.MetaSolution;
+import Util.CSVTableWriter;
+import Util.GlobalConstants;
 import Util.Optimizers.Optimizer;
-import Util.Writers.CSVTableWriter;
-import energytfg.GlobalConstants;
 
 /**
  * @author César Valdés
  */
-public class MetaSolver extends GlobalConstants {
+public class MetaSolver {
 
-    private final ArrayList<Future<List<Solution>>> futures = new ArrayList<>();
-    private final ArrayList<Solution> soluciones = new ArrayList<>();
+    private final ArrayList<Future<List<MetaSolution>>> futures = new ArrayList<>();
+    private final ArrayList<MetaSolution> soluciones = new ArrayList<>();
     private final int numBranches;
     private final int branchLeaves;
     private final int parts;
@@ -54,8 +54,8 @@ public class MetaSolver extends GlobalConstants {
                 Optimizer eo = (Optimizer) cons.newInstance(parts, r);
                 futures.add(es.submit(new MetaSearch(branchLeaves, eo, r)));
             }
-            for (Future<List<Solution>> f : futures) {
-                List<Solution> s = f.get();
+            for (Future<List<MetaSolution>> f : futures) {
+                List<MetaSolution> s = f.get();
                 soluciones.addAll(s);
             }
             totalConcurrentTime = System.currentTimeMillis() - totalConcurrentTime;
@@ -73,11 +73,11 @@ public class MetaSolver extends GlobalConstants {
             throw new Error("Search still not done");
         }
         if (results == null) {
-            Solution bestSolution = soluciones.get(0);
+            MetaSolution bestSolution = soluciones.get(0);
             Long totalSecuentialTime = 0L;
             Double avgErrorAux = 0.0;
 
-            for (Solution sol : soluciones) {
+            for (MetaSolution sol : soluciones) {
                 if (sol.getEvaluation() < bestSolution.getEvaluation()) {
                     bestSolution = sol;
                 }

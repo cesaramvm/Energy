@@ -1,7 +1,7 @@
 package Util.Optimizers;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
     }
 
     @Override
-    public void optimize(Solution solution) {
+    public void optimize(MetaSolution solution) {
         Double newEvaluation;
         int i = 0;
         while (!paramsIndex.isEmpty()) {

@@ -1,7 +1,7 @@
 package Util.Optimizers;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -15,7 +15,7 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
     }
 
     @Override
-    public void optimize(Solution solution) {
+    public void optimize(MetaSolution solution) {
         int i = 0;
         while (i<35000) {
         	i++;

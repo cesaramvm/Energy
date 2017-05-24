@@ -5,13 +5,13 @@ package Models;
  */
 public class MetaResults {
 
-    private final Solution bestSolution;
+    private final MetaSolution bestSolution;
     private final Long totalSecuentialTime;
     private final Long totalConcurrentTime;
     private final Double avgError;
     private final Long avgTime;
 
-    public MetaResults(Solution bestSolution, Long totalSecuentialTime, Long totalConcurrentTime, Long avgTime, Double avgError) {
+    public MetaResults(MetaSolution bestSolution, Long totalSecuentialTime, Long totalConcurrentTime, Long avgTime, Double avgError) {
         this.bestSolution = bestSolution;
         this.totalSecuentialTime = totalSecuentialTime;
         this.totalConcurrentTime = totalConcurrentTime;
@@ -19,7 +19,7 @@ public class MetaResults {
         this.avgTime = avgTime;
     }
 
-    public Solution getBestSolution() {
+    public MetaSolution getBestSolution() {
         return bestSolution;
     }
 

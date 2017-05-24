@@ -1,7 +1,7 @@
 package Util.Optimizers;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
 import java.util.HashMap;
 
 /**
@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public interface Optimizer {
 
-    abstract public void optimize(Solution solution);
+    abstract public void optimize(MetaSolution solution);
 
     abstract public double evaluate(HashMap<Integer, ProblemVariable> variables, Double epsi);
 }

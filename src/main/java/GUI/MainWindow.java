@@ -1,10 +1,16 @@
 package GUI;
 
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
@@ -13,19 +19,21 @@ import java.awt.event.KeyEvent;
  */
 public class MainWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
-
+	private static MetaGui metaG = new MetaGui();
+	private static NeuralGui neuralG = new NeuralGui();
+	
 	public MainWindow() {
         super(new GridLayout(1, 1));
         
         JTabbedPane tabbedPane = new JTabbedPane();
         ImageIcon icon = null;
         
-        MetaGui metaG = new MetaGui();
+        
         tabbedPane.addTab(metaG.getTitle(), icon, metaG.getTabContent(),
         		metaG.getMouseOver());
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        NeuralGui neuralG = new NeuralGui();
+        
         tabbedPane.addTab(neuralG.getTitle(), icon, neuralG.getTabContent(),
         		neuralG.getMouseOver());
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -50,5 +58,31 @@ public class MainWindow extends JPanel {
 			}
         });
     }
+
+	/*
+	 * raul cabido
+	 * juanjo
+	 * montemayor
+	 * jose velez
+	 * buenaposada
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				// Turn off metal's use of bold fonts
+				UIManager.put("swing.boldMetal", Boolean.FALSE);
+				createAndShowGUI();
+			}
+		});
+	}
+	
+	private static void createAndShowGUI() {
+		JFrame frame = new JFrame("Energy Problem TFG");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(400, 300));
+		frame.add(new MainWindow(), BorderLayout.CENTER);
+		frame.pack();
+		frame.setVisible(true);
+	}
     
 }

@@ -1,9 +1,9 @@
 package Util.Optimizers;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
 import Models.YearInfo;
-import energytfg.GlobalConstants;
+import Util.GlobalConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +87,6 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
     }
 
     @Override
-    abstract public void optimize(Solution solution);
+    abstract public void optimize(MetaSolution solution);
 
 }

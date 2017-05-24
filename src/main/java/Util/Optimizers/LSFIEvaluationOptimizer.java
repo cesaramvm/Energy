@@ -1,7 +1,7 @@
 package Util.Optimizers;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -19,7 +19,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
     }
 
     @Override
-    public void optimize(Solution solution) {
+    public void optimize(MetaSolution solution) {
         double newEvaluation = solution.getEvaluation();
         int i= 0;
         while (!paramsIndex.isEmpty()) {

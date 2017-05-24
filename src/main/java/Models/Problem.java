@@ -1,6 +1,5 @@
 package Models;
 
-import Util.Normalizers.Normalizer;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Util.Normalizer;
 
 /**
  * @author César Valdés

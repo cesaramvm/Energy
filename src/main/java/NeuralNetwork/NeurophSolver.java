@@ -1,7 +1,8 @@
 package NeuralNetwork;
 
-import Util.Normalizers.Normalizer;
-import energytfg.GlobalConstants;
+import Util.GlobalConstants;
+import Util.Normalizer;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

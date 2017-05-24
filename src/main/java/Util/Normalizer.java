@@ -1,4 +1,4 @@
-package Util.Normalizers;
+package Util;
 
 import Models.YearInfo;
 import java.util.ArrayList;

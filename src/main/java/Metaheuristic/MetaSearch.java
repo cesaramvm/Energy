@@ -1,9 +1,9 @@
 package Metaheuristic;
 
 import Models.ProblemVariable;
-import Models.Solution;
+import Models.MetaSolution;
+import Util.GlobalConstants;
 import Util.Optimizers.Optimizer;
-import energytfg.GlobalConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +14,13 @@ import java.util.concurrent.Callable;
 /**
  * @author César Valdés
  */
-public class MetaSearch extends GlobalConstants implements Callable<List<Solution>> {
+public class MetaSearch extends GlobalConstants implements Callable<List<MetaSolution>> {
 
     private final int leaves;
     private final Optimizer optimizer;
     private Long startTime;
 
-    private ArrayList<Solution> solutions = new ArrayList<>();
+    private ArrayList<MetaSolution> solutions = new ArrayList<>();
     private final Random random;
 
     public MetaSearch(int leaves, Optimizer eo, Random r) {
@@ -30,7 +30,7 @@ public class MetaSearch extends GlobalConstants implements Callable<List<Solutio
     }
 
     @Override
-    public List<Solution> call() throws Exception {
+    public List<MetaSolution> call() throws Exception {
         //System.err.println("Thread # " + Thread.currentThread().getId() + " is doing this task");
         for (int i = 0; i < leaves; i++) {
             HashMap<Integer, ProblemVariable> newSolVariables = new HashMap<>();
@@ -40,15 +40,15 @@ public class MetaSearch extends GlobalConstants implements Callable<List<Solutio
             Double newEpsilon = -5 + (random.nextDouble() * 10);
 
             Double evaluation = optimizer.evaluate(newSolVariables, newEpsilon);
-            Solution solution = new Solution(newEpsilon, newSolVariables, evaluation);
+            MetaSolution solution = new MetaSolution(newEpsilon, newSolVariables, evaluation);
             solutions.add(solution);
         }
 
         return this.solve();
     }
 
-    public List<Solution> solve() {
-        for (Solution sol : solutions) {
+    public List<MetaSolution> solve() {
+        for (MetaSolution sol : solutions) {
             this.startTime = System.currentTimeMillis();
             optimizer.optimize(sol);
             sol.setExecutionTime(System.currentTimeMillis() - startTime);
