@@ -31,7 +31,8 @@ import Util.Writers.CSVTableWriter;
 public class MetaGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton, advancedButton;
-
+	private MetaSolver metaSol;
+	
 	protected MetaGui() {
 		super("Metaheuristica", "Modo Metaheurísticas");
 
@@ -174,7 +175,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer) {
 
-		MetaSolver metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer);
+		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer);
 		metaSol.search();
 		MetaResults results = metaSol.getResults();
 		CSVTableWriter tw = MetaSolver.initTableWriter("testingLSFI.csv");
