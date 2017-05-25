@@ -78,13 +78,13 @@ public class NeurophSearch {
 			String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 					+ Arrays.toString(layers);
 			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
-			chartTesting.init();
+			chartTesting.start();
 
 			if (showTrainGraph) {
 				graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 						+ Arrays.toString(layers);
 				chartTraining = new LineChartSample(new ArrayList<>(graphTrainData), graphName);
-				chartTraining.init();
+				chartTraining.start();
 			}
 		}
 

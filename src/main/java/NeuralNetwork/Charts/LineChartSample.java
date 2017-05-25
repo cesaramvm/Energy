@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
 /**
  * @author César Valdés
  */
-public class LineChartSample {
+public class LineChartSample extends Thread {
 
     private static ArrayList<ChartData> data;
     private static String mseChartTitle;
@@ -36,15 +36,16 @@ public class LineChartSample {
         mseChartTitle = chartTitle;
     }
     
-    public void init(){
+    public void run(){
     	
     	try {
 
             SwingUtilities.invokeLater(() -> {
                 showGUI();
+
             });
 
-            Thread.sleep(2000);
+            Thread.sleep(1500);
             makeScreenshot(frame);
             frame.dispose();
         } catch (InterruptedException ex) {
@@ -133,6 +134,10 @@ public class LineChartSample {
 
     public static final void makeScreenshot(JFrame argFrame) {
         Rectangle rec = argFrame.getBounds();
+       /* while(argFrame.getState()==0){
+
+            System.out.println(argFrame.getState());
+        }*/
         BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
         argFrame.paint(bufferedImage.getGraphics());
 
