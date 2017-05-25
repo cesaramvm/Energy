@@ -148,7 +148,7 @@
   </class>  
   <class id="17" language="java" name="GUI.NeuralGui" project="Energy" file="/Energy/src/main/java/GUI/NeuralGui.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2247" y="-372"/>    
+    <position height="-1" width="-1" x="2229" y="-370"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -157,7 +157,7 @@
   </class>  
   <class id="18" language="java" name="NeuralNetwork.NeurophSolver" project="Energy" 
     file="/Energy/src/main/java/NeuralNetwork/NeurophSolver.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2247" y="440"/>    
+    <position height="-1" width="-1" x="2229" y="440"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -166,7 +166,7 @@
   </class>  
   <class id="19" language="java" name="NeuralNetwork.NeurophSearch" project="Energy" 
     file="/Energy/src/main/java/NeuralNetwork/NeurophSearch.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2699" y="440"/>    
+    <position height="-1" width="-1" x="2761" y="443"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -184,7 +184,7 @@
   </class>  
   <class id="21" language="java" name="Util.CSVTableWriter" project="Energy" 
     file="/Energy/src/main/java/Util/CSVTableWriter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="268" x="1531" y="1753"/>    
+    <position height="171" width="268" x="1531" y="1637"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -211,355 +211,311 @@
   </class>  
   <class id="24" language="java" name="NeuralNetwork.Charts.ChartData" project="Energy" 
     file="/Energy/src/main/java/NeuralNetwork/Charts/ChartData.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2699" y="1125"/>    
+    <position height="-1" width="-1" x="2761" y="1125"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="25">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="26" name="results">        
-        <position height="0" width="0" x="-1276" y="293"/>      
-      </attribute>      
-      <multiplicity id="27" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-1276" y="293"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="28">    
-    <bendpoint x="2374" y="820"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="29" name="chartTesting">        
-        <position height="18" width="67" x="2283" y="797"/>      
-      </attribute>      
-      <multiplicity id="30" minimum="0" maximum="1">        
-        <position height="16" width="23" x="2249" y="1003"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="solutions">        
-        <position height="0" width="0" x="-780" y="-351"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-780" y="-351"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="12"/>  
   </generalization>  
-  <association id="35">    
+  <association id="26">    
+    <bendpoint x="336" y="440"/>    
+    <bendpoint x="336" y="1720"/>    
     <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="36" name="soluciones">        
-        <position height="0" width="0" x="-780" y="-351"/>      
+      <attribute id="27" name="tableWriter">        
+        <position height="0" width="0" x="-602" y="582"/>      
       </attribute>      
-      <multiplicity id="37" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-780" y="-351"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="38">    
-    <bendpoint x="2244" y="-607"/>    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="39" name="neuralGui">        
-        <position height="0" width="0" x="802" y="-177"/>      
-      </attribute>      
-      <multiplicity id="40" minimum="0" maximum="1">        
-        <position height="0" width="0" x="802" y="-177"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="41">    
-    <bendpoint x="268" y="440"/>    
-    <bendpoint x="268" y="1838"/>    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="42" name="tableWriter">        
-        <position height="0" width="0" x="-602" y="698"/>      
-      </attribute>      
-      <multiplicity id="43" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-602" y="698"/>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-602" y="582"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="44">    
-    <bendpoint x="2762" y="794"/>    
-    <bendpoint x="2762" y="905"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="45" name="graphTrainData">        
-        <position height="18" width="82" x="2761" y="843"/>      
-      </attribute>      
-      <multiplicity id="46" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="47">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="48">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="49" name="probVariables">        
-        <position height="0" width="0" x="-700" y="-302"/>      
-      </attribute>      
-      <multiplicity id="50" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-700" y="-302"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="51">    
-    <bendpoint x="2433" y="864"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="52" name="chartTraining">        
-        <position height="18" width="71" x="2424" y="875"/>      
-      </attribute>      
-      <multiplicity id="53" minimum="0" maximum="1">        
-        <position height="16" width="23" x="2327" y="1006"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="54">    
+  <association id="29">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="55" name="metaSol">        
+      <attribute id="30" name="metaSol">        
         <position height="0" width="0" x="-1432" y="351"/>      
       </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
+      <multiplicity id="31" minimum="0" maximum="1">        
         <position height="0" width="0" x="-1432" y="351"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="57">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="58" name="normalizer">        
-        <position height="18" width="58" x="1497" y="6"/>      
-      </attribute>      
-      <multiplicity id="59" minimum="0" maximum="1">        
-        <position height="0" width="0" x="826" y="-535"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="60">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="6"/>  
-  </generalization>  
-  <association id="61">    
-    <bendpoint x="3012" y="441"/>    
-    <bendpoint x="3012" y="1838"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="62" name="tableWriter">        
-        <position height="0" width="0" x="-602" y="698"/>      
-      </attribute>      
-      <multiplicity id="63" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-602" y="698"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="64">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="65" name="neurophSearch">        
-        <position height="18" width="83" x="2393" y="419"/>      
-      </attribute>      
-      <multiplicity id="66" minimum="0" maximum="1">        
-        <position height="0" width="0" x="1530" y="-78"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="67">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="68" name="data">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="69" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="70">    
-    <bendpoint x="846" y="-608"/>    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="71" name="metaGui">        
-        <position height="0" width="0" x="-1038" y="-251"/>      
-      </attribute>      
-      <multiplicity id="72" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-1038" y="-251"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="73">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="74" name="bestSolution">        
+  <association id="32">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="33" name="soluciones">        
         <position height="0" width="0" x="-780" y="-351"/>      
       </attribute>      
-      <multiplicity id="75" minimum="0" maximum="1">        
+      <multiplicity id="34" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="-780" y="-351"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="76">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="77" name="metaSearches">        
-        <position height="0" width="0" x="-338" y="5"/>      
+  <association id="35">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="36" name="chartTesting">        
+        <position height="18" width="67" x="2367" y="836"/>      
       </attribute>      
-      <multiplicity id="78" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-338" y="5"/>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="16" width="23" x="2249" y="1003"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="79">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="12"/>  
+  <association id="38">    
+    <bendpoint x="846" y="-608"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="39" name="metaGui">        
+        <position height="0" width="0" x="-1038" y="-251"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-1038" y="-251"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="6"/>  
   </generalization>  
-  <generalization id="80">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="12"/>  
+  <association id="42">    
+    <bendpoint x="2678" y="808"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="43" name="graphTestData">        
+        <position height="18" width="78" x="2598" y="803"/>      
+      </attribute>      
+      <multiplicity id="44" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="2681" y="804"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="45">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
-  <generalization id="81">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="3"/>  
+  <association id="46">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="47" name="normalizer">        
+        <position height="18" width="58" x="1497" y="6"/>      
+      </attribute>      
+      <multiplicity id="48" minimum="0" maximum="1">        
+        <position height="0" width="0" x="826" y="-535"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="50" name="bestSolution">        
+        <position height="0" width="0" x="-780" y="-351"/>      
+      </attribute>      
+      <multiplicity id="51" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-780" y="-351"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="82">    
+  <association id="53">    
+    <bendpoint x="2229" y="-608"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="54" name="neuralGui">        
+        <position height="0" width="0" x="802" y="-177"/>      
+      </attribute>      
+      <multiplicity id="55" minimum="0" maximum="1">        
+        <position height="0" width="0" x="802" y="-177"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="83" name="problem">        
+      <attribute id="57" name="problem">        
         <position height="0" width="0" x="947" y="-188"/>      
       </attribute>      
-      <multiplicity id="84" minimum="0" maximum="1">        
+      <multiplicity id="58" minimum="0" maximum="1">        
         <position height="0" width="0" x="947" y="-188"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="85">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="2"/>  
+  <association id="59">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="60" name="years">        
+        <position height="0" width="0" x="1206" y="-595"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="1206" y="-595"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="62">    
+    <bendpoint x="2832" y="808"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="63" name="chartTestData">        
+        <position height="18" width="75" x="2754" y="800"/>      
+      </attribute>      
+      <multiplicity id="64" minimum="0" maximum="1">        
+        <position height="16" width="23" x="2838" y="802"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="65">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="66" name="metaSearches">        
+        <position height="0" width="0" x="-338" y="5"/>      
+      </attribute>      
+      <multiplicity id="67" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-338" y="5"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="68">    
+    <bendpoint x="3012" y="441"/>    
+    <bendpoint x="3012" y="1720"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="69" name="tableWriter">        
+        <position height="0" width="0" x="-602" y="582"/>      
+      </attribute>      
+      <multiplicity id="70" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-602" y="582"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="71">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="3"/>  
   </generalization>  
-  <realization id="86">    
+  <association id="72">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="73" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="75">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
-  <association id="87">    
-    <bendpoint x="2623" y="793"/>    
-    <bendpoint x="2623" y="906"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="88" name="graphTestData">        
-        <position height="18" width="78" x="2626" y="844"/>      
-      </attribute>      
-      <multiplicity id="89" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="90">    
-    <bendpoint x="2530" y="791"/>    
-    <bendpoint x="2530" y="918"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="91" name="chartTestData">        
-        <position height="18" width="75" x="2536" y="845"/>      
-      </attribute>      
-      <multiplicity id="92" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="93">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
+  <generalization id="76">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
   </generalization>  
-  <association id="94">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="95" name="neurophSolver">        
-        <position height="0" width="0" x="1106" y="235"/>      
-      </attribute>      
-      <multiplicity id="96" minimum="0" maximum="1">        
-        <position height="0" width="0" x="1106" y="235"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="97">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="6"/>  
-  </generalization>  
-  <association id="98">    
+  <association id="77">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="99" name="optimizer">        
+      <attribute id="78" name="optimizer">        
         <position height="0" width="0" x="182" y="-368"/>      
       </attribute>      
-      <multiplicity id="100" minimum="0" maximum="1">        
+      <multiplicity id="79" minimum="0" maximum="1">        
         <position height="0" width="0" x="182" y="-368"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="101">    
-    <bendpoint x="2867" y="793"/>    
-    <bendpoint x="2867" y="920"/>    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="102" name="chartTrainData">        
-        <position height="18" width="79" x="2868" y="843"/>      
+  <association id="80">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="81" name="results">        
+        <position height="0" width="0" x="-1276" y="293"/>      
       </attribute>      
-      <multiplicity id="103" minimum="0" maximum="1">        
-        <position height="16" width="23" x="2821" y="982"/>      
+      <multiplicity id="82" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-1276" y="293"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="104">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="105" name="years">        
-        <position height="0" width="0" x="1206" y="-595"/>      
+  <generalization id="83">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <association id="84">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="85" name="neurophSearch">        
+        <position height="18" width="83" x="2455" y="421"/>      
       </attribute>      
-      <multiplicity id="106" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="1206" y="-595"/>      
+      <multiplicity id="86" minimum="0" maximum="1">        
+        <position height="0" width="0" x="1592" y="-75"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="88" name="probVariables">        
+        <position height="0" width="0" x="-700" y="-302"/>      
+      </attribute>      
+      <multiplicity id="89" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-700" y="-302"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="91" name="solutions">        
+        <position height="0" width="0" x="-780" y="-351"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-780" y="-351"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="93">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="94">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="95">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="96" name="neurophSolver">        
+        <position height="0" width="0" x="1088" y="235"/>      
+      </attribute>      
+      <multiplicity id="97" minimum="0" maximum="1">        
+        <position height="0" width="0" x="1088" y="235"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
