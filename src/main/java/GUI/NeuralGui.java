@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import org.neuroph.nnet.learning.ResilientPropagation;
+import org.neuroph.util.TransferFunctionType;
 import NeuralNetwork.NeurophSolver;
 
 /**
@@ -41,8 +44,23 @@ public class NeuralGui extends DefaultTab implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==simpleButton){
-	      neurophSolver = new NeurophSolver();
-	      neurophSolver.simpleSearch();
+			
+			int iterations = 100; //min 100
+			// BackPropagation or ResilientPropagation
+			Class<?> propagationClass = ResilientPropagation.class;
+			boolean showGraph = true; 
+			String fileName = "Name.csv";
+			
+			
+			int times = 20;
+			double learningRate = 0.3;
+			//(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN)
+			TransferFunctionType transfer = TransferFunctionType.TANH;
+			int[] hiddenLayers = { 14, 7, 7, 1 };
+			
+			
+			neurophSolver = new NeurophSolver();
+			neurophSolver.simpleSearch(iterations, propagationClass, showGraph, fileName, times, learningRate, transfer, hiddenLayers);
 			
 			
         } else if(e.getSource()==advancedButton){

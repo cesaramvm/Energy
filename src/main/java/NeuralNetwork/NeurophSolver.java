@@ -31,30 +31,24 @@ public class NeurophSolver extends GlobalConstants {
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
 	private NeurophSearch neurophSearch;
 
-	public void simpleSearch() {
-		boolean showTrainGraph = false;
-		boolean showGraphs = true;
-		// BackPropagation or ResilientPropagation
-		neurophSearch = new NeurophSearch(100, ResilientPropagation.class, showTrainGraph, showGraphs,
-				TRAINPATH, TESTPATH, "FullTA77.csv");
-		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
-		// NeurophModule.Rprop);
-		int[] combination = { 14, 7, 7, 1 };
-		neurophSearch.singlePlot(20, 0.3, TransferFunctionType.TANH, combination);
+	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, boolean showGraph, String fileName,
+			int times, double learningRate, TransferFunctionType transfer, int[] hiddenLayers) {
+		
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph,
+				TRAINPATH, TESTPATH, fileName);
+		neurophSearch.singlePlot(times, learningRate, transfer, hiddenLayers);
 		try {
-			neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
+			neurophSearch.writeRows();
 			neurophSearch.closeTableWriter();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void fullSearch() {
-		boolean showTrainGraph = false;
-		boolean showGraphs = true;
+		boolean showGraph = true;
 		// BackPropagation or ResilientPropagation
-		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showTrainGraph, showGraphs,
+		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showGraph,
 				TRAINPATH, TESTPATH, "AllTest.csv");
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
@@ -82,7 +76,7 @@ public class NeurophSolver extends GlobalConstants {
 					for (TransferFunctionType type : TYPES) {
 						neurophSearch.onePlotLRs(lrates, type, combination);
 						try {
-							neurophSearch.writeRows(NeurophSearch.TEST_GRAPH);
+							neurophSearch.writeRows();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

@@ -47,6 +47,7 @@ public class LineChartSample extends Thread {
 
             Thread.sleep(1500);
             makeScreenshot(frame);
+            frame.setVisible(false);
             frame.dispose();
         } catch (InterruptedException ex) {
             Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
