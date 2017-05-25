@@ -28,6 +28,7 @@ public class LineChartSample {
     private static ArrayList<ChartData> data;
     private static String mseChartTitle;
     private static JFrame frame;
+    private static final String GRAPH_SAVES = "NeurophSolutions/Graphs/";
 
     public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
 
@@ -137,7 +138,7 @@ public class LineChartSample {
 
         try {
             // Create temp file.
-            File file = new File("NetworkSaves/Graphs/" + mseChartTitle.replace(":", "-") + ".png");
+            File file = new File(GRAPH_SAVES + mseChartTitle.replace(":", "-") + ".png");
             ImageIO.write(bufferedImage, "png", file);
         } catch (IOException ioe) {
         } // catch
