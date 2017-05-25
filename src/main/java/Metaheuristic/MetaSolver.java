@@ -33,6 +33,7 @@ public class MetaSolver {
     private MetaResults results;
     private ArrayList<MetaSearch> metaSearches = new ArrayList<>();
     private CSVTableWriter tableWriter;
+	private final static String CSV_SAVES = "MetaSolutions/";
 
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass, String writerPath) {
     	
@@ -156,7 +157,7 @@ public class MetaSolver {
     }
 
 	public static CSVTableWriter initTableWriter(String path) {
-        String realpath = "MetaSolutions/";
+        String realpath = CSV_SAVES;
         realpath += path;
         ArrayList<String> tableHeaders = new ArrayList<>();
         tableHeaders.addAll(Arrays.asList("Eval", "Branches", "Leaves", "Parts", "min MAE", "real Time", "sum Time", "avg Mae", "avg Time"));

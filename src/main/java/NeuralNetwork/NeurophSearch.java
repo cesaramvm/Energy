@@ -32,9 +32,9 @@ public class NeurophSearch {
 	private final static int OUTPUT = 1;
 	private final static DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
 	private final static DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
-	private final String PERCEPTRON_SAVE = "PerceptronSaves/Perceptron-";
-	private final String MLPERCEPTRON_SAVE = "MLPerceptronSaves/MLPerceptron-";
-	public final static int TRAINING_GRAPH = 0;
+	private final static String CSV_SAVES = "NeurophSolutions/";
+	private final static String NET_SAVES = "NeurophSolutions/Networks/";
+	public final static int TRAIN_GRAPH = 0;
 	public final static int TEST_GRAPH = 1;
 
 	private final DataSet trainingDataSet;
@@ -46,9 +46,9 @@ public class NeurophSearch {
 	private final boolean showGraph;
 
 	private final ArrayList<ChartData> graphTestData = new ArrayList<>();
-	private final ArrayList<ChartData> graphTrainingData = new ArrayList<>();
+	private final ArrayList<ChartData> graphTrainData = new ArrayList<>();
 	private ChartData chartTestData;
-	private ChartData chartTrainingData;
+	private ChartData chartTrainData;
 	private CSVTableWriter tableWriter;
 	private ArrayList<Integer> columnIndexes = new ArrayList<>();
 	private LineChartSample chartTraining;
@@ -71,20 +71,20 @@ public class NeurophSearch {
 		for (int i = 0; i < linesNum; i++) {
 			this.train(learningRate, transferType, layers);
 			graphTestData.add(chartTestData);
-			graphTrainingData.add(chartTrainingData);
+			graphTrainData.add(chartTrainData);
 		}
 
 		if (showGraph) {
 			String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 					+ Arrays.toString(layers);
 			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
-			chartTesting.init();
+			//chartTesting.init();
 
 			if (showTrainGraph) {
 				graphName = "Train TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
 						+ Arrays.toString(layers);
-				chartTraining = new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
-				chartTraining.init();
+				chartTraining = new LineChartSample(new ArrayList<>(graphTrainData), graphName);
+				//chartTraining.init();
 			}
 		}
 
@@ -95,7 +95,7 @@ public class NeurophSearch {
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
 			graphTestData.add(chartTestData);
-			graphTrainingData.add(chartTrainingData);
+			graphTrainData.add(chartTrainData);
 
 		}
 		if (showGraph) {
@@ -104,7 +104,7 @@ public class NeurophSearch {
 
 			if (showTrainGraph) {
 				graphName = "Train TF:" + transferType.toString() + " " + Arrays.toString(layers);
-				new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+				new LineChartSample(new ArrayList<>(graphTrainData), graphName);
 			}
 		}
 
@@ -115,7 +115,7 @@ public class NeurophSearch {
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
 			graphTestData.add(chartTestData);
-			graphTrainingData.add(chartTrainingData);
+			graphTrainData.add(chartTrainData);
 
 		}
 
@@ -125,7 +125,7 @@ public class NeurophSearch {
 
 			if (showTrainGraph) {
 				graphName = "Train LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-				new LineChartSample(new ArrayList<>(graphTrainingData), graphName);
+				new LineChartSample(new ArrayList<>(graphTrainData), graphName);
 			}
 		}
 
@@ -147,9 +147,9 @@ public class NeurophSearch {
 			rule.setMaxError(0);
 			rule.setMaxIterations(MAXITERATIONS);
 			rule.setLearningRate(learningRate);
-			neuralNetwork.learn(trainingDataSet);
+			neuralNetwork.learn(trainingDataSet, (BackPropagation) rule);
 			Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-			neuralNetwork.save("NetworkSaves/Networks/" + ERROR_FORMAT.format(mse) + "-Network-"
+			neuralNetwork.save(NET_SAVES + ERROR_FORMAT.format(mse) + "-Network-"
 					+ transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers)
 					+ ".nnet");
 
@@ -162,13 +162,12 @@ public class NeurophSearch {
 	private LearningEventListener createListener(NeuralNetwork<? extends LearningRule> neuralNetwork,
 			Double learningRate, String transferType, int[] layers) {
 		chartTestData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
-		chartTrainingData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
+		chartTrainData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
 		LearningEventListener listener = (LearningEvent le) -> {
 			if (le.getEventType() == EPOCH_ENDED) {
 				mseToChartData(neuralNetwork, testingDataSet, chartTestData);
-				mseToChartData(neuralNetwork, trainingDataSet, chartTrainingData);
+				mseToChartData(neuralNetwork, trainingDataSet, chartTrainData);
 			} else {
-				// System.out.println(" Finished LR - " + learningRate);
 			}
 		};
 		return listener;
@@ -220,16 +219,16 @@ public class NeurophSearch {
 	private void clearAll() {
 
 		chartTestData = null;
-		chartTrainingData = null;
+		chartTrainData = null;
 		graphTestData.clear();
-		graphTrainingData.clear();
+		graphTrainData.clear();
 	}
 
 	public void writeRows(int tableType) throws Exception {
 		ArrayList<ChartData> graphToBePrinted;
 		switch (tableType) {
-		case TRAINING_GRAPH:
-			graphToBePrinted = graphTrainingData;
+		case TRAIN_GRAPH:
+			graphToBePrinted = graphTrainData;
 			break;
 		case TEST_GRAPH:
 			graphToBePrinted = graphTestData;
@@ -269,7 +268,7 @@ public class NeurophSearch {
 	}
 
 	public CSVTableWriter initTableWriter(String path) {
-		String realpath = "NeurophSolutions/";
+		String realpath = CSV_SAVES;
 		realpath += path;
 		ArrayList<String> tableHeaders = new ArrayList<>();
 		tableHeaders.addAll(Arrays.asList("Conf", "Neurons"));

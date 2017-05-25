@@ -13,7 +13,7 @@ import NeuralNetwork.NeurophSolver;
  */
 public class NeuralGui extends DefaultTab implements ActionListener{
 	
-	private JButton bt1, bt2;
+	private JButton simpleButton, advancedButton;
 	private NeurophSolver neurophSolver;
 	
 	protected NeuralGui() {
@@ -21,29 +21,31 @@ public class NeuralGui extends DefaultTab implements ActionListener{
 		
 		JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(1, 1));
-        bt1 = new JButton("Busqueda");
+        simpleButton = new JButton("Entrenamiento simple");
         //TODO
-        bt1.setToolTipText("Explora bla bla bla bla bla bla bla");
-        bt1.setMargin(new Insets(3, 5, 3, 5));
+        simpleButton.setToolTipText("Entrena con una sola combinación");
+        simpleButton.setMargin(new Insets(3, 5, 3, 5));
         
-        bt2 = new JButton("Impresion");
+        advancedButton = new JButton("Impresion");
         //TODO
-        bt2.setToolTipText("Imprime bla bla bla bla bla bla bla");
-        bt2.setMargin(new Insets(1, 1, 1, 1));
+        advancedButton.setToolTipText("Imprime bla bla bla bla bla bla bla");
+        advancedButton.setMargin(new Insets(1, 1, 1, 1));
         
-        panel.add(bt1);
-        panel.add(bt2);
+        panel.add(simpleButton);
+        panel.add(advancedButton);
         this.setTabContent(panel);
-        bt1.addActionListener(this);
-        bt2.addActionListener(this);
+        simpleButton.addActionListener(this);
+        advancedButton.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==bt1){
+		if(e.getSource()==simpleButton){
+	      neurophSolver = new NeurophSolver();
+	      neurophSolver.simpleSearch();
 			
-			this.neuralSearch();
-        } else if(e.getSource()==bt2){
+			
+        } else if(e.getSource()==advancedButton){
 			
 			System.exit(0);
         }
@@ -54,7 +56,7 @@ public class NeuralGui extends DefaultTab implements ActionListener{
     private void neuralSearch(){
       neurophSolver = new NeurophSolver();
       neurophSolver.fullSearch();
-      neurophSolver.findBestNetwork1();
+      neurophSolver.findBestNetwork();
       String fileRoute = "Net.nnet";
       neurophSolver.networkTest(fileRoute, "FinalNnetOut.csv");
     	
