@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.neuroph.nnet.learning.ResilientPropagation;
@@ -47,6 +48,16 @@ public class NeuralGui extends DefaultTab implements ActionListener{
 			
 			int iterations = 100; //min 100
 			// BackPropagation or ResilientPropagation
+			
+			String[] values = {"ResilientPropagation", "BackPropagation"};
+
+			Object selected = JOptionPane.showInputDialog(null, "Elige la clase de propagación", "Propagación", JOptionPane.DEFAULT_OPTION, null, values, "ResilientPropagation");
+			if ( selected != null ){//null if the user cancels. 
+			    String selectedString = selected.toString();
+			    //do something
+			}else{
+			    System.out.println("User cancelled");
+			}
 			Class<?> propagationClass = ResilientPropagation.class;
 			boolean showGraph = true; 
 			String fileName = "Name.csv";
