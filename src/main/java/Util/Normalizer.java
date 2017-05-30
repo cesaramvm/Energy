@@ -3,7 +3,7 @@ package Util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Global.YearInfo;
+import Global.Models.YearInfo;
 
 /**
  * @author César Valdés

@@ -1,4 +1,4 @@
-package Global;
+package Global.Models;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

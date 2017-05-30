@@ -1,5 +1,7 @@
 package Global;
 
+import Global.Models.Problem;
+
 public abstract class GlobalConstants {
 
 	protected String FULLPATH = "ProjectData/N-fulldataset.csv";
