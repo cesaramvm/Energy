@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import Global.GlobalConstants;
 import Global.Models.YearInfo;
 import Metaheuristic.Models.MetaSolution;
-import Metaheuristic.Models.ProblemVariable;
+import Metaheuristic.Models.MetaVariable;
 
 /**
  * @author César Valdés
@@ -32,7 +32,7 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
     }
 
     @Override
-    public double evaluate(HashMap<Integer, ProblemVariable> variables, Double epsi) {
+    public double evaluate(HashMap<Integer, MetaVariable> variables, Double epsi) {
         int numYears = problem.getYears().size();
         Double aux = 1.0 / numYears;
         Double summation = 0.0;
@@ -41,7 +41,7 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
             Double objective = yi.getObj();
             Double predictSum = 0.0;
             for (int j = 0; j < yi.getFullData().size(); j++) {
-                ProblemVariable solVar = variables.get(j);
+                MetaVariable solVar = variables.get(j);
                 predictSum += solVar.getAlfa() * Math.pow(yi.getData(j), solVar.getBeta());
             }
             Double predict = epsi + predictSum;
@@ -66,11 +66,11 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
         return numbers;
     }
 
-    protected final HashMap<Integer, ProblemVariable> cloneMap(HashMap<Integer, ProblemVariable> original) {
-        HashMap<Integer, ProblemVariable> clone = new HashMap<Integer, ProblemVariable>();
-        for (Map.Entry<Integer, ProblemVariable> entry : original.entrySet()) {
+    protected final HashMap<Integer, MetaVariable> cloneMap(HashMap<Integer, MetaVariable> original) {
+        HashMap<Integer, MetaVariable> clone = new HashMap<Integer, MetaVariable>();
+        for (Map.Entry<Integer, MetaVariable> entry : original.entrySet()) {
             try {
-                clone.put(entry.getKey(), (ProblemVariable) entry.getValue().clone());
+                clone.put(entry.getKey(), (MetaVariable) entry.getValue().clone());
             } catch (CloneNotSupportedException ex) {
                 Logger.getLogger(EvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
             }

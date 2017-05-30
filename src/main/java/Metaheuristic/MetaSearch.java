@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 
 import Global.GlobalConstants;
 import Metaheuristic.Models.MetaSolution;
-import Metaheuristic.Models.ProblemVariable;
+import Metaheuristic.Models.MetaVariable;
 
 /**
  * @author César Valdés
@@ -34,9 +34,9 @@ public class MetaSearch extends GlobalConstants implements Callable<List<MetaSol
     public List<MetaSolution> call() throws Exception {
         //System.err.println("Thread # " + Thread.currentThread().getId() + " is doing this task");
         for (int i = 0; i < leaves; i++) {
-            HashMap<Integer, ProblemVariable> newSolVariables = new HashMap<>();
+            HashMap<Integer, MetaVariable> newSolVariables = new HashMap<>();
             for (int j = 0; j < problem.getNumParams(); j++) {
-                newSolVariables.put(j, new ProblemVariable(random));
+                newSolVariables.put(j, new MetaVariable(random));
             }
             Double newEpsilon = -5 + (random.nextDouble() * 10);
 

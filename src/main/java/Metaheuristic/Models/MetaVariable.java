@@ -5,19 +5,19 @@ import java.util.Random;
 /**
  * @author César Valdés
  */
-public class ProblemVariable implements Cloneable {
+public class MetaVariable implements Cloneable {
 //    boolean selected; 
     private double alfa;
     private double beta;
     // </editor-fold>
 
-    public ProblemVariable(Random r) {
+    public MetaVariable(Random r) {
 //        selected=true;
         alfa = -1 + (r.nextDouble() * 2);
         beta = -1 + (r.nextDouble() * 2);
     }
 
-    public ProblemVariable(double number) {
+    public MetaVariable(double number) {
 //        selected=true;
         alfa = number;
         beta = number;

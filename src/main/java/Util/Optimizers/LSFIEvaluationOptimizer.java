@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import Metaheuristic.Models.MetaSolution;
-import Metaheuristic.Models.ProblemVariable;
+import Metaheuristic.Models.MetaVariable;
 
 /**
  * @author César Valdés
@@ -30,7 +30,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 
             Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
             Double newEpsilon = solution.getEpsilon();
-            HashMap<Integer, ProblemVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
+            HashMap<Integer, MetaVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
 
             while (newEvaluation >= solution.getEvaluation() && !valueListCopy.isEmpty() && !epsilonListCopy.isEmpty()) {
                 if (selectedChange == 14) {
