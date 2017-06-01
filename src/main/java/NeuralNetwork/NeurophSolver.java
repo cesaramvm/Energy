@@ -32,11 +32,11 @@ public class NeurophSolver extends GlobalConstants {
 	private NeurophSearch neurophSearch;
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass,
-			int times, double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph, String fileName) {
+			int numLines, double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph, String fileName) {
 		
 		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph,
 				TRAINPATH, TESTPATH, fileName);
-		neurophSearch.singlePlot(times, learningRate, transfer, hiddenLayers);
+		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
 			neurophSearch.writeRows();
 			neurophSearch.closeTableWriter();

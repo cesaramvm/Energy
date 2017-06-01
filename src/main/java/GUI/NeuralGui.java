@@ -60,9 +60,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == simpleButton) {
-			// TODO DIFERENCIA TIMES E ITERACION
-
-			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones mínimo 100", "Iteraciones",
+			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 100)", "Iteraciones",
 					JOptionPane.QUESTION_MESSAGE);
 			if (iterationsStr != null) {
 				Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class,
@@ -71,10 +69,10 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 						"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
 
 				if (propagationClass != null) {
-					String timesStr = JOptionPane.showInputDialog(null, "Número de times? mínimo 100", "times",
+					String linesStr = JOptionPane.showInputDialog(null, "¿Cuántas veces quieres realizar la prueba? (lineas que aparecerán en el gráfico) Default: 1 (1-100)", "Lineas del gráfico",
 							JOptionPane.QUESTION_MESSAGE);
-					if (timesStr != null) {
-						String learningStr = JOptionPane.showInputDialog(null, "¿Qué learningRate quieres estudiar?",
+					if (linesStr != null) {
+						String learningStr = JOptionPane.showInputDialog(null, "¿Qué learningRate quieres estudiar? (Min 0.0 Max 1.0 Def 0.5)",
 								"Learning Rate", JOptionPane.QUESTION_MESSAGE);
 						if (learningStr != null) {
 							TransferFunctionType[] transfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
@@ -124,17 +122,14 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 										fileName += ".csv";
 
 										neurophSolver = new NeurophSolver();
-										//iterationsStr, timesStr learningStr
 										Integer iterationsNum = giveInteger(iterationsStr);
-										//TODO DEFAULT Y PONERLO EN EL GUI
-										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 1;
-										Integer timesNum = giveInteger(timesStr);
-										//TODO DEFAULT Y PONERLO EN EL GUI
-										int times = this.validTime(timesNum) ? timesNum : 1;
+										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 100;
+										Integer linesNum = giveInteger(linesStr);
+										int lines = this.validLinesNum(linesNum) ? linesNum : 1;
 										Double learningNum = giveDouble(learningStr);
 										double learningRate = this.validLR(learningNum) ? learningNum : 0.5;
 										
-										neurophSolver.simpleSearch(iterations, propagationClass, times, learningRate, transferClass, layersArray, showGraph, fileName);
+										neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate, transferClass, layersArray, showGraph, fileName);
 
 									}
 								}
@@ -156,17 +151,23 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 
 	private boolean validLR(Double learningNum) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	private boolean validTime(Integer timesNum) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean validLinesNum(Integer linesNum) {
+		if (linesNum <= 0 || linesNum > 100) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private boolean validIteration(Integer iterationsNum) {
-		// TODO Auto-generated method stub
-		return false;
+		if (iterationsNum < 100 || iterationsNum > 1000000) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private void neuralSearch() {
