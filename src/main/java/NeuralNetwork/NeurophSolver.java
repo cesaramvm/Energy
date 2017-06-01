@@ -31,8 +31,8 @@ public class NeurophSolver extends GlobalConstants {
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
 	private NeurophSearch neurophSearch;
 
-	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, boolean showGraph, String fileName,
-			int times, double learningRate, TransferFunctionType transfer, int[] hiddenLayers) {
+	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass,
+			int times, double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph, String fileName) {
 		
 		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph,
 				TRAINPATH, TESTPATH, fileName);

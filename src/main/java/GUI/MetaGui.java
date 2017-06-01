@@ -74,13 +74,13 @@ public class MetaGui extends DefaultTab implements ActionListener {
 								LSBIEvaluationOptimizer.class };
 						Class<?> optimizer = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador",
 								"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, optimizers, optimizers[0]);
-						Integer branchesNum = giveInteger(branchesStr);
-						int branches = this.validBranch(branchesNum) ? branchesNum : 1;
-						Integer leavesNum = giveInteger(leavesStr);
-						int leaves = this.validLeaf(leavesNum) ? leavesNum : 5;
-						Integer partsNum = giveInteger(partsStr);
-						int parts = this.validPart(partsNum) ? partsNum : 99;
 						if (optimizer != null) {
+							Integer branchesNum = giveInteger(branchesStr);
+							int branches = this.validBranch(branchesNum) ? branchesNum : 1;
+							Integer leavesNum = giveInteger(leavesStr);
+							int leaves = this.validLeaf(leavesNum) ? leavesNum : 5;
+							Integer partsNum = giveInteger(partsStr);
+							int parts = this.validPart(partsNum) ? partsNum : 99;
 							String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
 									JOptionPane.QUESTION_MESSAGE);
 							if(fileName!=null){
@@ -96,10 +96,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 		} else if (e.getSource() == advancedButton) {
 			List<Class<? extends Object>> optimizers = new ArrayList<>();
-			List<Integer> numParts = new ArrayList<>();
-			List<Integer> numBranches = new ArrayList<>();
-			List<Integer> numLeaves = new ArrayList<>();
-
 			JCheckBox RandomCheck = new JCheckBox("RandomEvaluationOptimizer");
 			JCheckBox LSFICheck = new JCheckBox("LSFIEvaluationOptimize");
 			JCheckBox LSBICheck = new JCheckBox("LSBIEvaluationOptimize");
@@ -121,6 +117,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			}
 
 			if (n == JOptionPane.OK_OPTION) {
+				List<Integer> numBranches = new ArrayList<>();
 				String branchesStr = "";
 				while (branchesStr!=null && numBranches.size() == 0) {
 					branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
@@ -138,6 +135,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				}
 				
 				if(branchesStr!=null){
+					List<Integer> numLeaves = new ArrayList<>();
 					String leavesStr = "";
 					while (leavesStr != null && numLeaves.size() == 0) {
 						leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
@@ -154,6 +152,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							}
 					}
 					if(leavesStr!=null){
+						List<Integer> numParts = new ArrayList<>();
 						String partsStr = "";
 						while (partsStr !=null && numParts.size() == 0) {
 							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Hojas",
@@ -185,7 +184,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer, String fileName) {
 
 		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer, fileName);
-		//metaSol.search();
 		MetaResults results = metaSol.getAndSaveResults();
 		metaSol.closeTableWriter();
 		
