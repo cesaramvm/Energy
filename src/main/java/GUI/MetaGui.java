@@ -190,7 +190,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 		metaSol.closeTableWriter();
 		
 		String resultado = "Tiempo secuencial: " + results.getTotalSecuentialTime() + "\nTiempo concurrente: " + results.getTotalConcurrentTime()
-		+ "\nError medio :" + results.getAvgError() + "\nTiempo medio:" + results.getAvgTime();
+		+ "\nError medio :" + results.getAvgError() + "\nTiempo medio:" + results.getAvgTime() + "\n\nArchivo " + fileName +" actualizado";
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
 	    final JDialog dlg = msg.createDialog("Metaheurística Simple Finalizada");
 	    dlg.setVisible(true);
@@ -199,29 +199,21 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private void metaAdvanced(List<Class<? extends Object>> optimizers, List<Integer> parts, List<Integer> numBranches,
 			List<Integer> numLeaves, String fileName) {
-
-		boolean keepGoing = true;
+		
 		CSVTableWriter tw = MetaSolver.initTableWriter(fileName);
 		for (int leaves : numLeaves) {
 			for (int part : parts) {
 				for (int branches : numBranches) {
 					for (Class<? extends Object> optimizer : optimizers) {
-						if (optimizer == LSBIEvaluationOptimizer.class && branches == 8 && leaves == 100
-								&& part == 999) {
-							keepGoing = false;
-						}
-						if (!keepGoing) {
-
-							MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer, tw);
-							metaSol.getAndSaveResults();
-						}
+						MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer, tw);
+						metaSol.getAndSaveResults();
 					}
 				}
 			}
 		}
 		tw.close();
 		
-		String resultado = "Para visualizar los resultados abrir el archivo " + "niceOrder.csv";
+		String resultado = "Para visualizar los resultados abrir el archivo " + fileName;
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
 	    final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
 	    dlg.setVisible(true);
@@ -259,14 +251,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			return 0;
 		}
 		return numberInt;
-	}
-
-	private void searchCancelled() {
-		JOptionPane.showMessageDialog(null, "Busqueda cancelada");
-	}
-
-	private void searchDone() {
-		JOptionPane.showMessageDialog(null, "Busqueda finalizada");
 	}
 
 }
