@@ -43,6 +43,7 @@ public class MetaSolver {
         this.evaluationClass = evaluationClass;
         CSVTableWriter writer = initTableWriter(writerPath);
         this.setTableWriter(writer);
+        search();
     }
 
     public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass, CSVTableWriter writer) {
@@ -52,9 +53,10 @@ public class MetaSolver {
         this.parts = parts;
         this.evaluationClass = evaluationClass;
         this.setTableWriter(writer);
+        search();
     }
 
-    public void search() {
+    private void search() {
 
         futures.clear();
         soluciones.clear();
@@ -83,7 +85,7 @@ public class MetaSolver {
 
     }
 
-    public MetaResults getResults() {
+    public MetaResults getAndSaveResults() {
         if (soluciones.isEmpty()) {
             throw new Error("Search still not done");
         }

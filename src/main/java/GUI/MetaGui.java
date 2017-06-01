@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Metaheuristic.MetaSolver;
@@ -66,7 +67,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				String leavesStr = JOptionPane.showInputDialog(null, "Número de hojas 1-1000 (Def: 5)", "Hojas",
 						JOptionPane.QUESTION_MESSAGE);
 				if (leavesStr != null) {
-					String partsStr = JOptionPane.showInputDialog(null, "Número de partes 2-9999 (Def: 99)", "Partes",
+					String partsStr = JOptionPane.showInputDialog(null, "Número de partes 3-9999 (Def: 99)", "Partes",
 							JOptionPane.QUESTION_MESSAGE);
 					if (partsStr != null) {
 						Class<?>[] optimizers = { RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class,
@@ -80,14 +81,18 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						Integer partsNum = giveInteger(partsStr);
 						int parts = this.validPart(partsNum) ? partsNum : 99;
 						if (optimizer != null) {
-							JOptionPane.showMessageDialog(null,
-									"Branches " + branches + " , leaves " + leaves + ", parts " + parts);
-							this.metaEasy(branches, leaves, parts, optimizer);
-							this.searchDone();
-						} else {this.searchCancelled();}
-					} else {this.searchCancelled();}
-				} else {this.searchCancelled();}
-			} else {this.searchCancelled();}
+							String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+									JOptionPane.QUESTION_MESSAGE);
+							if(fileName!=null){
+								JOptionPane.showMessageDialog(null,
+										"Branches " + branches + " , leaves " + leaves + ", parts " + parts);
+								fileName += ".csv";
+								this.metaEasy(branches, leaves, parts, optimizer, fileName);
+							}
+						}
+					}
+				}
+			}
 
 		} else if (e.getSource() == advancedButton) {
 			List<Class<? extends Object>> optimizers = new ArrayList<>();
@@ -164,39 +169,39 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							}
 						}
 						if(partsStr != null){
-							this.metaAdvanced(optimizers, numParts, numBranches, numLeaves);
-							this.searchDone();
-						} else {this.searchCancelled();}
-					} else {this.searchCancelled();}
-				} else {this.searchCancelled();}				
-			} else {this.searchCancelled();}
+							String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+									JOptionPane.QUESTION_MESSAGE);
+							if(fileName!=null){
+								fileName += ".csv";
+								this.metaAdvanced(optimizers, numParts, numBranches, numLeaves, fileName);
+							}
+						}
+					}
+				}				
+			}
 		}
 	}
 
-	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer) {
+	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer, String fileName) {
 
-		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer,"testingLSFI.csv");
-		metaSol.search();
-		MetaResults results = metaSol.getResults();
+		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer, fileName);
+		//metaSol.search();
+		MetaResults results = metaSol.getAndSaveResults();
 		metaSol.closeTableWriter();
-
-		// System.out.println(results.getBestSolution());
-		// System.out.println("Secuencial: " +
-		// results.getTotalSecuentialTime());
-		// System.out.println("Concurrent: " +
-		// results.getTotalConcurrentTime());
-		// System.out.println("Avg Error :" + results.getAvgError());
-		// System.out.println("Avg Time :" + results.getAvgTime());
-		// System.out.println(solution);
-		// System.out.println("Tiempo de busqueda " + );
+		
+		String resultado = "Tiempo secuencial: " + results.getTotalSecuentialTime() + "\nTiempo concurrente: " + results.getTotalConcurrentTime()
+		+ "\nError medio :" + results.getAvgError() + "\nTiempo medio:" + results.getAvgTime();
+		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+	    final JDialog dlg = msg.createDialog("Metaheurística Simple Finalizada");
+	    dlg.setVisible(true);
 
 	}
 
 	private void metaAdvanced(List<Class<? extends Object>> optimizers, List<Integer> parts, List<Integer> numBranches,
-			List<Integer> numLeaves) {
+			List<Integer> numLeaves, String fileName) {
 
 		boolean keepGoing = true;
-		CSVTableWriter tw = MetaSolver.initTableWriter("niceOrder.csv");
+		CSVTableWriter tw = MetaSolver.initTableWriter(fileName);
 		for (int leaves : numLeaves) {
 			for (int part : parts) {
 				for (int branches : numBranches) {
@@ -208,29 +213,18 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						if (!keepGoing) {
 
 							MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer, tw);
-							metaSol.search();
-							MetaResults results = metaSol.getResults();
-							// System.out.println(results.getBestSolution());
-							// System.out.println("Secuencial: " +
-							// results.getTotalSecuentialTime());
-							// System.out.println("Concurrent: " +
-							// results.getTotalConcurrentTime());
-							// System.out.println("Avg Error :" +
-							// results.getAvgError());
-							// System.out.println("Avg Time :" +
-							// results.getAvgTime());
-							// System.out.println(LSFIEvaluationOptimizer.class.getCanonicalName());
-
-							// Runtime runtime = Runtime.getRuntime();
-							// Process proc = runtime.exec("shutdown -s -t 0");
-							// System.exit(0);
+							metaSol.getAndSaveResults();
 						}
-						// }
 					}
 				}
 			}
 		}
 		tw.close();
+		
+		String resultado = "Para visualizar los resultados abrir el archivo " + "niceOrder.csv";
+		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+	    final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
+	    dlg.setVisible(true);
 
 	}
 
@@ -250,7 +244,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 	}
 
 	private boolean validPart(int number) {
-		if (number <= 1 || number > 9999) {
+		if (number <= 2 || number > 9999) {
 			return false;
 		} else {
 			return true;
