@@ -42,7 +42,6 @@ public class LineChartSample extends Thread {
 
             SwingUtilities.invokeLater(() -> {
                 showGUI();
-
             });
             
             Thread.sleep(1500);
@@ -80,6 +79,7 @@ public class LineChartSample extends Thread {
             public void keyTyped(KeyEvent e) {
             }
         });
+        Platform.setImplicitExit(false);
         Platform.runLater(() -> {
         	initFX(fxPanel);
         });        
