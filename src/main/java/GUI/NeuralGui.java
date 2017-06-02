@@ -4,15 +4,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.JButton;
@@ -23,9 +15,6 @@ import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
 import NeuralNetwork.NeurophSolver;
-import Util.Optimizers.LSBIEvaluationOptimizer;
-import Util.Optimizers.LSFIEvaluationOptimizer;
-import Util.Optimizers.RandomEvaluationOptimizer;
 
 /**
  * @author César Valdés
@@ -33,7 +22,7 @@ import Util.Optimizers.RandomEvaluationOptimizer;
 public class NeuralGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton, advancedButton;
-	private NeurophSolver neurophSolver;
+	private NeurophSolver neurophSolver = new NeurophSolver();
 
 	protected NeuralGui() {
 		super("Redes", "Modo Redes Neuronales");
@@ -63,11 +52,9 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 100)", "Iteraciones",
 					JOptionPane.QUESTION_MESSAGE);
 			if (iterationsStr != null) {
-				Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class,
-						LSBIEvaluationOptimizer.class };
+				Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class };
 				Class<?> propagationClass = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador",
 						"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
-
 				if (propagationClass != null) {
 					String linesStr = JOptionPane.showInputDialog(null, "¿Cuántas veces quieres realizar la prueba? (lineas que aparecerán en el gráfico) Default: 1 (1-100)", "Lineas del gráfico",
 							JOptionPane.QUESTION_MESSAGE);
@@ -121,28 +108,33 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 									if (fileName != null) {
 										fileName += ".csv";
 
-										neurophSolver = new NeurophSolver();
 										Integer iterationsNum = giveInteger(iterationsStr);
 										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 100;
 										Integer linesNum = giveInteger(linesStr);
 										int lines = this.validLinesNum(linesNum) ? linesNum : 1;
 										Double learningNum = giveDouble(learningStr);
 										double learningRate = this.validLR(learningNum) ? learningNum : 0.5;
-										
 										neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate, transferClass, layersArray, showGraph, fileName);
 
 									}
 								}
-
 							}
-
 						}
 					}
-
 				}
 			}
-
 		} else if (e.getSource() == advancedButton) {
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 			System.exit(0);
 		}

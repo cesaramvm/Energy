@@ -44,7 +44,7 @@ public class LineChartSample extends Thread {
                 showGUI();
 
             });
-
+            
             Thread.sleep(1500);
             makeScreenshot(frame);
             frame.setVisible(false);
@@ -81,8 +81,8 @@ public class LineChartSample extends Thread {
             }
         });
         Platform.runLater(() -> {
-            initFX(fxPanel);
-        });
+        	initFX(fxPanel);
+        });        
     }
 
     private void initFX(JFXPanel fxPanel) {
@@ -92,7 +92,6 @@ public class LineChartSample extends Thread {
     }
 
     private Scene createScene() {
-
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Epochs");
@@ -129,7 +128,6 @@ public class LineChartSample extends Thread {
 
         Scene scene = new Scene(lineChart, 1000, 600);
         lineChart.getData().addAll(arraySeries);
-
         return (scene);
     }
 

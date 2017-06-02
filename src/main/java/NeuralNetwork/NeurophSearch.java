@@ -199,7 +199,6 @@ public class NeurophSearch {
 			ArrayList<String> nextRow = new ArrayList<>();
 			nextRow.add(trainChart.getTransferType().substring(0, 2) + " " + trainChart.getLearningRate());
 			nextRow.add(Arrays.toString(graphTestData.get(0).getLayersConf()));
-			System.out.println(columnIndexes);
 			for (Integer columnIndex : columnIndexes) {
 				String error = ERROR_FORMAT.format(trainChart.get(columnIndex));
 				nextRow.add(error);
