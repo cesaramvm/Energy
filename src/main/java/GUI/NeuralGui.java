@@ -49,7 +49,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == simpleButton) {
-			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 100)", "Iteraciones",
+			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 1000)", "Iteraciones",
 					JOptionPane.QUESTION_MESSAGE);
 			if (iterationsStr != null) {
 				Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class };
@@ -109,7 +109,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 										fileName += ".csv";
 
 										Integer iterationsNum = giveInteger(iterationsStr);
-										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 100;
+										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 1000;
 										Integer linesNum = giveInteger(linesStr);
 										int lines = this.validLinesNum(linesNum) ? linesNum : 1;
 										Double learningNum = giveDouble(learningStr);
@@ -142,8 +142,11 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 	}
 
 	private boolean validLR(Double learningNum) {
-		// TODO Auto-generated method stub
-		return true;
+		if (learningNum <= 0 || learningNum > 10) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private boolean validLinesNum(Integer linesNum) {

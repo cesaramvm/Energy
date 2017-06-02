@@ -63,7 +63,6 @@ public class NeurophSearch {
 		clearAll();
 		for (int i = 0; i < linesNum; i++) {
 			this.train(learningRate, transferType, layers);
-			graphTestData.add(chartTestData);
 		}
 
 		if (showGraph) {
@@ -79,7 +78,7 @@ public class NeurophSearch {
 		clearAll();
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
-			graphTestData.add(chartTestData);
+			
 
 		}
 		if (showGraph) {
@@ -93,7 +92,6 @@ public class NeurophSearch {
 		clearAll();
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
-			graphTestData.add(chartTestData);
 
 		}
 
@@ -130,6 +128,7 @@ public class NeurophSearch {
 				| IllegalArgumentException | InvocationTargetException ex) {
 			Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		graphTestData.add(chartTestData);
 	}
 
 	private LearningEventListener createListener(NeuralNetwork<? extends LearningRule> neuralNetwork,
