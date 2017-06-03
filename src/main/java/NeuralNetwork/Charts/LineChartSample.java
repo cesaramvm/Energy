@@ -38,7 +38,7 @@ public class LineChartSample extends Thread {
     	
     	try {
 
-            SwingUtilities.invokeAndWait(() -> {
+            SwingUtilities.invokeLater(() -> {
                 showGUI();
             });
             
@@ -48,9 +48,7 @@ public class LineChartSample extends Thread {
             frame.dispose();
         } catch (InterruptedException ex) {
             Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+        }
 
     }
 

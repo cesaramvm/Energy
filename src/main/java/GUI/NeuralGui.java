@@ -94,20 +94,22 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 									}
 								}
 								if (layersStr != null) {
-									layersArray = ArrayUtils.add(layersArray, 1);
+									int[] layers = ArrayUtils.add(layersArray, 1);
 
-									boolean showGraph = false;
+									boolean showGraph;
 									int reply = JOptionPane.showConfirmDialog(null,
 											"¿Quieres que se muestren los gráficos de entrenamiento?", "Gráficos",
 											JOptionPane.YES_NO_OPTION);
 									if (reply == JOptionPane.YES_OPTION) {
 										showGraph = true;
+									} else {
+										showGraph = false;
 									}
 
-									String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
+									String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
 											"Archivo", JOptionPane.QUESTION_MESSAGE);
-									if (fileName != null) {
-										fileName += ".csv";
+									if (file != null) {
+										String fileName = file + ".csv";
 
 										Integer iterationsNum = giveInteger(iterationsStr);
 										int iterations = this.validIteration(iterationsNum) ? iterationsNum : 1000;
@@ -115,8 +117,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 										int lines = this.validLinesNum(linesNum) ? linesNum : 1;
 										Double learningNum = giveDouble(learningStr);
 										double learningRate = this.validLR(learningNum) ? learningNum : 0.5;
-										neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate, transferClass, layersArray, showGraph, fileName);
-
+										
+										new Thread(() -> neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate, transferClass, layers, showGraph, fileName)).start();
 									}
 								}
 							}
@@ -137,9 +139,9 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			//Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 			boolean showGraph = true;
 			String fileName = "Name.csv";
+			new Thread(() -> neurophSolver.advancedLRSearch(iterations, propagationTypeClass, lrates, transfer, maxHiddenLayers, neuronsInLayers, 
+					showGraph, fileName)).start();
 			
-			neurophSolver.advancedLRSearch(iterations, propagationTypeClass, lrates, transfer, maxHiddenLayers, neuronsInLayers, 
-					showGraph, fileName);
 		}
 
 	}

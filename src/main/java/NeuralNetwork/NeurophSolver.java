@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
@@ -48,51 +51,54 @@ public class NeurophSolver extends GlobalConstants {
 	public void advancedLRSearch(int iterations, Class<? extends Object> propagationTypeClass, ArrayList<Double> lrates,
 			TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean showGraph,
 			String fileName) {
-
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
-				TESTPATH, fileName);
-		int[] combination = { 14, 5, 1 };
-		neurophSearch.onePlotLRs(lrates, transfer, combination);
-		try {
-			neurophSearch.writeRows();
-			neurophSearch.closeTableWriter();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
-				TESTPATH, fileName);
-		int[] combination2 = { 14, 6, 1 };
-		neurophSearch.onePlotLRs(lrates, transfer, combination2);
-		try {
-			neurophSearch.writeRows();
-			neurophSearch.closeTableWriter();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 //
-//		for (int i = 1; i <= maxHiddenLayers; i++) {
-//
-//			neuronsConfig.clear();
-//			int[] combination = new int[i + 2];
-//			combination[0] = 14;
-//			combination[i + 2 - 1] = 1;
-//			createCombinations(i, neuronsInLayers, new ArrayList<>());
-//			for (Integer[] comb : neuronsConfig) {
-//				for (int j = 1; j < i + 2 - 1; j++) {
-//					combination[j] = comb[j - 1];
-//				}
-//				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
-//						fileName);
-//				neurophSearch.onePlotLRs(lrates, transfer, combination);
-//				
-//				try {
-//					neurophSearch.writeRows();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
+//		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
+//				TESTPATH, fileName);
+//		int[] combination2 = { 14, 5, 1 };
+//		neurophSearch.onePlotLRs(lrates, transfer, combination2);
+//		try {
+//			neurophSearch.writeRows();
+//			neurophSearch.closeTableWriter();
+//		} catch (Exception e) {
+//			e.printStackTrace();
 //		}
+//		
+//		
+//		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
+//				TESTPATH, fileName);
+//		int[] combination3 = { 14, 6, 1 };
+//		neurophSearch.onePlotLRs(lrates, transfer, combination3);
+//		try {
+//			neurophSearch.writeRows();
+//			neurophSearch.closeTableWriter();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+		for (int i = 1; i <= maxHiddenLayers; i++) {
+
+			neuronsConfig.clear();
+			int[] combination = new int[i + 2];
+			combination[0] = 14;
+			combination[i + 2 - 1] = 1;
+			createCombinations(i, neuronsInLayers, new ArrayList<>());
+			for (Integer[] comb : neuronsConfig) {
+				for (int j = 1; j < i + 2 - 1; j++) {
+					combination[j] = comb[j - 1];
+				}
+				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
+						fileName);
+				neurophSearch.onePlotLRs(lrates, transfer, combination);
+				
+				try {
+					neurophSearch.writeRows();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		neurophSearch.closeTableWriter();
 	}
 
 	public void fullSearch() {
