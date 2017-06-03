@@ -138,17 +138,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			boolean showGraph = true;
 			String fileName = "Name.csv";
 			
-			
-			
 			neurophSolver.advancedLRSearch(iterations, propagationTypeClass, lrates, transfer, maxHiddenLayers, neuronsInLayers, 
 					showGraph, fileName);
-			
-			
-			
-			
-			
-
-			System.exit(0);
 		}
 
 	}

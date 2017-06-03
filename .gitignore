@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io/api/windows,java,eclipse
 
+### PROJECT ###
+Metasolutions/*
+NeurophSolutions/*
+
 ### Windows ###
 # Windows image file caches
 Thumbs.db
