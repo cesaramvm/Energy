@@ -78,29 +78,27 @@ public class NeurophSearch {
 		clearAll();
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
-			
-
 		}
 		if (showGraph) {
 			String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
-			new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting.start();
 		}
 
 	}
 
-	public void onePlotTFs(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers) {
+	/*public void onePlotTFs(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers) {
 		clearAll();
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
-
 		}
-
 		if (showGraph) {
 			String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-			new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting.start();
 		}
 
-	}
+	}*/
 
 	private void train(Double learningRate, TransferFunctionType transferType, int[] layers) {
 		try {

@@ -1,11 +1,10 @@
 package NeuralNetwork.Charts;
 
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,17 +39,19 @@ public class LineChartSample extends Thread {
     	
     	try {
 
-            SwingUtilities.invokeLater(() -> {
+            SwingUtilities.invokeAndWait(() -> {
                 showGUI();
             });
             
-            Thread.sleep(1500);
+            Thread.sleep(1500 + 20*data.size());
             makeScreenshot(frame);
             frame.setVisible(false);
             frame.dispose();
         } catch (InterruptedException ex) {
             Logger.getLogger(LineChartSample.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 
     }
 
@@ -61,24 +62,6 @@ public class LineChartSample extends Thread {
         frame.add(fxPanel);
         frame.setSize(600, 360);
         frame.setVisible(true);
-        fxPanel.addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == 'q') {
-                    frame.dispose();
-                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    System.exit(0);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-        });
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
         	initFX(fxPanel);

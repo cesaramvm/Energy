@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -126,10 +127,21 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 		} else if (e.getSource() == advancedButton) {
 			
 			
+			int iterations = 1000;
+			Class<? extends Object> propagationTypeClass = ResilientPropagation.class;
+			ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));;
+			TransferFunctionType transfer = TransferFunctionType.SIN;
+			int maxHiddenLayers = 3;
+			Integer[] neuronsInLayers = {4,5,6};
+			//Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+			//Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+			boolean showGraph = true;
+			String fileName = "Name.csv";
 			
 			
 			
-			
+			neurophSolver.advancedLRSearch(iterations, propagationTypeClass, lrates, transfer, maxHiddenLayers, neuronsInLayers, 
+					showGraph, fileName);
 			
 			
 			
@@ -140,6 +152,15 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 		}
 
 	}
+
+	/*private void neuralSearch() {
+		neurophSolver = new NeurophSolver();
+		neurophSolver.fullSearch();
+		neurophSolver.findBestNetwork();
+		String fileRoute = "Net.nnet";
+		neurophSolver.networkTest(fileRoute, "FinalNnetOut.csv");
+
+	}*/
 
 	private boolean validLR(Double learningNum) {
 		if (learningNum <= 0 || learningNum > 10) {
@@ -163,15 +184,6 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 		} else {
 			return true;
 		}
-	}
-
-	private void neuralSearch() {
-		neurophSolver = new NeurophSolver();
-		neurophSolver.fullSearch();
-		neurophSolver.findBestNetwork();
-		String fileRoute = "Net.nnet";
-		neurophSolver.networkTest(fileRoute, "FinalNnetOut.csv");
-
 	}
 
 	private boolean validLayer(int number) {
