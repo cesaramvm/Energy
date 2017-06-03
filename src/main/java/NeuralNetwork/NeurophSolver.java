@@ -45,6 +45,39 @@ public class NeurophSolver extends GlobalConstants {
 		}
 	}
 
+	public void advancedLRSearch(int iterations, Class<? extends Object> propagationTypeClass,
+			ArrayList<Double> lrates, TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean showGraph, String fileName) {
+		
+		
+
+		for (int i = 1; i <= maxHiddenLayers; i++) {
+			neuronsConfig.clear();
+			int[] combination = new int[i + 2];
+			combination[0] = 14;
+			combination[i + 2 - 1] = 1;
+			createCombinations(i, neuronsInLayers, new ArrayList<>());
+			for (Integer[] comb : neuronsConfig) {
+				for (int j = 1; j < i + 2 - 1; j++) {
+					combination[j] = comb[j - 1];
+				}
+				for (TransferFunctionType type : TYPES) {
+					neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph,
+							TRAINPATH, TESTPATH, fileName);
+					neurophSearch.onePlotLRs(lrates, type, combination);
+					try {
+						neurophSearch.writeRows();
+						Thread.sleep(10000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+					//System.out.println("Finished " + Arrays.toString(combination));
+
+			}
+
+		}
+	}
+
 	public void fullSearch() {
 		boolean showGraph = true;
 		// BackPropagation or ResilientPropagation
