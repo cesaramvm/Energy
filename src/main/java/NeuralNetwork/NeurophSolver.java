@@ -29,12 +29,13 @@ public class NeurophSolver extends GlobalConstants {
 	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
+	private NeurophSearch neurophSearch;
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, int numLines,
 			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph,
 			String fileName) {
 
-		NeurophSearch neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName);
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName);
 		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
 			neurophSearch.writeRows();
@@ -48,15 +49,26 @@ public class NeurophSolver extends GlobalConstants {
 			TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean showGraph,
 			String fileName) {
 
-		NeurophSearch neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
 				TESTPATH, fileName);
 		int[] combination = { 14, 5, 1 };
 		neurophSearch.onePlotLRs(lrates, transfer, combination);
-
-		NeurophSearch neurophSearch2 = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
+		try {
+			neurophSearch.writeRows();
+			neurophSearch.closeTableWriter();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
 				TESTPATH, fileName);
 		int[] combination2 = { 14, 6, 1 };
-		neurophSearch2.onePlotLRs(lrates, transfer, combination2);
+		neurophSearch.onePlotLRs(lrates, transfer, combination2);
+		try {
+			neurophSearch.writeRows();
+			neurophSearch.closeTableWriter();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 //
 //		for (int i = 1; i <= maxHiddenLayers; i++) {
 //
@@ -69,7 +81,7 @@ public class NeurophSolver extends GlobalConstants {
 //				for (int j = 1; j < i + 2 - 1; j++) {
 //					combination[j] = comb[j - 1];
 //				}
-//				NeurophSearch neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
+//				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
 //						fileName);
 //				neurophSearch.onePlotLRs(lrates, transfer, combination);
 //				
@@ -86,7 +98,7 @@ public class NeurophSolver extends GlobalConstants {
 	public void fullSearch() {
 		boolean showGraph = true;
 		// BackPropagation or ResilientPropagation
-		NeurophSearch neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showGraph, TRAINPATH, TESTPATH,
+		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showGraph, TRAINPATH, TESTPATH,
 				"AllTest.csv");
 		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
 		// NeurophModule.Rprop);
