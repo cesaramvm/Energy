@@ -24,13 +24,12 @@ import javax.swing.SwingUtilities;
  */
 public class LineChartSample extends Thread {
 
-    private static ArrayList<ChartData> data;
-    private static String mseChartTitle;
-    private static JFrame frame;
+    private ArrayList<ChartData> data;
+    private String mseChartTitle;
+    private JFrame frame;
     private static final String GRAPH_SAVES = "NeurophSolutions/Graphs/";
 
     public LineChartSample(ArrayList<ChartData> incomingData, String chartTitle) {
-
         data = incomingData;
         mseChartTitle = chartTitle;
     }
@@ -114,7 +113,7 @@ public class LineChartSample extends Thread {
         return (scene);
     }
 
-    public static final void makeScreenshot(JFrame argFrame) {
+    public void makeScreenshot(JFrame argFrame) {
         Rectangle rec = argFrame.getBounds();
        /* while(argFrame.getState()==0){
 

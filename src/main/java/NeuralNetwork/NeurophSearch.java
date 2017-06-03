@@ -35,14 +35,14 @@ public class NeurophSearch {
 	private final static String CSV_SAVES = "NeurophSolutions/";
 	private final static String NET_SAVES = "NeurophSolutions/Networks/";
 
-	private final DataSet trainingDataSet;
-	private final DataSet testingDataSet;
-	private final Class<? extends Object> propagationClass;
+	private DataSet trainingDataSet;
+	private DataSet testingDataSet;
+	private Class<? extends Object> propagationClass;
 
-	private final int MAXITERATIONS;
-	private final boolean showGraph;
+	private int MAXITERATIONS;
+	private boolean showGraph;
 
-	private final ArrayList<ChartData> graphTestData = new ArrayList<>();
+	private ArrayList<ChartData> graphTestData = new ArrayList<>();
 	private ChartData chartTestData;
 	private CSVTableWriter tableWriter;
 	private ArrayList<Integer> columnIndexes = new ArrayList<>();
