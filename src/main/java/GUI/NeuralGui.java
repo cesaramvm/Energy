@@ -23,7 +23,6 @@ import NeuralNetwork.NeurophSolver;
 public class NeuralGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton, advancedButton;
-	private NeurophSolver neurophSolver = new NeurophSolver();
 
 	protected NeuralGui() {
 		super("Redes", "Modo Redes Neuronales");
@@ -117,7 +116,9 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 										int lines = this.validLinesNum(linesNum) ? linesNum : 1;
 										Double learningNum = giveDouble(learningStr);
 										double learningRate = this.validLR(learningNum) ? learningNum : 0.5;
-										
+
+
+										NeurophSolver neurophSolver = new NeurophSolver();
 										new Thread(() -> neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate, transferClass, layers, showGraph, fileName)).start();
 									}
 								}
@@ -139,6 +140,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			//Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 			boolean showGraph = true;
 			String fileName = "Name.csv";
+
+			NeurophSolver neurophSolver = new NeurophSolver();
 			new Thread(() -> neurophSolver.advancedLRSearch(iterations, propagationTypeClass, lrates, transfer, maxHiddenLayers, neuronsInLayers, 
 					showGraph, fileName)).start();
 			

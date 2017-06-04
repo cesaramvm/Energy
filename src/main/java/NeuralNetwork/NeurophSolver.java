@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.SwingUtilities;
-
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
@@ -29,8 +27,8 @@ import Global.GlobalConstants;
  */
 public class NeurophSolver extends GlobalConstants {
 
-	private static final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
-	private static final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
+	private final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
+	private final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
 			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
 	private NeurophSearch neurophSearch;
 

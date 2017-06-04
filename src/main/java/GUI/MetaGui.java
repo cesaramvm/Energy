@@ -81,13 +81,13 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							int leaves = this.validLeaf(leavesNum) ? leavesNum : 5;
 							Integer partsNum = giveInteger(partsStr);
 							int parts = this.validPart(partsNum) ? partsNum : 99;
-							String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
 									JOptionPane.QUESTION_MESSAGE);
-							if(fileName!=null){
+							if(file!=null){
 								JOptionPane.showMessageDialog(null,
 										"Branches " + branches + " , leaves " + leaves + ", parts " + parts);
-								fileName += ".csv";
-								this.metaEasy(branches, leaves, parts, optimizer, fileName);
+								String fileName = file + ".csv";
+								new Thread(() -> this.metaEasy(branches, leaves, parts, optimizer, fileName)).start();
 							}
 						}
 					}
@@ -135,6 +135,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				}
 				
 				if(branchesStr!=null){
+					List<Integer> branches = numBranches;
 					List<Integer> numLeaves = new ArrayList<>();
 					String leavesStr = "";
 					while (leavesStr != null && numLeaves.size() == 0) {
@@ -152,6 +153,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							}
 					}
 					if(leavesStr!=null){
+						List<Integer> leaves = numLeaves;
 						List<Integer> numParts = new ArrayList<>();
 						String partsStr = "";
 						while (partsStr !=null && numParts.size() == 0) {
@@ -168,11 +170,13 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							}
 						}
 						if(partsStr != null){
-							String fileName = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
 									JOptionPane.QUESTION_MESSAGE);
-							if(fileName!=null){
-								fileName += ".csv";
-								this.metaAdvanced(optimizers, numParts, numBranches, numLeaves, fileName);
+							if(file!=null){
+								String fileName = file + ".csv";
+								List<Integer> parts = numParts;
+
+								new Thread(() -> this.metaAdvanced(optimizers, parts, branches, leaves, fileName)).start();
 							}
 						}
 					}
