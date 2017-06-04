@@ -9,19 +9,19 @@ import java.util.Random;
  */
 public abstract class LSEvaluationOptimizer extends EvaluationOptimizer {
 
-    protected List<Integer> paramsIndex = new LinkedList<>();
-    private List<Integer> paramsIndexBackup = new LinkedList<>();
+	protected List<Integer> paramsIndex = new LinkedList<>();
+	private List<Integer> paramsIndexBackup = new LinkedList<>();
 
-    public LSEvaluationOptimizer(int newParts, Random r) {
-        super(newParts, r);
-        for (Integer i = 0; i <= problem.getNumParams(); i++) {
-            paramsIndexBackup.add(i);
-        }
-        this.restoreParamsIndex();
-    }
+	public LSEvaluationOptimizer(int newParts, Random r) {
+		super(newParts, r);
+		for (Integer i = 0; i <= problem.getNumParams(); i++) {
+			paramsIndexBackup.add(i);
+		}
+		this.restoreParamsIndex();
+	}
 
-    public final void restoreParamsIndex() {
-        paramsIndex = new LinkedList<>(paramsIndexBackup);
-    }
+	public final void restoreParamsIndex() {
+		paramsIndex = new LinkedList<>(paramsIndexBackup);
+	}
 
 }

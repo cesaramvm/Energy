@@ -8,5 +8,5 @@ public abstract class GlobalConstants {
 	protected String TRAINPATH = "ProjectData/N-train.csv";
 	protected String TESTPATH = "ProjectData/N-test.csv";
 	protected Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
-	
+
 }

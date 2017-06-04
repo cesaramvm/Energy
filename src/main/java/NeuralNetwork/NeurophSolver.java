@@ -10,14 +10,16 @@ import java.io.PrintWriter;
 import static java.lang.Math.abs;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
-import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
 
 import Global.GlobalConstants;
@@ -28,15 +30,16 @@ import Global.GlobalConstants;
 public class NeurophSolver extends GlobalConstants {
 
 	private final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
-	private final ArrayList<TransferFunctionType> TYPES = new ArrayList<>(
-			Arrays.asList(TransferFunctionType.SIN, TransferFunctionType.TANH, TransferFunctionType.GAUSSIAN));
 	private NeurophSearch neurophSearch;
+	private final static String CSV_SAVES = "NeurophSolutions/";
+	private final static String NET_SAVES = "NeurophSolutions/Networks/";
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, int numLines,
 			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph,
 			String fileName) {
 
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName);
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName,
+				NET_SAVES, CSV_SAVES);
 		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
 			neurophSearch.writeRows();
@@ -46,35 +49,11 @@ public class NeurophSolver extends GlobalConstants {
 		}
 	}
 
-	public void advancedLRSearch(int iterations, Class<? extends Object> propagationTypeClass, ArrayList<Double> lrates,
+	public void advancedLRSearch(int iterations, Class<? extends Object> propagationTypeClass, List<Double> lrates,
 			TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean showGraph,
 			String fileName) {
-//
-//		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
-//				TESTPATH, fileName);
-//		int[] combination2 = { 14, 5, 1 };
-//		neurophSearch.onePlotLRs(lrates, transfer, combination2);
-//		try {
-//			neurophSearch.writeRows();
-//			neurophSearch.closeTableWriter();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH,
-//				TESTPATH, fileName);
-//		int[] combination3 = { 14, 6, 1 };
-//		neurophSearch.onePlotLRs(lrates, transfer, combination3);
-//		try {
-//			neurophSearch.writeRows();
-//			neurophSearch.closeTableWriter();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 
 		for (int i = 1; i <= maxHiddenLayers; i++) {
-
 			neuronsConfig.clear();
 			int[] combination = new int[i + 2];
 			combination[0] = 14;
@@ -85,9 +64,9 @@ public class NeurophSolver extends GlobalConstants {
 					combination[j] = comb[j - 1];
 				}
 				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
-						fileName);
+						fileName, NET_SAVES, CSV_SAVES);
 				neurophSearch.onePlotLRs(lrates, transfer, combination);
-				
+
 				try {
 					neurophSearch.writeRows();
 				} catch (Exception e) {
@@ -99,109 +78,80 @@ public class NeurophSolver extends GlobalConstants {
 		neurophSearch.closeTableWriter();
 	}
 
-	public void fullSearch() {
-		boolean showGraph = true;
-		// BackPropagation or ResilientPropagation
-		neurophSearch = new NeurophSearch(15000, ResilientPropagation.class, showGraph, TRAINPATH, TESTPATH,
-				"AllTest.csv");
-		// neurophSearch.onePlot(5, 0.3, TransferFunctionType.GAUSSIAN, 6, 0,
-		// NeurophModule.Rprop);
-		ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
-
-		Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-		Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-		int i;
-		for (i = 1; i <= 3; i++) {
-			neuronsConfig.clear();
-
-			Integer[] usedNeurons = possibleNeurons;
-			if (i == 3) {
-				usedNeurons = possible3Neurons;
-			}
-			createCombinations(i, usedNeurons, new ArrayList<>());
-			int[] combination = new int[i + 2];
-			combination[0] = 14;
-			combination[i + 2 - 1] = 1;
-			for (Integer[] comb : neuronsConfig) {
-				for (int j = 1; j < i + 2 - 1; j++) {
-					combination[j] = comb[j - 1];
-				}
-				if (combination[1] == 14) {
-					for (TransferFunctionType type : TYPES) {
-						neurophSearch.onePlotLRs(lrates, type, combination);
-						try {
-							neurophSearch.writeRows();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					System.out.println("Finished " + Arrays.toString(combination));
-
-				}
-
-			}
-
-		}
-	}
-
 	public void findBestNetwork() {
 		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
-		String networkDir = "TemporalNets/";
-		File folder = new File(networkDir);
+		File folder = new File(NET_SAVES);
 		File[] listOfFiles = folder.listFiles();
 		String bestNetworkFile = "";
 		Double minMeanError = Double.POSITIVE_INFINITY;
 		Double minError = Double.POSITIVE_INFINITY;
 		for (File f : listOfFiles) {
-			Double networkSumError = 0.0;
-			Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
-			NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
-			// Para sacar el test de cada uno
-			// networkTest(f.toString(), problem, f.getName().substring(0,
-			// f.getName().length()-5) + ".csv");
-			for (DataSetRow dataRow : allDataset.getRows()) {
-				neuralNetwork.setInput(dataRow.getInput());
-				neuralNetwork.calculate();
-				double[] networkOutput = neuralNetwork.getOutput();
-				double[] desiredOut = dataRow.getDesiredOutput();
-				Normalizer n = problem.getNormalizer();
-				Double calculado = n.denormalizeObjective(networkOutput[0]);
-				Double deseado = n.denormalizeObjective(desiredOut[0]);
-				Double error = abs(calculado - deseado);
-				networkSumError += error;
-				if (error > maxErrorNetwork) {
-					maxErrorNetwork = error;
+			if (f.getName().toLowerCase().endsWith(".nnet")) {
+				System.out.println(listOfFiles.length);
+				Double networkSumError = 0.0;
+				Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
+				NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
+				// Para sacar el test de cada uno
+				// networkTest(f.toString(), problem, f.getName().substring(0,
+				// f.getName().length()-5) + ".csv");
+				for (DataSetRow dataRow : allDataset.getRows()) {
+					neuralNetwork.setInput(dataRow.getInput());
+					neuralNetwork.calculate();
+					double[] networkOutput = neuralNetwork.getOutput();
+					double[] desiredOut = dataRow.getDesiredOutput();
+					Normalizer n = problem.getNormalizer();
+					Double calculado = n.denormalizeObjective(networkOutput[0]);
+					Double deseado = n.denormalizeObjective(desiredOut[0]);
+					Double error = abs(calculado - deseado);
+					networkSumError += error;
+					if (error > maxErrorNetwork) {
+						maxErrorNetwork = error;
+					}
+				}
+				Double meanError = networkSumError / (allDataset.getRows().size());
+
+				// if (maxErrorNetwork < minError) {
+				// minError = maxErrorNetwork;
+				// minMeanError = meanError;
+				// bestNetworkFile = f.toString();
+				// }
+				if (meanError < minMeanError) {
+					minError = maxErrorNetwork;
+					minMeanError = meanError;
+					bestNetworkFile = f.toString();
 				}
 			}
-			Double meanError = networkSumError / (allDataset.getRows().size());
-
-			// if (maxErrorNetwork < minError) {
-			// minError = maxErrorNetwork;
-			// minMeanError = meanError;
-			// bestNetworkFile = f.toString();
-			// }
-			if (meanError < minMeanError) {
-				minError = maxErrorNetwork;
-				minMeanError = meanError;
-				bestNetworkFile = f.toString();
-			}
-
 		}
 
-		System.out.println(bestNetworkFile);
-		System.out.println(minError);
-		System.out.println(minMeanError);
+		if (bestNetworkFile == "") {
+			String resultado = "No se han encontrado archivos de guardado de redes neuronales (.nnet) en la carpeta "
+					+ NET_SAVES;
+			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+			final JDialog dlg = msg.createDialog("Ningúna red encontrada");
+			dlg.setVisible(true);
+		} else {
+			String resultado = "La mejor red es: \n" + bestNetworkFile + "\n" + "Con un error minimo de " + minError
+					+ "\n" + "Y un error medio de " + minMeanError;
+			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+			final JDialog dlg = msg.createDialog("Mejor red neuronal");
+			dlg.setVisible(true);
+		}
+
 	}
 
-	public void networkTest(String fileRoute, String saveRoute) {
+	public void networkTest(String inputFile, String outputFile) {
+		if (!inputFile.endsWith(".nnet")) {
+			inputFile += ".nnet";
+		}
+		outputFile = CSV_SAVES + outputFile + ".csv";
+		inputFile = NET_SAVES + inputFile;
 		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
-
 		try {
-			FileWriter fw = new FileWriter(saveRoute, false);
+			FileWriter fw = new FileWriter(outputFile, false);
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter pw = new PrintWriter(bw);
 			pw.println("TABLA FINAL; OBJETIVO; RESULTADO; ERROR");
-			NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(fileRoute);
+			NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(inputFile);
 			for (DataSetRow dataRow : allDataset.getRows()) {
 				neuralNetwork.setInput(dataRow.getInput());
 				neuralNetwork.calculate();
@@ -242,5 +192,34 @@ public class NeurophSolver extends GlobalConstants {
 			}
 		}
 	}
+
+	/*
+	 * public void fullSearch() { boolean showGraph = true; // BackPropagation
+	 * or ResilientPropagation neurophSearch = new NeurophSearch(15000,
+	 * ResilientPropagation.class, showGraph, TRAINPATH, TESTPATH,
+	 * "AllTest.csv", NET_SAVES); // neurophSearch.onePlot(5, 0.3,
+	 * TransferFunctionType.GAUSSIAN, 6, 0, // NeurophModule.Rprop);
+	 * ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
+	 * 
+	 * Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+	 * Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 }; int i;
+	 * for (i = 1; i <= 3; i++) { neuronsConfig.clear();
+	 * 
+	 * Integer[] usedNeurons = possibleNeurons; if (i == 3) { usedNeurons =
+	 * possible3Neurons; } createCombinations(i, usedNeurons, new
+	 * ArrayList<>()); int[] combination = new int[i + 2]; combination[0] = 14;
+	 * combination[i + 2 - 1] = 1; for (Integer[] comb : neuronsConfig) { for
+	 * (int j = 1; j < i + 2 - 1; j++) { combination[j] = comb[j - 1]; } if
+	 * (combination[1] == 14) { for (TransferFunctionType type : TYPES) {
+	 * neurophSearch.onePlotLRs(lrates, type, combination); try {
+	 * neurophSearch.writeRows(); } catch (Exception e) { e.printStackTrace(); }
+	 * } System.out.println("Finished " + Arrays.toString(combination));
+	 * 
+	 * }
+	 * 
+	 * }
+	 * 
+	 * } }
+	 */
 
 }

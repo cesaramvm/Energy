@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
@@ -32,9 +33,10 @@ public class NeurophSearch {
 	private final static int OUTPUT = 1;
 	private final static DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
 	private final static DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
-	private final static String CSV_SAVES = "NeurophSolutions/";
-	private final static String NET_SAVES = "NeurophSolutions/Networks/";
+	
 
+	private String CSV_SAVES;
+	private String NET_SAVES;
 	private DataSet trainingDataSet;
 	private DataSet testingDataSet;
 	private Class<? extends Object> propagationClass;
@@ -48,8 +50,10 @@ public class NeurophSearch {
 	private ArrayList<Integer> columnIndexes = new ArrayList<>();
 	private LineChartSample chartTesting;
 
-	public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass,
-			boolean graphShow, String trainingFile, String testingFile, String writerPath) {
+	public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean graphShow, 
+			String trainingFile, String testingFile, String writerPath, String netSaves, String csvSaves) {
+		this.NET_SAVES = netSaves;
+		this.CSV_SAVES = csvSaves;
 		this.MAXITERATIONS = iterations;
 		this.showGraph = graphShow;
 		this.trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
@@ -74,7 +78,7 @@ public class NeurophSearch {
 
 	}
 
-	public void onePlotLRs(ArrayList<Double> learningRates, TransferFunctionType transferType, int[] layers) {
+	public void onePlotLRs(List<Double> learningRates, TransferFunctionType transferType, int[] layers) {
 		clearAll();
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);

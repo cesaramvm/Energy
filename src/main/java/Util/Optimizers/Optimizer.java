@@ -10,7 +10,7 @@ import Metaheuristic.Models.MetaVariable;
  */
 public interface Optimizer {
 
-    abstract public void optimize(MetaSolution solution);
+	abstract public void optimize(MetaSolution solution);
 
-    abstract public double evaluate(HashMap<Integer, MetaVariable> variables, Double epsi);
+	abstract public double evaluate(HashMap<Integer, MetaVariable> variables, Double epsi);
 }

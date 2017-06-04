@@ -33,7 +33,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton, advancedButton;
 	private MetaSolver metaSol;
-	
+
 	protected MetaGui() {
 		super("Metaheuristica", "Modo Metaheurísticas");
 
@@ -83,7 +83,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 							int parts = this.validPart(partsNum) ? partsNum : 99;
 							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
 									JOptionPane.QUESTION_MESSAGE);
-							if(file!=null){
+							if (file != null) {
 								JOptionPane.showMessageDialog(null,
 										"Branches " + branches + " , leaves " + leaves + ", parts " + parts);
 								String fileName = file + ".csv";
@@ -110,22 +110,28 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				boolean lsbi = LSBICheck.isSelected();
 				someSelected = random || lsfi || lsbi;
 				if (someSelected) {
-					if (random) {optimizers.add(RandomEvaluationOptimizer.class);}
-					if (lsfi) {optimizers.add(LSFIEvaluationOptimizer.class);}
-					if (lsbi) {optimizers.add(LSBIEvaluationOptimizer.class);}
+					if (random) {
+						optimizers.add(RandomEvaluationOptimizer.class);
+					}
+					if (lsfi) {
+						optimizers.add(LSFIEvaluationOptimizer.class);
+					}
+					if (lsbi) {
+						optimizers.add(LSBIEvaluationOptimizer.class);
+					}
 				}
 			}
 
 			if (n == JOptionPane.OK_OPTION) {
 				List<Integer> numBranches = new ArrayList<>();
 				String branchesStr = "";
-				while (branchesStr!=null && numBranches.size() == 0) {
+				while (branchesStr != null && numBranches.size() == 0) {
 					branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
 							JOptionPane.QUESTION_MESSAGE);
-					if(branchesStr!=null){
+					if (branchesStr != null) {
 						branchesStr = branchesStr.replaceAll("\\s", "");
-						int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream().mapToInt(x -> this.giveInteger(x))
-								.filter(x -> this.validBranch(x)).toArray();
+						int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream()
+								.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validBranch(x)).toArray();
 						numBranches = IntStream.of(branchesArray).boxed().collect(Collectors.toList());
 						Set<Integer> set = new HashSet<>(numBranches);
 						numBranches.clear();
@@ -133,35 +139,35 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						Collections.sort(numBranches);
 					}
 				}
-				
-				if(branchesStr!=null){
+
+				if (branchesStr != null) {
 					List<Integer> branches = numBranches;
 					List<Integer> numLeaves = new ArrayList<>();
 					String leavesStr = "";
 					while (leavesStr != null && numLeaves.size() == 0) {
 						leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
 								JOptionPane.QUESTION_MESSAGE);
-						if(leavesStr!=null){
+						if (leavesStr != null) {
 							leavesStr = leavesStr.replaceAll("\\s", "");
-							int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream().mapToInt(x -> this.giveInteger(x))
-									.filter(x -> this.validLeaf(x)).toArray();
+							int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream()
+									.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validLeaf(x)).toArray();
 							numLeaves = IntStream.of(leavesArray).boxed().collect(Collectors.toList());
 							Set<Integer> set = new HashSet<Integer>(numLeaves);
 							numLeaves.clear();
 							numLeaves.addAll(set);
 							Collections.sort(numLeaves);
-							}
+						}
 					}
-					if(leavesStr!=null){
+					if (leavesStr != null) {
 						List<Integer> leaves = numLeaves;
 						List<Integer> numParts = new ArrayList<>();
 						String partsStr = "";
-						while (partsStr !=null && numParts.size() == 0) {
+						while (partsStr != null && numParts.size() == 0) {
 							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Hojas",
 									JOptionPane.QUESTION_MESSAGE);
-							if (partsStr != null){
-								int[] partsArray = Arrays.asList(partsStr.split(",")).stream().mapToInt(x -> this.giveInteger(x))
-										.filter(x -> this.validPart(x)).toArray();
+							if (partsStr != null) {
+								int[] partsArray = Arrays.asList(partsStr.split(",")).stream()
+										.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validPart(x)).toArray();
 								numParts = IntStream.of(partsArray).boxed().collect(Collectors.toList());
 								Set<Integer> set = new HashSet<>(numParts);
 								numParts.clear();
@@ -169,18 +175,19 @@ public class MetaGui extends DefaultTab implements ActionListener {
 								Collections.sort(numParts);
 							}
 						}
-						if(partsStr != null){
+						if (partsStr != null) {
 							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
 									JOptionPane.QUESTION_MESSAGE);
-							if(file!=null){
+							if (file != null) {
 								String fileName = file + ".csv";
 								List<Integer> parts = numParts;
 
-								new Thread(() -> this.metaAdvanced(optimizers, parts, branches, leaves, fileName)).start();
+								new Thread(() -> this.metaAdvanced(optimizers, parts, branches, leaves, fileName))
+										.start();
 							}
 						}
 					}
-				}				
+				}
 			}
 		}
 	}
@@ -190,18 +197,19 @@ public class MetaGui extends DefaultTab implements ActionListener {
 		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer, fileName);
 		MetaResults results = metaSol.getAndSaveResults();
 		metaSol.closeTableWriter();
-		
-		String resultado = "Tiempo secuencial: " + results.getTotalSecuentialTime() + "\nTiempo concurrente: " + results.getTotalConcurrentTime()
-		+ "\nError medio :" + results.getAvgError() + "\nTiempo medio:" + results.getAvgTime() + "\n\nArchivo " + fileName +" actualizado";
+
+		String resultado = "Tiempo secuencial: " + results.getTotalSecuentialTime() + "\nTiempo concurrente: "
+				+ results.getTotalConcurrentTime() + "\nError medio :" + results.getAvgError() + "\nTiempo medio:"
+				+ results.getAvgTime() + "\n\nArchivo " + fileName + " actualizado";
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
-	    final JDialog dlg = msg.createDialog("Metaheurística Simple Finalizada");
-	    dlg.setVisible(true);
+		final JDialog dlg = msg.createDialog("Metaheurística Simple Finalizada");
+		dlg.setVisible(true);
 
 	}
 
 	private void metaAdvanced(List<Class<? extends Object>> optimizers, List<Integer> parts, List<Integer> numBranches,
 			List<Integer> numLeaves, String fileName) {
-		
+
 		CSVTableWriter tw = MetaSolver.initTableWriter(fileName);
 		for (int leaves : numLeaves) {
 			for (int part : parts) {
@@ -214,11 +222,11 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			}
 		}
 		tw.close();
-		
+
 		String resultado = "Para visualizar los resultados abrir el archivo " + fileName;
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
-	    final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
-	    dlg.setVisible(true);
+		final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
+		dlg.setVisible(true);
 
 	}
 
