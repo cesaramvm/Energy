@@ -21,6 +21,7 @@ import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.*;
 import org.neuroph.util.TransferFunctionType;
 
+import GUI.MetaGui;
 import NeuralNetwork.Charts.ChartData;
 import NeuralNetwork.Charts.LineChartSample;
 
@@ -159,29 +160,13 @@ public class NeurophSearch {
 		Double sumatorio = 0.0;
 
 		for (DataSetRow dataRow : tset.getRows()) {
-
 			nnet.setInput(dataRow.getInput());
 			nnet.calculate();
 			double[] networkOutput = nnet.getOutput();
 			double[] desiredOut = dataRow.getDesiredOutput();
 			double errorParcial = networkOutput[0] - desiredOut[0];
-			// System.out.println("Output: " +
-			// normalizer.denormalizeObjective(networkOutput[0]));
-			// System.out.println("Desired: " +
-			// normalizer.denormalizeObjective(desiredOut[0]));
-			// System.out.println("Error: " + errorParcial);
-			// double errorParcial =
-			// normalizer.denormalizeObjective(networkOutput[0]) -
-			// normalizer.denormalizeObjective(desiredOut[0]);
-
 			double sumaux = errorParcial * errorParcial;
 			sumatorio = sumatorio + sumaux;
-
-			// System.out.println("Error parcial: " + errorParcial);
-			// System.out.print("Desired: " + desiredOut[0] + " ");
-			// System.out.println("Input: " +
-			// Arrays.toString(dataRow.getInput()));
-			// System.out.println(" Output: " + networkOutput[0]);
 		}
 
 		return sumatorio / (2 * INPUT);
@@ -219,8 +204,8 @@ public class NeurophSearch {
 		}
 		try {
 			tableWriter.printRow(nextRow);
-		} catch (Exception e) {
-			System.err.println("EXCEPCION CAPTURADA");
+		} catch (Exception ex) {
+			Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

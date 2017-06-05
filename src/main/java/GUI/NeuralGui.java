@@ -30,7 +30,10 @@ import NeuralNetwork.NeurophSolver;
  */
 public class NeuralGui extends DefaultTab implements ActionListener {
 
-	private JButton simpleButton, lRatesdButton, findBestNetworkButton, networkTestButton;
+	private JButton simpleButton;
+	private JButton lRatesdButton;
+	private JButton findBestNetworkButton;
+	private JButton networkTestButton;
 	private NeurophSolver neurophSolver = new NeurophSolver();
 
 	protected NeuralGui() {
@@ -70,7 +73,6 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == simpleButton) {
-			System.out.println("simple");
 			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 1000)", "Iteraciones",
 					JOptionPane.QUESTION_MESSAGE);
 			if (iterationsStr != null) {
@@ -160,7 +162,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 				if (propagationClass != null) {
 					List<Double> lRatesList = new ArrayList<>();
 					String lRatesStr = "";
-					while (lRatesStr != null && lRatesList.size() == 0) {
+					while (lRatesStr != null && lRatesList.isEmpty()) {
 						lRatesStr = JOptionPane.showInputDialog(null,
 								"Introduce los LearningRates que quieres estudiar separados por ,", "Hojas",
 								JOptionPane.QUESTION_MESSAGE);
@@ -168,8 +170,10 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 							lRatesStr = lRatesStr.replaceAll("\\s", "");
 							double[] lRatesArray = Arrays.asList(lRatesStr.split(",")).stream()
 									.mapToDouble(x -> this.giveDouble(x)).filter(x -> this.validLR(x)).toArray();
-							lRatesList = DoubleStream.of(lRatesArray).boxed().collect(Collectors.toList());
-							Set<Double> set = new HashSet<Double>(lRatesList);
+							DoubleStream stream = DoubleStream.of(lRatesArray);
+							lRatesList = stream.boxed().collect(Collectors.toList());
+							stream.close();
+							Set<Double> set = new HashSet<>(lRatesList);
 							lRatesList.clear();
 							lRatesList.addAll(set);
 							Collections.sort(lRatesList);
@@ -190,7 +194,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 							if (maxHiddenLayersStr != null) {
 								List<Integer> neuronsNumList = new ArrayList<>();
 								String neuronsNumStr = "";
-								while (neuronsNumStr != null && neuronsNumList.size() == 0) {
+								while (neuronsNumStr != null && neuronsNumList.isEmpty()) {
 									neuronsNumStr = JOptionPane.showInputDialog(null,
 											"Introduce todos los posbiles números de neurona en cada capa separados por , (Se estudiarán todas las posibles combinaciones para cada número que insertes en cada capa)",
 											"Hojas", JOptionPane.QUESTION_MESSAGE);
@@ -199,9 +203,11 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 										int[] neuronsNumArray = Arrays.asList(neuronsNumStr.split(",")).stream()
 												.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validNeuronsNum(x))
 												.toArray();
-										neuronsNumList = IntStream.of(neuronsNumArray).boxed()
+										IntStream stream = IntStream.of(neuronsNumArray);
+										neuronsNumList = stream.boxed()
 												.collect(Collectors.toList());
-										Set<Integer> set = new HashSet<Integer>(neuronsNumList);
+										stream.close();
+										Set<Integer> set = new HashSet<>(neuronsNumList);
 										neuronsNumList.clear();
 										neuronsNumList.addAll(set);
 										Collections.sort(neuronsNumList);

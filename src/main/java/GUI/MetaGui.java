@@ -31,7 +31,8 @@ import Util.Optimizers.RandomEvaluationOptimizer;
  */
 public class MetaGui extends DefaultTab implements ActionListener {
 
-	private JButton simpleButton, advancedButton;
+	private JButton simpleButton;
+	private JButton advancedButton;
 	private MetaSolver metaSol;
 
 	protected MetaGui() {
@@ -125,14 +126,16 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			if (n == JOptionPane.OK_OPTION) {
 				List<Integer> numBranches = new ArrayList<>();
 				String branchesStr = "";
-				while (branchesStr != null && numBranches.size() == 0) {
+				while (branchesStr != null && numBranches.isEmpty()) {
 					branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
 							JOptionPane.QUESTION_MESSAGE);
 					if (branchesStr != null) {
 						branchesStr = branchesStr.replaceAll("\\s", "");
 						int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream()
 								.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validBranch(x)).toArray();
-						numBranches = IntStream.of(branchesArray).boxed().collect(Collectors.toList());
+						IntStream stream = IntStream.of(branchesArray);
+						numBranches = stream.boxed().collect(Collectors.toList());
+						stream.close();
 						Set<Integer> set = new HashSet<>(numBranches);
 						numBranches.clear();
 						numBranches.addAll(set);
@@ -144,15 +147,17 @@ public class MetaGui extends DefaultTab implements ActionListener {
 					List<Integer> branches = numBranches;
 					List<Integer> numLeaves = new ArrayList<>();
 					String leavesStr = "";
-					while (leavesStr != null && numLeaves.size() == 0) {
+					while (leavesStr != null && numLeaves.isEmpty()) {
 						leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
 								JOptionPane.QUESTION_MESSAGE);
 						if (leavesStr != null) {
 							leavesStr = leavesStr.replaceAll("\\s", "");
 							int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream()
 									.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validLeaf(x)).toArray();
-							numLeaves = IntStream.of(leavesArray).boxed().collect(Collectors.toList());
-							Set<Integer> set = new HashSet<Integer>(numLeaves);
+							IntStream stream = IntStream.of(leavesArray);
+							numLeaves = stream.boxed().collect(Collectors.toList());
+							stream.close();
+							Set<Integer> set = new HashSet<>(numLeaves);
 							numLeaves.clear();
 							numLeaves.addAll(set);
 							Collections.sort(numLeaves);
@@ -162,13 +167,15 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						List<Integer> leaves = numLeaves;
 						List<Integer> numParts = new ArrayList<>();
 						String partsStr = "";
-						while (partsStr != null && numParts.size() == 0) {
+						while (partsStr != null && numParts.isEmpty()) {
 							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Hojas",
 									JOptionPane.QUESTION_MESSAGE);
 							if (partsStr != null) {
 								int[] partsArray = Arrays.asList(partsStr.split(",")).stream()
 										.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validPart(x)).toArray();
-								numParts = IntStream.of(partsArray).boxed().collect(Collectors.toList());
+								IntStream stream = IntStream.of(partsArray);
+								numParts = stream.boxed().collect(Collectors.toList());
+								stream.close();
 								Set<Integer> set = new HashSet<>(numParts);
 								numParts.clear();
 								numParts.addAll(set);

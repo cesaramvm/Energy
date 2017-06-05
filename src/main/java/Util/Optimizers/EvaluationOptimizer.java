@@ -56,7 +56,7 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
 	protected final ArrayList<Double> newRandomList(Double value, int parts) {
 		ArrayList<Double> numbers = new ArrayList<>();
 		numbers.add(0.0);
-		double aux = (parts - 1) / 2;
+		double aux = (double) (parts - 1) / 2;
 		double part = value / aux;
 		for (int i = 1; i <= aux; i++) {
 			numbers.add(i * part);

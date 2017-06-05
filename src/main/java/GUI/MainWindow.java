@@ -3,8 +3,6 @@ package GUI;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,37 +32,21 @@ public class MainWindow extends JPanel {
 		tabbedPane.addTab(neuralGui.getTitle(), icon, neuralGui.getTabContent(), neuralGui.getMouseOver());
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		tabbedPane.addTab("Salir", icon, new JPanel(), "Pulse para salir");
-		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
-
 		// Add the tabbed pane to this panel.
 		this.add(tabbedPane);
 
 		// The following line enables to use scrolling tabs.
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
-		tabbedPane.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				if (tabbedPane.getSelectedIndex() == 2) {
-					System.exit(0);
-				}
-
-			}
-		});
 	}
 
 	/*
 	 * raul cabido juanjo montemayor jose velez buenaposada
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				// Turn off metal's use of bold fonts
-				UIManager.put("swing.boldMetal", Boolean.FALSE);
-				createAndShowGUI();
-			}
-		});
+		SwingUtilities.invokeLater(() -> { 
+			UIManager.put("swing.boldMetal", Boolean.FALSE);
+			createAndShowGUI(); 
+			});
 	}
 
 	private static void createAndShowGUI() {

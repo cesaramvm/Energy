@@ -23,6 +23,7 @@ import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
 
 import Global.GlobalConstants;
+import Metaheuristic.MetaSolver;
 
 /**
  * @author César Valdés
@@ -44,8 +45,8 @@ public class NeurophSolver extends GlobalConstants {
 		try {
 			neurophSearch.writeRows();
 			neurophSearch.closeTableWriter();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			Logger.getLogger(NeurophSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
@@ -69,8 +70,8 @@ public class NeurophSolver extends GlobalConstants {
 
 				try {
 					neurophSearch.writeRows();
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception ex) {
+					Logger.getLogger(NeurophSolver.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
 
@@ -87,7 +88,6 @@ public class NeurophSolver extends GlobalConstants {
 		Double minError = Double.POSITIVE_INFINITY;
 		for (File f : listOfFiles) {
 			if (f.getName().toLowerCase().endsWith(".nnet")) {
-				System.out.println(listOfFiles.length);
 				Double networkSumError = 0.0;
 				Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
 				NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
@@ -192,34 +192,4 @@ public class NeurophSolver extends GlobalConstants {
 			}
 		}
 	}
-
-	/*
-	 * public void fullSearch() { boolean showGraph = true; // BackPropagation
-	 * or ResilientPropagation neurophSearch = new NeurophSearch(15000,
-	 * ResilientPropagation.class, showGraph, TRAINPATH, TESTPATH,
-	 * "AllTest.csv", NET_SAVES); // neurophSearch.onePlot(5, 0.3,
-	 * TransferFunctionType.GAUSSIAN, 6, 0, // NeurophModule.Rprop);
-	 * ArrayList<Double> lrates = new ArrayList<>(Arrays.asList(0.2, 0.3, 0.4));
-	 * 
-	 * Integer[] possibleNeurons = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-	 * Integer[] possible3Neurons = { 6, 7, 8, 9, 10, 11, 12, 13, 14 }; int i;
-	 * for (i = 1; i <= 3; i++) { neuronsConfig.clear();
-	 * 
-	 * Integer[] usedNeurons = possibleNeurons; if (i == 3) { usedNeurons =
-	 * possible3Neurons; } createCombinations(i, usedNeurons, new
-	 * ArrayList<>()); int[] combination = new int[i + 2]; combination[0] = 14;
-	 * combination[i + 2 - 1] = 1; for (Integer[] comb : neuronsConfig) { for
-	 * (int j = 1; j < i + 2 - 1; j++) { combination[j] = comb[j - 1]; } if
-	 * (combination[1] == 14) { for (TransferFunctionType type : TYPES) {
-	 * neurophSearch.onePlotLRs(lrates, type, combination); try {
-	 * neurophSearch.writeRows(); } catch (Exception e) { e.printStackTrace(); }
-	 * } System.out.println("Finished " + Arrays.toString(combination));
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * } }
-	 */
-
 }

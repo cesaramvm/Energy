@@ -29,10 +29,6 @@ public class Normalizer {
 			double dataRange = max_array.get(i) - min_array.get(i);
 			double dataMax = max_array.get(i) + norm_Range_Percentage * dataRange;
 			double dataMin = min_array.get(i) - norm_Range_Percentage * dataRange;
-			// System.out.println("El maximo era: " + maxs.get(i + 1) + "ahora
-			// es " + dataMax);
-			// System.out.println("El minimo era: " + mins.get(i + 1) + "ahora
-			// es " + dataMin + "\n");
 			maxs.add(dataMax);
 			mins.add(dataMin);
 		}

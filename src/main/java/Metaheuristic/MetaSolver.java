@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import GUI.MetaGui;
 import Metaheuristic.Models.MetaResults;
 import Metaheuristic.Models.MetaSolution;
 import Util.CSVTableWriter;
@@ -112,8 +113,8 @@ public class MetaSolver {
 
 		try {
 			this.writeRow();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return results;
 	}
@@ -156,8 +157,8 @@ public class MetaSolver {
 
 			tableWriter.printRow(nextRow);
 
-		} catch (Exception e) {
-			System.err.println("EXCEPCION CAPTURADA");
+		} catch (Exception ex) {
+			Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

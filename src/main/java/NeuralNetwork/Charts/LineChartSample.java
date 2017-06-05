@@ -40,8 +40,8 @@ public class LineChartSample extends Thread {
 			SwingUtilities.invokeLater(() -> {
 				showGUI();
 			});
-
-			Thread.sleep(1500 + 20 * data.size());
+			Long sleepTime = (long) (1500 + 20 * data.size());
+			Thread.sleep(sleepTime);
 			makeScreenshot(frame);
 			frame.setVisible(false);
 			frame.dispose();
@@ -113,11 +113,6 @@ public class LineChartSample extends Thread {
 
 	public void makeScreenshot(JFrame argFrame) {
 		Rectangle rec = argFrame.getBounds();
-		/*
-		 * while(argFrame.getState()==0){
-		 * 
-		 * System.out.println(argFrame.getState()); }
-		 */
 		BufferedImage bufferedImage = new BufferedImage(rec.width, rec.height, BufferedImage.TYPE_INT_ARGB);
 		argFrame.paint(bufferedImage.getGraphics());
 

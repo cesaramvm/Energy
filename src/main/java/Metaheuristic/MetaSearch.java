@@ -32,8 +32,6 @@ public class MetaSearch extends GlobalConstants implements Callable<List<MetaSol
 
 	@Override
 	public List<MetaSolution> call() throws Exception {
-		// System.err.println("Thread # " + Thread.currentThread().getId() + "
-		// is doing this task");
 		for (int i = 0; i < leaves; i++) {
 			HashMap<Integer, MetaVariable> newSolVariables = new HashMap<>();
 			for (int j = 0; j < problem.getNumParams(); j++) {
