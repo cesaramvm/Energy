@@ -36,10 +36,10 @@ public class NeurophSolver extends GlobalConstants {
 	private static final String NET_SAVES = "NeurophSolutions/Networks/";
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, int numLines,
-			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph,
+			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean saveGraph,
 			String fileName) {
 
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName,
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, TRAINPATH, TESTPATH, fileName,
 				NET_SAVES, CSV_SAVES);
 		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
@@ -51,7 +51,7 @@ public class NeurophSolver extends GlobalConstants {
 	}
 
 	public void advancedLRSearch(int iterations, Class<? extends Object> propagationTypeClass, List<Double> lrates,
-			TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean showGraph,
+			TransferFunctionType transfer, int maxHiddenLayers, Integer[] neuronsInLayers, boolean saveGraph,
 			String fileName) {
 
 		for (int i = 1; i <= maxHiddenLayers; i++) {
@@ -64,7 +64,7 @@ public class NeurophSolver extends GlobalConstants {
 				for (int j = 1; j < i + 2 - 1; j++) {
 					combination[j] = comb[j - 1];
 				}
-				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
+				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, TRAINPATH, TESTPATH,
 						fileName, NET_SAVES, CSV_SAVES);
 				neurophSearch.onePlotLRs(lrates, transfer, combination);
 

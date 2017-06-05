@@ -119,7 +119,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 								if (layersStr != null) {
 									int[] layers = ArrayUtils.add(layersArray, 1);
 
-									boolean showGraph = this.requestShowGraph();
+									boolean saveGraph = this.requestSaveGraph();
 
 									String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
 											"Archivo", JOptionPane.QUESTION_MESSAGE);
@@ -135,7 +135,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 
 										NeurophSolver neurophSolver = new NeurophSolver();
 										new Thread(() -> neurophSolver.simpleSearch(iterations, propagationClass, lines,
-												learningRate, transferClass, layers, showGraph, fileName)).start();
+												learningRate, transferClass, layers, saveGraph, fileName)).start();
 									}
 								}
 							}
@@ -206,7 +206,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 								}
 								if (neuronsNumStr != null) {
 									Integer[] neuronsNum = neuronsNumList.toArray(new Integer[neuronsNumList.size()]);
-									boolean showGraph = this.requestShowGraph();
+									boolean saveGraph = this.requestSaveGraph();
 
 									String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
 											"Archivo", JOptionPane.QUESTION_MESSAGE);
@@ -219,7 +219,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 												? maxHiddenLayersNum : 3;
 										NeurophSolver neurophSolver = new NeurophSolver();
 										new Thread(() -> neurophSolver.advancedLRSearch(iterations, propagationClass,
-												lRates, transferClass, maxHiddenLayers, neuronsNum, showGraph,
+												lRates, transferClass, maxHiddenLayers, neuronsNum, saveGraph,
 												fileName)).start();
 									}
 								}
@@ -248,9 +248,9 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 
 	}
 
-	private boolean requestShowGraph() {
+	private boolean requestSaveGraph() {
 		int reply = JOptionPane.showConfirmDialog(null,
-				"¿Quieres que se muestren los gráficos de entrenamiento?", "Gráficos",
+				"¿Quieres que se muestren y guarden los gráficos de entrenamiento?", "Gráficos",
 				JOptionPane.YES_NO_OPTION);
 		return reply == JOptionPane.YES_OPTION;
 	}
