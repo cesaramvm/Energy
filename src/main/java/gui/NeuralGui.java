@@ -231,8 +231,16 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 		} else if (e.getSource() == findBestNetworkButton) {
 			new Thread(() -> NeurophSolver.findBestNetwork()).start();
 		} else if (e.getSource() == networkTestButton) {
-			String inputFile = "in";
-			String outputFile = "out";
+			String inputFile = JOptionPane.showInputDialog(null, "Nombre del arhivo en el que se encuentra la red (debe estar en NeurophSolutions/Networks/ )",
+					"Elección red neuronal", JOptionPane.QUESTION_MESSAGE);
+			if (inputFile == null) {
+				return;
+			}
+			String outputFile = JOptionPane.showInputDialog(null, "Nombre del arhivo en el que quieres guardar los resultados (estará eh NeurophSolutions/ )",
+					"Archivo de salida", JOptionPane.QUESTION_MESSAGE);
+			if (outputFile == null) {
+				return;
+			}
 			String inputFilePath = inputFile.endsWith(".nnet") ? inputFile : inputFile + ".nnet";
 			String outputFilePath = outputFile.endsWith(".csv") ? outputFile : outputFile + ".csv";
 			new Thread(() -> NeurophSolver.networkTest(inputFilePath, outputFilePath)).start();
