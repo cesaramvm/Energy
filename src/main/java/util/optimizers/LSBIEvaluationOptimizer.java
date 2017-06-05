@@ -2,7 +2,7 @@ package util.optimizers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import metaheuristic.models.MetaSolution;
@@ -22,12 +22,11 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
 		Double newEvaluation;
 		int i = 0;
 		while (!paramsIndex.isEmpty()) {
-			i = i + 1; // No uso i++ para evitar un warning de Unused variable i
-						// (bug)
+			i = i+1;
 			ArrayList<Double> evaluations = new ArrayList<>();
 			Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
 			Double newEpsilon = solution.getEpsilon();
-			HashMap<Integer, MetaVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
+			Map<Integer, MetaVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
 
 			if (selectedChange == 14) {
 				for (Double d : epsilonList) {

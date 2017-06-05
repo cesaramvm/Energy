@@ -33,7 +33,7 @@ public class MetaSolver {
 	private MetaResults results;
 	private ArrayList<MetaSearch> metaSearches = new ArrayList<>();
 	private CSVTableWriter tableWriter;
-	private final static String CSV_SAVES = "MetaSolutions/";
+	private static final String CSV_SAVES = "MetaSolutions/";
 
 	public MetaSolver(int numBranches, int numLeaves, int parts, Class<? extends Object> evaluationClass,
 			String writerPath) {
@@ -117,13 +117,6 @@ public class MetaSolver {
 		}
 		return results;
 	}
-	//
-	// private Solution findBestSolution() {
-	// if (soluciones.isEmpty()) {
-	// this.search();
-	// }
-	// return Collections.min(soluciones);
-	// }
 
 	public void setTableWriter(CSVTableWriter tableWriter) {
 		this.tableWriter = tableWriter;
@@ -144,7 +137,7 @@ public class MetaSolver {
 			Double minMAe = results.getBestSolution().getEvaluation();
 			Double avgMae = results.getAvgError();
 
-			nextRow.add(evalName.substring(evalName.lastIndexOf(".") + 1, evalName.indexOf("E")));
+			nextRow.add(evalName.substring(evalName.lastIndexOf('.') + 1, evalName.indexOf('E')));
 			nextRow.add(String.valueOf(numBranches));
 			nextRow.add(String.valueOf(branchLeaves));
 			nextRow.add(String.valueOf(parts));
@@ -170,8 +163,8 @@ public class MetaSolver {
 		CSVTableWriter tw = null;
 		try {
 			tw = new CSVTableWriter(realpath, tableHeaders);
-		} catch (Exception e) {
-
+		} catch (Exception ex) {
+			Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return tw;

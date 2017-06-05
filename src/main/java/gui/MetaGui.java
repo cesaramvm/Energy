@@ -10,10 +10,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -34,7 +33,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private JButton simpleButton;
 	private JButton advancedButton;
-	private MetaSolver metaSol;
 
 	protected MetaGui() {
 		super("Metaheuristica", "Modo Metaheurísticas");
@@ -56,12 +54,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		try {
-		} catch (Exception ex) {
-			Logger.getLogger(MetaGui.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
 		if (e.getSource() == simpleButton) {
 			String branchesStr = JOptionPane.showInputDialog(null, "Número de ramas 1-8 (Def: 1)", "Ramas",
 					JOptionPane.QUESTION_MESSAGE);
@@ -98,18 +90,18 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 		} else if (e.getSource() == advancedButton) {
 			List<Class<? extends Object>> optimizers = new ArrayList<>();
-			JCheckBox RandomCheck = new JCheckBox("RandomEvaluationOptimizer");
-			JCheckBox LSFICheck = new JCheckBox("LSFIEvaluationOptimize");
-			JCheckBox LSBICheck = new JCheckBox("LSBIEvaluationOptimize");
+			JCheckBox randomCheck = new JCheckBox("RandomEvaluationOptimizer");
+			JCheckBox lsfiCheck = new JCheckBox("LSFIEvaluationOptimize");
+			JCheckBox lsbiCheck = new JCheckBox("LSBIEvaluationOptimize");
 			String msg = "Selecciona las clases";
-			Object[] msgContent = { msg, RandomCheck, LSFICheck, LSBICheck };
+			Object[] msgContent = { msg, randomCheck, lsfiCheck, lsbiCheck };
 			boolean someSelected = false;
 			int n = JOptionPane.OK_OPTION;
 			while (n == JOptionPane.OK_OPTION && !someSelected) {
 				n = JOptionPane.showConfirmDialog(null, msgContent, "Optimizadores", JOptionPane.DEFAULT_OPTION);
-				boolean random = RandomCheck.isSelected();
-				boolean lsfi = LSFICheck.isSelected();
-				boolean lsbi = LSBICheck.isSelected();
+				boolean random = randomCheck.isSelected();
+				boolean lsfi = lsfiCheck.isSelected();
+				boolean lsbi = lsbiCheck.isSelected();
 				someSelected = random || lsfi || lsbi;
 				if (someSelected) {
 					if (random) {
@@ -169,7 +161,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						List<Integer> numParts = new ArrayList<>();
 						String partsStr = "";
 						while (partsStr != null && numParts.isEmpty()) {
-							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Hojas",
+							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Partes",
 									JOptionPane.QUESTION_MESSAGE);
 							if (partsStr != null) {
 								int[] partsArray = Arrays.asList(partsStr.split(",")).stream()
@@ -202,7 +194,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private void metaEasy(int searchBranches, int leaves, int parts, Class<?> optimizer, String fileName) {
 
-		metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer, fileName);
+		MetaSolver metaSol = new MetaSolver(searchBranches, leaves, parts, optimizer, fileName);
 		MetaResults results = metaSol.getAndSaveResults();
 		metaSol.closeTableWriter();
 
@@ -242,33 +234,25 @@ public class MetaGui extends DefaultTab implements ActionListener {
 		if (number <= 0 || number > 8) {
 			return false;
 		}
-		return ((number & (number - 1)) == 0);
+		return (number & (number - 1)) == 0;
 	}
 
 	private boolean validLeaf(int number) {
-		if (number <= 0 || number > 1000) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(number <= 0 || number > 1000);
 	}
 
 	private boolean validPart(int number) {
-		if (number <= 2 || number > 9999) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(number <= 2 || number > 9999);
 	}
 
 	private Integer giveInteger(String number) {
 		Integer numberInt;
 		try {
 			numberInt = Integer.parseInt(number);
-		} catch (Exception e) {
+			return numberInt;
+		} catch (Exception ex) {
 			return 0;
 		}
-		return numberInt;
 	}
 
 }

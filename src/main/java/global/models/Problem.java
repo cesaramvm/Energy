@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +20,7 @@ import util.Normalizer;
  */
 public class Problem {
 
-	private HashMap<Integer, YearInfo> years = new HashMap<>();
+	private Map<Integer, YearInfo> years = new HashMap<>();
 	private int numParams;
 	private static Normalizer normalizer;
 	// 1 MEANS: KEEPING PROPORCIONALITY IN RANGE (0,1]
@@ -66,8 +68,6 @@ public class Problem {
 				auxYears.put(year.getYear(), year);
 			}
 			b.close();
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger(Problem.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
 			Logger.getLogger(Problem.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -77,11 +77,11 @@ public class Problem {
 		normalizer = norm;
 	}
 
-	public HashMap<Integer, YearInfo> getYears() {
+	public Map<Integer, YearInfo> getYears() {
 		return years;
 	}
 
-	public void setYears(HashMap<Integer, YearInfo> years) {
+	public void setYears(Map<Integer, YearInfo> years) {
 		this.years = years;
 	}
 
@@ -104,12 +104,13 @@ public class Problem {
 	public Problem saveNormalizedData(String full, String train, String test) {
 
 		try {
-			PrintWriter fullwriter = new PrintWriter(full, "UTF-8");
-			PrintWriter testwriter = new PrintWriter(test, "UTF-8");
-			PrintWriter trainwriter = new PrintWriter(train, "UTF-8");
+			String fileFormat = "UTF-8";
+			PrintWriter fullwriter = new PrintWriter(full, fileFormat);
+			PrintWriter testwriter = new PrintWriter(test, fileFormat);
+			PrintWriter trainwriter = new PrintWriter(train, fileFormat);
 			for (int i = 1981; i <= 2011; i++) {
 				YearInfo year = years.get(i);
-				ArrayList<Double> yearData = year.getFullData();
+				List<Double> yearData = year.getFullData();
 				Double yearObj = year.getObj();
 				for (Double d : yearData) {
 					if (i <= 2005) {

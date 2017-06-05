@@ -14,12 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.nnet.learning.ResilientPropagation;
 import org.neuroph.util.TransferFunctionType;
@@ -35,7 +34,6 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 	private JButton lRatesdButton;
 	private JButton findBestNetworkButton;
 	private JButton networkTestButton;
-	private NeurophSolver neurophSolver = new NeurophSolver();
 
 	protected NeuralGui() {
 		super("Redes", "Modo Redes Neuronales");
@@ -121,15 +119,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 								if (layersStr != null) {
 									int[] layers = ArrayUtils.add(layersArray, 1);
 
-									boolean showGraph;
-									int reply = JOptionPane.showConfirmDialog(null,
-											"¿Quieres que se muestren los gráficos de entrenamiento?", "Gráficos",
-											JOptionPane.YES_NO_OPTION);
-									if (reply == JOptionPane.YES_OPTION) {
-										showGraph = true;
-									} else {
-										showGraph = false;
-									}
+									boolean showGraph = this.requestShowGraph();
 
 									String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
 											"Archivo", JOptionPane.QUESTION_MESSAGE);
@@ -216,15 +206,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 								}
 								if (neuronsNumStr != null) {
 									Integer[] neuronsNum = neuronsNumList.toArray(new Integer[neuronsNumList.size()]);
-									boolean showGraph;
-									int reply = JOptionPane.showConfirmDialog(null,
-											"¿Quieres que se muestren los gráficos de entrenamiento?", "Gráficos",
-											JOptionPane.YES_NO_OPTION);
-									if (reply == JOptionPane.YES_OPTION) {
-										showGraph = true;
-									} else {
-										showGraph = false;
-									}
+									boolean showGraph = this.requestShowGraph();
 
 									String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado",
 											"Archivo", JOptionPane.QUESTION_MESSAGE);
@@ -247,90 +229,66 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 				}
 			}
 		} else if (e.getSource() == findBestNetworkButton) {
-			new Thread(() -> neurophSolver.findBestNetwork()).start();
+			new Thread(() -> NeurophSolver.findBestNetwork()).start();
 		} else if (e.getSource() == networkTestButton) {
 			String inputFile = "in";
 			String outputFile = "out";
-			new Thread(() -> neurophSolver.networkTest(inputFile, outputFile)).start();
+			String inputFilePath = inputFile.endsWith(".nnet") ? inputFile : inputFile + ".nnet";
+			String outputFilePath = outputFile.endsWith(".csv") ? outputFile : outputFile + ".csv";
+			new Thread(() -> NeurophSolver.networkTest(inputFilePath, outputFilePath)).start();
 		}
 
 	}
 
-	/*
-	 * private void neuralSearch() { neurophSolver = new NeurophSolver();
-	 * neurophSolver.fullSearch(); neurophSolver.findBestNetwork(); String
-	 * fileRoute = "Net.nnet"; neurophSolver.networkTest(fileRoute,
-	 * "FinalNnetOut.csv");
-	 * 
-	 * }
-	 */
+	private boolean requestShowGraph() {
+		int reply = JOptionPane.showConfirmDialog(null,
+				"¿Quieres que se muestren los gráficos de entrenamiento?", "Gráficos",
+				JOptionPane.YES_NO_OPTION);
+		return reply == JOptionPane.YES_OPTION;
+	}
 
 	private boolean validMaxHiddenLayers(Integer maxHiddenLayersStr) {
-		if (maxHiddenLayersStr <= 0 || maxHiddenLayersStr > 4) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(maxHiddenLayersStr <= 0 || maxHiddenLayersStr > 4);
 	}
 
 	private boolean validNeuronsNum(int neuronsNum) {
-		if (neuronsNum <= 0 || neuronsNum > 15) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(neuronsNum <= 0 || neuronsNum > 15);
 	}
 
 	private boolean validLR(Double learningNum) {
-		if (learningNum <= 0 || learningNum > 10) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(learningNum <= 0 || learningNum > 10);
 	}
 
 	private boolean validLinesNum(Integer linesNum) {
-		if (linesNum <= 0 || linesNum > 100) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(linesNum <= 0 || linesNum > 100);
 	}
 
 	private boolean validIteration(Integer iterationsNum) {
-		if (iterationsNum < 100 || iterationsNum > 1000000) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(iterationsNum < 100 || iterationsNum > 1000000);
 	}
 
 	private boolean validLayer(int number) {
-		if (number <= 0 || number > 20) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(number <= 0 || number > 20);
 	}
 
 	private Integer giveInteger(String number) {
 		Integer numberInt;
 		try {
 			numberInt = Integer.parseInt(number);
-		} catch (Exception e) {
+			return numberInt;
+		} catch (Exception ex) {
 			return 0;
 		}
-		return numberInt;
 	}
 
 	private Double giveDouble(String number) {
 		Double numberInt;
 		try {
 			numberInt = Double.parseDouble(number);
-		} catch (Exception e) {
+			return numberInt;
+		} catch (Exception ex) {
 			return 0.0;
 		}
-		return numberInt;
 	}
 
 }

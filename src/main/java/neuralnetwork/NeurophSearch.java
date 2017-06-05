@@ -1,8 +1,6 @@
 package neuralnetwork;
 
-import neuralnetwork.charts.ChartData;
-import neuralnetwork.charts.LineChartSample;
-import util.CSVTableWriter;
+import static org.neuroph.core.events.LearningEvent.Type.EPOCH_ENDED;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,35 +10,40 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.events.LearningEvent;
-import static org.neuroph.core.events.LearningEvent.Type.EPOCH_ENDED;
 import org.neuroph.core.events.LearningEventListener;
 import org.neuroph.core.learning.LearningRule;
 import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.nnet.learning.*;
+import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.LMS;
 import org.neuroph.util.TransferFunctionType;
+
+import neuralnetwork.charts.ChartData;
+import neuralnetwork.charts.LineChartSample;
+import util.CSVTableWriter;
 
 /**
  * @author César Valdés
  */
 public class NeurophSearch {
 
-	private final static int INPUT = 14;
-	private final static int OUTPUT = 1;
-	private final static DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
-	private final static DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
+	private static final int INPUT = 14;
+	private static final int OUTPUT = 1;
+	private static final DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
+	private static final DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
 	
 
-	private String CSV_SAVES;
-	private String NET_SAVES;
+	private String csvSaves;
+	private String netSaves;
 	private DataSet trainingDataSet;
 	private DataSet testingDataSet;
 	private Class<? extends Object> propagationClass;
 
-	private int MAXITERATIONS;
+	private int maxIterations;
 	private boolean showGraph;
 
 	private ArrayList<ChartData> graphTestData = new ArrayList<>();
@@ -51,9 +54,9 @@ public class NeurophSearch {
 
 	public NeurophSearch(int iterations, Class<? extends Object> newPropagationClass, boolean graphShow, 
 			String trainingFile, String testingFile, String writerPath, String netSaves, String csvSaves) {
-		this.NET_SAVES = netSaves;
-		this.CSV_SAVES = csvSaves;
-		this.MAXITERATIONS = iterations;
+		this.netSaves = netSaves;
+		this.csvSaves = csvSaves;
+		this.maxIterations = iterations;
 		this.showGraph = graphShow;
 		this.trainingDataSet = DataSet.createFromFile(trainingFile, INPUT, OUTPUT, ";");
 		this.testingDataSet = DataSet.createFromFile(testingFile, INPUT, OUTPUT, ";");
@@ -67,14 +70,9 @@ public class NeurophSearch {
 		for (int i = 0; i < linesNum; i++) {
 			this.train(learningRate, transferType, layers);
 		}
-
-		if (showGraph) {
-			String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
-					+ Arrays.toString(layers);
-			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
-			chartTesting.start();
-		}
-
+		String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
+				+ Arrays.toString(layers);
+		this.graphProcedure(graphName);
 	}
 
 	public void onePlotLRs(List<Double> learningRates, TransferFunctionType transferType, int[] layers) {
@@ -82,26 +80,27 @@ public class NeurophSearch {
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
 		}
-		if (showGraph) {
-			String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
-			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
-			chartTesting.start();
-		}
-
+		String graphName = "Test TF:" + transferType.toString() + " " + Arrays.toString(layers);
+		this.graphProcedure(graphName);
 	}
 
-	/*public void onePlotTFs(Double learningRate, ArrayList<TransferFunctionType> transferTypes, int[] layers) {
+	public void onePlotTFs(Double learningRate, List<TransferFunctionType> transferTypes, int[] layers) {
 		clearAll();
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
 		}
+		String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+		this.graphProcedure(graphName);
+	}
+	
+	private void graphProcedure(String title){
+		
 		if (showGraph) {
-			String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
-			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), graphName);
+			chartTesting = new LineChartSample(new ArrayList<>(graphTestData), title);
 			chartTesting.start();
 		}
-
-	}*/
+		
+	}
 
 	private void train(Double learningRate, TransferFunctionType transferType, int[] layers) {
 		try {
@@ -117,11 +116,11 @@ public class NeurophSearch {
 					layers);
 			rule.addListener(listener);
 			rule.setMaxError(0);
-			rule.setMaxIterations(MAXITERATIONS);
+			rule.setMaxIterations(maxIterations);
 			rule.setLearningRate(learningRate);
 			neuralNetwork.learn(trainingDataSet, (BackPropagation) rule);
 			Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-			neuralNetwork.save(NET_SAVES + ERROR_FORMAT.format(mse) + "-Network-"
+			neuralNetwork.save(netSaves + ERROR_FORMAT.format(mse) + "-Network-"
 					+ transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers)
 					+ ".nnet");
 
@@ -135,13 +134,11 @@ public class NeurophSearch {
 	private LearningEventListener createListener(NeuralNetwork<? extends LearningRule> neuralNetwork,
 			Double learningRate, String transferType, int[] layers) {
 		chartTestData = new ChartData(LR_FORMAT.format(learningRate), transferType, layers);
-		LearningEventListener listener = (LearningEvent le) -> {
+		return (LearningEvent le) -> {
 			if (le.getEventType() == EPOCH_ENDED) {
 				mseToChartData(neuralNetwork, testingDataSet, chartTestData);
-			} else {
 			}
 		};
-		return listener;
 	}
 
 	private void mseToChartData(NeuralNetwork<? extends LearningRule> neuralNetwork, DataSet dataSet,
@@ -154,7 +151,6 @@ public class NeurophSearch {
 
 	public Double netWorkMSE(NeuralNetwork<? extends LearningRule> nnet, DataSet tset) {
 		// https://github.com/neuroph/neuroph/blob/master/neuroph-2.9/Core/src/main/java/org/neuroph/core/learning/error/MeanSquaredError.java
-		// ellos hacen ((real-calculado)Â²)/2*n Â¿Â¿??
 		Double sumatorio = 0.0;
 
 		for (DataSetRow dataRow : tset.getRows()) {
@@ -208,13 +204,13 @@ public class NeurophSearch {
 	}
 
 	public CSVTableWriter initTableWriter(String path) {
-		String realpath = CSV_SAVES;
+		String realpath = csvSaves;
 		realpath += path;
 		ArrayList<String> tableHeaders = new ArrayList<>();
 		tableHeaders.addAll(Arrays.asList("Conf", "Neurons"));
 		tableHeaders.add(Integer.toString(0));
 		columnIndexes.add(0);
-		int column = MAXITERATIONS / 10;
+		int column = maxIterations / 10;
 		for (int i = 1; i <= 10; i++) {
 			int columnNumber = column * (i) - 1;
 			tableHeaders.add(Integer.toString(columnNumber));
@@ -223,8 +219,8 @@ public class NeurophSearch {
 		CSVTableWriter tw = null;
 		try {
 			tw = new CSVTableWriter(realpath, tableHeaders);
-		} catch (Exception e) {
-
+		} catch (Exception ex) {
+			Logger.getLogger(NeurophSearch.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		return tw;

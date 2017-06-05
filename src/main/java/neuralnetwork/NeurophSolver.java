@@ -1,14 +1,12 @@
 package neuralnetwork;
 
-import global.GlobalConstants;
-import util.Normalizer;
+import static java.lang.Math.abs;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.Math.abs;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,9 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
 
+import global.GlobalConstants;
+import util.Normalizer;
+
 /**
  * @author César Valdés
  */
@@ -30,14 +31,15 @@ public class NeurophSolver extends GlobalConstants {
 
 	private final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private NeurophSearch neurophSearch;
-	private final static String CSV_SAVES = "NeurophSolutions/";
-	private final static String NET_SAVES = "NeurophSolutions/Networks/";
+	private static final String NETWORK_EXTENSION = ".nnet";
+	private static final String CSV_SAVES = "NeurophSolutions/";
+	private static final String NET_SAVES = "NeurophSolutions/Networks/";
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, int numLines,
 			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean showGraph,
 			String fileName) {
 
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH, fileName,
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, trainPath, testPath, fileName,
 				NET_SAVES, CSV_SAVES);
 		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
@@ -62,7 +64,7 @@ public class NeurophSolver extends GlobalConstants {
 				for (int j = 1; j < i + 2 - 1; j++) {
 					combination[j] = comb[j - 1];
 				}
-				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, TRAINPATH, TESTPATH,
+				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, showGraph, trainPath, testPath,
 						fileName, NET_SAVES, CSV_SAVES);
 				neurophSearch.onePlotLRs(lrates, transfer, combination);
 
@@ -77,21 +79,18 @@ public class NeurophSolver extends GlobalConstants {
 		neurophSearch.closeTableWriter();
 	}
 
-	public void findBestNetwork() {
-		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+	public static void findBestNetwork() {
+		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
 		File folder = new File(NET_SAVES);
 		File[] listOfFiles = folder.listFiles();
 		String bestNetworkFile = "";
 		Double minMeanError = Double.POSITIVE_INFINITY;
 		Double minError = Double.POSITIVE_INFINITY;
 		for (File f : listOfFiles) {
-			if (f.getName().toLowerCase().endsWith(".nnet")) {
+			if (f.getName().toLowerCase().endsWith(NETWORK_EXTENSION)) {
 				Double networkSumError = 0.0;
 				Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
 				NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
-				// Para sacar el test de cada uno
-				// networkTest(f.toString(), problem, f.getName().substring(0,
-				// f.getName().length()-5) + ".csv");
 				for (DataSetRow dataRow : allDataset.getRows()) {
 					neuralNetwork.setInput(dataRow.getInput());
 					neuralNetwork.calculate();
@@ -107,12 +106,6 @@ public class NeurophSolver extends GlobalConstants {
 					}
 				}
 				Double meanError = networkSumError / (allDataset.getRows().size());
-
-				// if (maxErrorNetwork < minError) {
-				// minError = maxErrorNetwork;
-				// minMeanError = meanError;
-				// bestNetworkFile = f.toString();
-				// }
 				if (meanError < minMeanError) {
 					minError = maxErrorNetwork;
 					minMeanError = meanError;
@@ -137,19 +130,16 @@ public class NeurophSolver extends GlobalConstants {
 
 	}
 
-	public void networkTest(String inputFile, String outputFile) {
-		if (!inputFile.endsWith(".nnet")) {
-			inputFile += ".nnet";
-		}
-		outputFile = CSV_SAVES + outputFile + ".csv";
-		inputFile = NET_SAVES + inputFile;
-		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+	public static void networkTest(String inputFile, String outputFile) {
+		String outputFilePath = CSV_SAVES + outputFile;
+		String inputFilePath = NET_SAVES + inputFile;
+		DataSet allDataset = DataSet.createFromFile(fullPath, 14, 1, ";");
 		try {
-			FileWriter fw = new FileWriter(outputFile, false);
+			FileWriter fw = new FileWriter(outputFilePath, false);
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter pw = new PrintWriter(bw);
 			pw.println("TABLA FINAL; OBJETIVO; RESULTADO; ERROR");
-			NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(inputFile);
+			NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(inputFilePath);
 			for (DataSetRow dataRow : allDataset.getRows()) {
 				neuralNetwork.setInput(dataRow.getInput());
 				neuralNetwork.calculate();
@@ -159,16 +149,19 @@ public class NeurophSolver extends GlobalConstants {
 				Double calculado = n.denormalizeObjective(networkOutput[0]);
 				Double deseado = n.denormalizeObjective(desiredOut[0]);
 				Double error = calculado - deseado;
-				System.out.println("Calculado: " + calculado);
-				System.out.println("Deseado: " + deseado);
-				System.out.println("Error: " + error + "\n");
-				DecimalFormat ERROR_DF = new DecimalFormat("0.00000");
-				pw.println(";" + ERROR_DF.format(deseado) + ";" + ERROR_DF.format(calculado) + ";"
-						+ ERROR_DF.format(error) + ";");
+				DecimalFormat errorFormat = new DecimalFormat("0.00000");
+				pw.println(";" + errorFormat.format(deseado) + ";" + errorFormat.format(calculado) + ";"
+						+ errorFormat.format(error) + ";");
 
 			}
-
 			pw.close();
+			
+			String resultado = "Red neuronal testeada sastisfactoriamente\n" + 
+			"Los resultados han sido guardados en el archivo:\n" + outputFilePath;
+			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+			final JDialog dlg = msg.createDialog("Test de red neuronal");
+			dlg.setVisible(true);
+		
 		} catch (IOException ex) {
 			Logger.getLogger(NeurophSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}

@@ -4,9 +4,12 @@ import global.models.Problem;
 
 public abstract class GlobalConstants {
 
-	protected String FULLPATH = "ProjectData/N-fulldataset.csv";
-	protected String TRAINPATH = "ProjectData/N-train.csv";
-	protected String TESTPATH = "ProjectData/N-test.csv";
-	protected Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(FULLPATH, TRAINPATH, TESTPATH);
+	protected static String fullPath = "ProjectData/N-fulldataset.csv";
+	protected static String trainPath = "ProjectData/N-train.csv";
+	protected static String testPath = "ProjectData/N-test.csv";
+	protected static Problem problem = new Problem("ProjectData/O-data.txt").saveNormalizedData(fullPath, trainPath, testPath);
+	
+	protected GlobalConstants() {
+	}
 
 }

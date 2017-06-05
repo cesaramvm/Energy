@@ -1,6 +1,6 @@
 package util.optimizers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import metaheuristic.models.MetaSolution;
@@ -23,7 +23,7 @@ public class RandomEvaluationOptimizer extends EvaluationOptimizer {
 			// Min + (int)(Math.random() * ((Max - Min) + 1)) max=14 min=0
 			int selectedChange = (int) (random.nextDouble() * (problem.getNumParams() + 1));
 			Double newEpsilon = solution.getEpsilon();
-			HashMap<Integer, MetaVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
+			Map<Integer, MetaVariable> newProbVariables = this.cloneMap(solution.getProbVariables());
 
 			if (selectedChange == problem.getNumParams()) {
 				newEpsilon = this.getNewEpsilon();

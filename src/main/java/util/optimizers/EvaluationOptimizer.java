@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import global.GlobalConstants;
 import global.models.YearInfo;
@@ -32,7 +30,7 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
 	}
 
 	@Override
-	public double evaluate(HashMap<Integer, MetaVariable> variables, Double epsi) {
+	public double evaluate(Map<Integer, MetaVariable> variables, Double epsi) {
 		int numYears = problem.getYears().size();
 		Double aux = 1.0 / numYears;
 		Double summation = 0.0;
@@ -48,9 +46,7 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
 			summation += Math.pow(objective - predict, 2);
 		}
 
-		double result = aux * summation;
-
-		return result;
+		return  aux * summation;
 	}
 
 	protected final ArrayList<Double> newRandomList(Double value, int parts) {
@@ -66,14 +62,10 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
 		return numbers;
 	}
 
-	protected final HashMap<Integer, MetaVariable> cloneMap(HashMap<Integer, MetaVariable> original) {
-		HashMap<Integer, MetaVariable> clone = new HashMap<Integer, MetaVariable>();
+	protected final Map<Integer, MetaVariable> cloneMap(Map<Integer, MetaVariable> original) {
+		HashMap<Integer, MetaVariable> clone = new HashMap<>();
 		for (Map.Entry<Integer, MetaVariable> entry : original.entrySet()) {
-			try {
-				clone.put(entry.getKey(), (MetaVariable) entry.getValue().clone());
-			} catch (CloneNotSupportedException ex) {
-				Logger.getLogger(EvaluationOptimizer.class.getName()).log(Level.SEVERE, null, ex);
-			}
+				clone.put(entry.getKey(), (MetaVariable) new MetaVariable(entry.getValue()));
 		}
 		return clone;
 	}
@@ -87,6 +79,6 @@ public abstract class EvaluationOptimizer extends GlobalConstants implements Opt
 	}
 
 	@Override
-	abstract public void optimize(MetaSolution solution);
+	public abstract void optimize(MetaSolution solution);
 
 }

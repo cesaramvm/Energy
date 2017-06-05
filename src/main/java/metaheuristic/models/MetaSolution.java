@@ -1,18 +1,20 @@
 package metaheuristic.models;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author César Valdés
  */
 public class MetaSolution implements Comparable<MetaSolution> {
 
-	private double epsilon;
-	private HashMap<Integer, MetaVariable> probVariables = new HashMap<>();
-	private double evaluation;
+	private Double epsilon;
+	private Map<Integer, MetaVariable> probVariables = new HashMap<>();
+	private Double evaluation;
 	private Long executionTime;
 
-	public MetaSolution(double epsilon, HashMap<Integer, MetaVariable> probVariables, double evaluation) {
+	public MetaSolution(Double epsilon, Map<Integer, MetaVariable> probVariables, Double evaluation) {
 		this.epsilon = epsilon;
 		this.probVariables = probVariables;
 		this.evaluation = evaluation;
@@ -26,27 +28,27 @@ public class MetaSolution implements Comparable<MetaSolution> {
 		}
 	}
 
-	public double getEpsilon() {
+	public Double getEpsilon() {
 		return epsilon;
 	}
 
-	public void setEpsilon(double epsilon) {
+	public void setEpsilon(Double epsilon) {
 		this.epsilon = epsilon;
 	}
 
-	public HashMap<Integer, MetaVariable> getProbVariables() {
+	public Map<Integer, MetaVariable> getProbVariables() {
 		return probVariables;
 	}
 
-	public void setProbVariables(HashMap<Integer, MetaVariable> probVariables) {
+	public void setProbVariables(Map<Integer, MetaVariable> probVariables) {
 		this.probVariables = probVariables;
 	}
 
-	public double getEvaluation() {
+	public Double getEvaluation() {
 		return evaluation;
 	}
 
-	public void setEvaluation(double evaluation) {
+	public void setEvaluation(Double evaluation) {
 		this.evaluation = evaluation;
 	}
 
@@ -68,5 +70,22 @@ public class MetaSolution implements Comparable<MetaSolution> {
 	public int compareTo(MetaSolution other) {
 		return Double.compare(this.getEvaluation(), other.getEvaluation());
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof MetaSolution){
+			MetaSolution ms = (MetaSolution) other;
+			return this.epsilon == ms.getEpsilon() && this.evaluation == ms.getEvaluation() && this.executionTime == ms.executionTime && this.probVariables.equals(ms.getProbVariables());
+		} else {
+			return false;
+		}
+		
+	}
+
+	@Override
+	public int hashCode(){
+	    return Objects.hash(this.epsilon, this.evaluation, this.executionTime, this.probVariables);
+	}
+	
 
 }

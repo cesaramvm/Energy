@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +17,7 @@ public class CSVTableWriter {
 	private final PrintWriter pw;
 	private final int tableColumns;
 
-	public CSVTableWriter(String path, ArrayList<String> headers) throws Exception {
+	public CSVTableWriter(String path, List<String> headers) throws Exception {
 		PrintWriter newPw = null;
 		boolean exists = false;
 		try {
@@ -40,7 +40,7 @@ public class CSVTableWriter {
 
 	}
 
-	private void printHeaders(ArrayList<String> lista) throws Exception {
+	private void printHeaders(List<String> lista) throws Exception {
 		if (pw == null) {
 			throw new Exception("Fallo en el printWriter");
 		}
@@ -52,7 +52,7 @@ public class CSVTableWriter {
 		pw.flush();
 	}
 
-	public void printRow(ArrayList<String> lista) throws Exception {
+	public void printRow(List<String> lista) throws Exception {
 		if (pw == null) {
 			throw new Exception("Fallo en el printWriter");
 		}

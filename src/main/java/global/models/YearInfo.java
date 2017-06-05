@@ -1,6 +1,7 @@
 package global.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author César Valdés
@@ -9,7 +10,7 @@ public class YearInfo {
 
 	private int year;
 	private double obj;
-	private ArrayList<Double> data = new ArrayList<>();
+	private List<Double> data = new ArrayList<>();
 
 	// ----------------CONSTRUCTOR------------------
 	public YearInfo(int year, Double obj) {
@@ -26,7 +27,7 @@ public class YearInfo {
 		this.year = year;
 	}
 
-	public ArrayList<Double> getFullData() {
+	public List<Double> getFullData() {
 		return data;
 	}
 
@@ -34,7 +35,7 @@ public class YearInfo {
 		return data.get(n);
 	}
 
-	public void setFullData(ArrayList<Double> data) {
+	public void setFullData(List<Double> data) {
 		this.data = data;
 	}
 

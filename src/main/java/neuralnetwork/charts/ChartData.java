@@ -1,16 +1,17 @@
 package neuralnetwork.charts;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author César Valdés
  */
-public class ChartData implements Cloneable {
+public class ChartData {
 
 	private String learningRate;
 	private String transferType;
 	private int[] layersConf;
-	private ArrayList<Double> graphData = new ArrayList<>();
+	private List<Double> graphData = new ArrayList<>();
 
 	public ChartData(String learningRate, String transferType, int[] layersConfiguration) {
 		this.learningRate = learningRate;
@@ -42,11 +43,11 @@ public class ChartData implements Cloneable {
 		this.layersConf = layersConf;
 	}
 
-	public ArrayList<Double> getGraphData() {
+	public List<Double> getGraphData() {
 		return graphData;
 	}
 
-	public void setGraphData(ArrayList<Double> graphData) {
+	public void setGraphData(List<Double> graphData) {
 		this.graphData = graphData;
 	}
 
@@ -56,20 +57,6 @@ public class ChartData implements Cloneable {
 
 	public boolean add(Double e) {
 		return graphData.add(e);
-	}
-
-	@Override
-	public ChartData clone() throws CloneNotSupportedException {
-
-		ChartData clone;
-		try {
-			clone = (ChartData) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new Error();
-		}
-
-		return clone;
-
 	}
 
 	@Override
