@@ -104,10 +104,6 @@ public class NeurophSearch {
 
 	private void train(Double learningRate, TransferFunctionType transferType, int[] layers) {
 		try {
-
-			if (layers.length == 0 || learningRate == 0) {
-				throw new Error("Learning rate can't be 0 and layers must contain something");
-			}
 			NeuralNetwork<BackPropagation> neuralNetwork = new MultiLayerPerceptron(transferType, layers);
 
 			Constructor<?> cons = propagationClass.getConstructor();
@@ -173,7 +169,7 @@ public class NeurophSearch {
 		graphTestData.clear();
 	}
 
-	public void writeRows() throws Exception {
+	public void writeRows() {
 		for (int j = 0; j < graphTestData.size(); j++) {
 			ChartData trainChart = graphTestData.get(j);
 			ArrayList<String> nextRow = new ArrayList<>();
@@ -192,10 +188,7 @@ public class NeurophSearch {
 
 	}
 
-	private void writeRow(ArrayList<String> nextRow) throws Exception {
-		if (tableWriter == null) {
-			throw new Exception("tableWriter cannot be null");
-		}
+	private void writeRow(ArrayList<String> nextRow) {
 		try {
 			tableWriter.printRow(nextRow);
 		} catch (Exception ex) {

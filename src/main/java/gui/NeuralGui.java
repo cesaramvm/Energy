@@ -104,7 +104,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 									if (layersStr != null) {
 										layersStr = layersStr.replaceAll("\\s", "");
 										inputLayersArray = Arrays.asList(layersStr.split(",")).stream()
-												.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validLayer(x))
+												.mapToInt(this::giveInteger).filter(this::validLayer)
 												.toArray();
 										if (inputLayersArray.length > 4 || inputLayersArray.length < 1) {
 											JOptionPane.showMessageDialog(null,
@@ -160,7 +160,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 						if (lRatesStr != null) {
 							lRatesStr = lRatesStr.replaceAll("\\s", "");
 							double[] lRatesArray = Arrays.asList(lRatesStr.split(",")).stream()
-									.mapToDouble(x -> this.giveDouble(x)).filter(x -> this.validLR(x)).toArray();
+									.mapToDouble(this::giveDouble).filter(this::validLR).toArray();
 							DoubleStream stream = DoubleStream.of(lRatesArray);
 							lRatesList = stream.boxed().collect(Collectors.toList());
 							stream.close();
@@ -192,7 +192,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 									if (neuronsNumStr != null) {
 										neuronsNumStr = neuronsNumStr.replaceAll("\\s", "");
 										int[] neuronsNumArray = Arrays.asList(neuronsNumStr.split(",")).stream()
-												.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validNeuronsNum(x))
+												.mapToInt(this::giveInteger).filter(this::validNeuronsNum)
 												.toArray();
 										IntStream stream = IntStream.of(neuronsNumArray);
 										neuronsNumList = stream.boxed()

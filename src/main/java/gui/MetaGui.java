@@ -125,7 +125,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 					if (branchesStr != null) {
 						branchesStr = branchesStr.replaceAll("\\s", "");
 						int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream()
-								.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validBranch(x)).toArray();
+								.mapToInt(this::giveInteger).filter(this::validBranch).toArray();
 						IntStream stream = IntStream.of(branchesArray);
 						numBranches = stream.boxed().collect(Collectors.toList());
 						stream.close();
@@ -146,7 +146,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 						if (leavesStr != null) {
 							leavesStr = leavesStr.replaceAll("\\s", "");
 							int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream()
-									.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validLeaf(x)).toArray();
+									.mapToInt(this::giveInteger).filter(this::validLeaf).toArray();
 							IntStream stream = IntStream.of(leavesArray);
 							numLeaves = stream.boxed().collect(Collectors.toList());
 							stream.close();
@@ -165,7 +165,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 									JOptionPane.QUESTION_MESSAGE);
 							if (partsStr != null) {
 								int[] partsArray = Arrays.asList(partsStr.split(",")).stream()
-										.mapToInt(x -> this.giveInteger(x)).filter(x -> this.validPart(x)).toArray();
+										.mapToInt(this::giveInteger).filter(this::validPart).toArray();
 								IntStream stream = IntStream.of(partsArray);
 								numParts = stream.boxed().collect(Collectors.toList());
 								stream.close();

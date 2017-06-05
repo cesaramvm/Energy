@@ -17,7 +17,7 @@ public class CSVTableWriter {
 	private final PrintWriter pw;
 	private final int tableColumns;
 
-	public CSVTableWriter(String path, List<String> headers) throws Exception {
+	public CSVTableWriter(String path, List<String> headers) throws IOException {
 		PrintWriter newPw = null;
 		boolean exists = false;
 		try {
@@ -40,9 +40,9 @@ public class CSVTableWriter {
 
 	}
 
-	private void printHeaders(List<String> lista) throws Exception {
+	private void printHeaders(List<String> lista) throws IOException {
 		if (pw == null) {
-			throw new Exception("Fallo en el printWriter");
+			throw new IOException("PrintWriter Fail");
 		}
 		String headers = "";
 		for (String columnName : lista) {
@@ -52,13 +52,13 @@ public class CSVTableWriter {
 		pw.flush();
 	}
 
-	public void printRow(List<String> lista) throws Exception {
+	public void printRow(List<String> lista) throws IOException {
 		if (pw == null) {
-			throw new Exception("Fallo en el printWriter");
+			throw new IOException("PrintWriter Fail");
 		}
 		if (lista.size() != this.tableColumns) {
 			pw.close();
-			throw new Exception("Debe haber tantos datos como columnas");
+			throw new IOException("There are more data to print than columns");
 		}
 		String rowData = "";
 		for (String columnName : lista) {

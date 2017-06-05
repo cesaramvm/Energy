@@ -109,29 +109,16 @@ public class Problem {
 			PrintWriter testwriter = new PrintWriter(test, fileFormat);
 			PrintWriter trainwriter = new PrintWriter(train, fileFormat);
 			for (int i = 1981; i <= 2011; i++) {
+				PrintWriter actualWriter = (i <= 2005) ? trainwriter : testwriter;
 				YearInfo year = years.get(i);
 				List<Double> yearData = year.getFullData();
 				Double yearObj = year.getObj();
 				for (Double d : yearData) {
-					if (i <= 2005) {
-						trainwriter.print(d);
-						trainwriter.print(";");
-					} else {
-						testwriter.print(d);
-						testwriter.print(";");
-					}
-					fullwriter.print(d);
-					fullwriter.print(";");
+					actualWriter.print(d + ";");
+					fullwriter.print(d + ";");
 				}
-				if (i <= 2005) {
-					trainwriter.print(yearObj);
-					trainwriter.println();
-				} else {
-					testwriter.print(yearObj);
-					testwriter.println();
-				}
-				fullwriter.print(yearObj);
-				fullwriter.println();
+				actualWriter.println(yearObj);
+				fullwriter.println(yearObj);
 			}
 			fullwriter.close();
 			testwriter.close();

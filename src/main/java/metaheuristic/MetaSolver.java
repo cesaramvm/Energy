@@ -90,9 +90,6 @@ public class MetaSolver {
 	}
 
 	public MetaResults getAndSaveResults() {
-		if (soluciones.isEmpty()) {
-			throw new Error("Search still not done");
-		}
 		if (results == null) {
 			MetaSolution bestSolution = soluciones.get(0);
 			Long totalSecuentialTime = 0L;
@@ -127,10 +124,7 @@ public class MetaSolver {
 
 	}
 
-	private void writeRow() throws Exception {
-		if (tableWriter == null) {
-			throw new Exception("tableWriter cannot be null");
-		}
+	private void writeRow() {
 		try {
 			ArrayList<String> nextRow = new ArrayList<>();
 			String evalName = evaluationClass.getName();
