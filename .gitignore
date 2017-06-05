@@ -25,6 +25,9 @@ $RECYCLE.BIN/
 *.lnk
 
 
+### Sonar ###
+.scannerwork/
+
 ### Eclipse ###
 
 .metadata
