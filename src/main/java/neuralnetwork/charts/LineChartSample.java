@@ -41,6 +41,9 @@ public class LineChartSample extends Thread {
 			SwingUtilities.invokeLater(() -> showGUI());
 			Long sleepTime = (long) (1500 + 20 * data.size());
 			Thread.sleep(sleepTime);
+			while(frame==null){
+				Thread.sleep(1500);
+			}
 			makeScreenshot(frame);
 			frame.setVisible(false);
 			frame.dispose();
