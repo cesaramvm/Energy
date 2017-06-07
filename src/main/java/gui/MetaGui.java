@@ -57,36 +57,44 @@ public class MetaGui extends DefaultTab implements ActionListener {
 		if (e.getSource() == simpleButton) {
 			String branchesStr = JOptionPane.showInputDialog(null, "Número de ramas 1-8 (Def: 1)", "Ramas",
 					JOptionPane.QUESTION_MESSAGE);
-			if (branchesStr != null) {
-				String leavesStr = JOptionPane.showInputDialog(null, "Número de hojas 1-1000 (Def: 5)", "Hojas",
-						JOptionPane.QUESTION_MESSAGE);
-				if (leavesStr != null) {
-					String partsStr = JOptionPane.showInputDialog(null, "Número de partes 3-9999 (Def: 99)", "Partes",
-							JOptionPane.QUESTION_MESSAGE);
-					if (partsStr != null) {
-						Class<?>[] optimizers = { RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class,
-								LSBIEvaluationOptimizer.class };
-						Class<?> optimizer = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador",
-								"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, optimizers, optimizers[0]);
-						if (optimizer != null) {
-							Integer branchesNum = giveInteger(branchesStr);
-							int branches = this.validBranch(branchesNum) ? branchesNum : 1;
-							Integer leavesNum = giveInteger(leavesStr);
-							int leaves = this.validLeaf(leavesNum) ? leavesNum : 5;
-							Integer partsNum = giveInteger(partsStr);
-							int parts = this.validPart(partsNum) ? partsNum : 99;
-							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
-									JOptionPane.QUESTION_MESSAGE);
-							if (file != null) {
-								JOptionPane.showMessageDialog(null,
-										"Branches " + branches + " , leaves " + leaves + ", parts " + parts);
-								String fileName = file + ".csv";
-								new Thread(() -> this.metaEasy(branches, leaves, parts, optimizer, fileName)).start();
-							}
-						}
-					}
-				}
+			if (branchesStr == null) {
+				return;
 			}
+
+			String leavesStr = JOptionPane.showInputDialog(null, "Número de hojas 1-1000 (Def: 5)", "Hojas",
+					JOptionPane.QUESTION_MESSAGE);
+			if (leavesStr == null) {
+				return;
+			}
+			String partsStr = JOptionPane.showInputDialog(null, "Número de partes 3-9999 (Def: 99)", "Partes",
+					JOptionPane.QUESTION_MESSAGE);
+			if (partsStr == null) {
+				return;
+			}
+
+			Class<?>[] optimizers = { RandomEvaluationOptimizer.class, LSFIEvaluationOptimizer.class,
+					LSBIEvaluationOptimizer.class };
+			Class<?> optimizer = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador", "Optimizadores",
+					JOptionPane.QUESTION_MESSAGE, null, optimizers, optimizers[0]);
+			if (optimizer == null) {
+				return;
+			}
+
+			Integer branchesNum = giveInteger(branchesStr);
+			int branches = this.validBranch(branchesNum) ? branchesNum : 1;
+			Integer leavesNum = giveInteger(leavesStr);
+			int leaves = this.validLeaf(leavesNum) ? leavesNum : 5;
+			Integer partsNum = giveInteger(partsStr);
+			int parts = this.validPart(partsNum) ? partsNum : 99;
+			String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+					JOptionPane.QUESTION_MESSAGE);
+			if (file == null) {
+				return;
+			}
+
+			JOptionPane.showMessageDialog(null, "Branches " + branches + " , leaves " + leaves + ", parts " + parts);
+			String fileName = file + ".csv";
+			new Thread(() -> this.metaEasy(branches, leaves, parts, optimizer, fileName)).start();
 
 		} else if (e.getSource() == advancedButton) {
 			List<Class<? extends Object>> optimizers = new ArrayList<>();
@@ -116,79 +124,87 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				}
 			}
 
-			if (n == JOptionPane.OK_OPTION) {
-				List<Integer> numBranches = new ArrayList<>();
-				String branchesStr = "";
-				while (branchesStr != null && numBranches.isEmpty()) {
-					branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
-							JOptionPane.QUESTION_MESSAGE);
-					if (branchesStr != null) {
-						branchesStr = branchesStr.replaceAll("\\s", "");
-						int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream()
-								.mapToInt(this::giveInteger).filter(this::validBranch).toArray();
-						IntStream stream = IntStream.of(branchesArray);
-						numBranches = stream.boxed().collect(Collectors.toList());
-						stream.close();
-						Set<Integer> set = new HashSet<>(numBranches);
-						numBranches.clear();
-						numBranches.addAll(set);
-						Collections.sort(numBranches);
-					}
-				}
+			if (!(n == JOptionPane.OK_OPTION)) {
+				return;
+			}
 
+			List<Integer> numBranches = new ArrayList<>();
+			String branchesStr = "";
+			while (branchesStr != null && numBranches.isEmpty()) {
+				branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
+						JOptionPane.QUESTION_MESSAGE);
 				if (branchesStr != null) {
-					List<Integer> branches = numBranches;
-					List<Integer> numLeaves = new ArrayList<>();
-					String leavesStr = "";
-					while (leavesStr != null && numLeaves.isEmpty()) {
-						leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
-								JOptionPane.QUESTION_MESSAGE);
-						if (leavesStr != null) {
-							leavesStr = leavesStr.replaceAll("\\s", "");
-							int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream()
-									.mapToInt(this::giveInteger).filter(this::validLeaf).toArray();
-							IntStream stream = IntStream.of(leavesArray);
-							numLeaves = stream.boxed().collect(Collectors.toList());
-							stream.close();
-							Set<Integer> set = new HashSet<>(numLeaves);
-							numLeaves.clear();
-							numLeaves.addAll(set);
-							Collections.sort(numLeaves);
-						}
-					}
-					if (leavesStr != null) {
-						List<Integer> leaves = numLeaves;
-						List<Integer> numParts = new ArrayList<>();
-						String partsStr = "";
-						while (partsStr != null && numParts.isEmpty()) {
-							partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Partes",
-									JOptionPane.QUESTION_MESSAGE);
-							if (partsStr != null) {
-								int[] partsArray = Arrays.asList(partsStr.split(",")).stream()
-										.mapToInt(this::giveInteger).filter(this::validPart).toArray();
-								IntStream stream = IntStream.of(partsArray);
-								numParts = stream.boxed().collect(Collectors.toList());
-								stream.close();
-								Set<Integer> set = new HashSet<>(numParts);
-								numParts.clear();
-								numParts.addAll(set);
-								Collections.sort(numParts);
-							}
-						}
-						if (partsStr != null) {
-							String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
-									JOptionPane.QUESTION_MESSAGE);
-							if (file != null) {
-								String fileName = file + ".csv";
-								List<Integer> parts = numParts;
-
-								new Thread(() -> this.metaAdvanced(optimizers, parts, branches, leaves, fileName))
-										.start();
-							}
-						}
-					}
+					branchesStr = branchesStr.replaceAll("\\s", "");
+					int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream().mapToInt(this::giveInteger)
+							.filter(this::validBranch).toArray();
+					IntStream stream = IntStream.of(branchesArray);
+					numBranches = stream.boxed().collect(Collectors.toList());
+					stream.close();
+					Set<Integer> set = new HashSet<>(numBranches);
+					numBranches.clear();
+					numBranches.addAll(set);
+					Collections.sort(numBranches);
 				}
 			}
+
+			if (branchesStr == null) {
+				return;
+			}
+
+			List<Integer> branches = numBranches;
+			List<Integer> numLeaves = new ArrayList<>();
+			String leavesStr = "";
+			while (leavesStr != null && numLeaves.isEmpty()) {
+				leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
+						JOptionPane.QUESTION_MESSAGE);
+				if (leavesStr != null) {
+					leavesStr = leavesStr.replaceAll("\\s", "");
+					int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream().mapToInt(this::giveInteger)
+							.filter(this::validLeaf).toArray();
+					IntStream stream = IntStream.of(leavesArray);
+					numLeaves = stream.boxed().collect(Collectors.toList());
+					stream.close();
+					Set<Integer> set = new HashSet<>(numLeaves);
+					numLeaves.clear();
+					numLeaves.addAll(set);
+					Collections.sort(numLeaves);
+				}
+			}
+			if (leavesStr == null) {
+				return;
+			}
+
+			List<Integer> leaves = numLeaves;
+			List<Integer> numParts = new ArrayList<>();
+			String partsStr = "";
+			while (partsStr != null && numParts.isEmpty()) {
+				partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Partes",
+						JOptionPane.QUESTION_MESSAGE);
+				if (partsStr != null) {
+					int[] partsArray = Arrays.asList(partsStr.split(",")).stream().mapToInt(this::giveInteger)
+							.filter(this::validPart).toArray();
+					IntStream stream = IntStream.of(partsArray);
+					numParts = stream.boxed().collect(Collectors.toList());
+					stream.close();
+					Set<Integer> set = new HashSet<>(numParts);
+					numParts.clear();
+					numParts.addAll(set);
+					Collections.sort(numParts);
+				}
+			}
+			if (partsStr == null) {
+				return;
+			}
+
+			String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
+					JOptionPane.QUESTION_MESSAGE);
+			if (file == null) {
+				return;
+			}
+			String fileName = file + ".csv";
+			List<Integer> parts = numParts;
+
+			new Thread(() -> this.metaAdvanced(optimizers, parts, branches, leaves, fileName)).start();
 		}
 	}
 
