@@ -111,17 +111,16 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				boolean lsfi = lsfiCheck.isSelected();
 				boolean lsbi = lsbiCheck.isSelected();
 				someSelected = random || lsfi || lsbi;
-				if (someSelected) {
-					if (random) {
-						optimizers.add(RandomEvaluationOptimizer.class);
-					}
-					if (lsfi) {
-						optimizers.add(LSFIEvaluationOptimizer.class);
-					}
-					if (lsbi) {
-						optimizers.add(LSBIEvaluationOptimizer.class);
-					}
+				if (random) {
+					optimizers.add(RandomEvaluationOptimizer.class);
 				}
+				if (lsfi) {
+					optimizers.add(LSFIEvaluationOptimizer.class);
+				}
+				if (lsbi) {
+					optimizers.add(LSBIEvaluationOptimizer.class);
+				}
+
 			}
 
 			if (!(n == JOptionPane.OK_OPTION)) {
