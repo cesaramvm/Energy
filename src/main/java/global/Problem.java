@@ -1,4 +1,4 @@
-package global.models;
+package global;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,6 +20,11 @@ import util.Normalizer;
  */
 public class Problem {
 
+	private static Problem instance = null;
+	private static final String FULLPATH = "ProjectData/N-fulldataset.csv";
+	private static final String TRAINPATH = "ProjectData/N-train.csv";
+	private static final String TESTPATH = "ProjectData/N-test.csv";
+	private static final String ORIGENPATH = "ProjectData/O-data.txt";
 	private Map<Integer, YearInfo> years = new HashMap<>();
 	private int numParams;
 	private static Normalizer normalizer;
@@ -27,16 +32,16 @@ public class Problem {
 	// 0 MEANS: NOT KEEPING PROPORCIONALITY IN RANGE [0,1] Abraham
 	private static final int NORMALIZATION_TYPE = 0;
 	private static final double NORMALIZATION_RANGE_PERCENTAGE = 0.15;
-
-	public Problem(String fileroute) {
-
+	
+	protected Problem() {
+		System.out.println("INSTANCIANDO");
 		String cadena;
 		FileReader f;
 		HashMap<Integer, YearInfo> auxYears = new HashMap<>();
 		ArrayList<Double> maxs = new ArrayList<>();
 		ArrayList<Double> mins = new ArrayList<>();
 		try {
-			f = new FileReader(fileroute);
+			f = new FileReader(ORIGENPATH);
 
 			BufferedReader b = new BufferedReader(f);
 
@@ -76,38 +81,45 @@ public class Problem {
 		years = norm.normalizeData(auxYears, maxs, mins);
 		normalizer = norm;
 	}
+	
+	public static Problem getInstance() {
+	      if(instance == null) {
+	    	  instance = new Problem().saveNormalizedData();
+	      }
+	      return instance;
+	   }
 
 	public Map<Integer, YearInfo> getYears() {
 		return years;
-	}
-
-	public void setYears(Map<Integer, YearInfo> years) {
-		this.years = years;
 	}
 
 	public int getNumParams() {
 		return numParams;
 	}
 
-	public void setNumParams(int numParams) {
-		this.numParams = numParams;
-	}
-
 	public Normalizer getNormalizer() {
 		return normalizer;
 	}
 
-	public static void setNormalizer(Normalizer normalizer) {
-		Problem.normalizer = normalizer;
+	public static String getFullpath() {
+		return FULLPATH;
 	}
 
-	public Problem saveNormalizedData(String full, String train, String test) {
+	public static String getTrainpath() {
+		return TRAINPATH;
+	}
+
+	public static String getTestpath() {
+		return TESTPATH;
+	}
+
+	private Problem saveNormalizedData() {
 
 		try {
 			String fileFormat = "UTF-8";
-			PrintWriter fullwriter = new PrintWriter(full, fileFormat);
-			PrintWriter testwriter = new PrintWriter(test, fileFormat);
-			PrintWriter trainwriter = new PrintWriter(train, fileFormat);
+			PrintWriter fullwriter = new PrintWriter(FULLPATH, fileFormat);
+			PrintWriter testwriter = new PrintWriter(TESTPATH, fileFormat);
+			PrintWriter trainwriter = new PrintWriter(TRAINPATH, fileFormat);
 			for (int i = 1981; i <= 2011; i++) {
 				PrintWriter actualWriter = (i <= 2005) ? trainwriter : testwriter;
 				YearInfo year = years.get(i);

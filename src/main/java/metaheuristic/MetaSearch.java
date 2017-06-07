@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-import global.GlobalConstants;
+import global.Problem;
 import metaheuristic.models.MetaSolution;
 import metaheuristic.models.MetaVariable;
 import util.optimizers.Optimizer;
@@ -14,8 +14,9 @@ import util.optimizers.Optimizer;
 /**
  * @author César Valdés
  */
-public class MetaSearch extends GlobalConstants implements Callable<List<MetaSolution>> {
+public class MetaSearch implements Callable<List<MetaSolution>> {
 
+	private static final Problem problem = Problem.getInstance();
 	private final int leaves;
 	private final Optimizer optimizer;
 	private Long startTime;

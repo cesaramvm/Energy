@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import global.models.YearInfo;
+import global.YearInfo;
 
 /**
  * @author César Valdés

@@ -6,16 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import global.GlobalConstants;
-import global.models.YearInfo;
+import global.Problem;
+import global.YearInfo;
 import metaheuristic.models.MetaSolution;
 import metaheuristic.models.MetaVariable;
 
 /**
  * @author César Valdés
  */
-public abstract class EvaluationOptimizer extends GlobalConstants implements Optimizer {
+public abstract class EvaluationOptimizer implements Optimizer {
 
+	protected static final Problem problem = Problem.getInstance();
 	protected final ArrayList<Double> valueList;
 	protected final ArrayList<Double> epsilonList;
 	protected final int parts;

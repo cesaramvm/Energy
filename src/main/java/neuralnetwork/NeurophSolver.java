@@ -21,25 +21,26 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
 
-import global.GlobalConstants;
+import global.Problem;
 import util.Normalizer;
 
 /**
  * @author César Valdés
  */
-public class NeurophSolver extends GlobalConstants {
+public class NeurophSolver {
 
 	private final ArrayList<Integer[]> neuronsConfig = new ArrayList<>();
 	private NeurophSearch neurophSearch;
 	private static final String NETWORK_EXTENSION = ".nnet";
 	private static final String CSV_SAVES = "NeurophSolutions/";
 	private static final String NET_SAVES = "NeurophSolutions/Networks/";
+	private static final Problem problem = Problem.getInstance();
 
 	public void simpleSearch(int iterations, Class<? extends Object> propagationTypeClass, int numLines,
 			double learningRate, TransferFunctionType transfer, int[] hiddenLayers, boolean saveGraph,
 			String fileName) {
 
-		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, TRAINPATH, TESTPATH, fileName,
+		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, Problem.getTrainpath(), Problem.getTestpath(), fileName,
 				NET_SAVES, CSV_SAVES);
 		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
 		try {
@@ -64,7 +65,7 @@ public class NeurophSolver extends GlobalConstants {
 				for (int j = 1; j < i + 2 - 1; j++) {
 					combination[j] = comb[j - 1];
 				}
-				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, TRAINPATH, TESTPATH,
+				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, Problem.getTrainpath(), Problem.getTestpath(),
 						fileName, NET_SAVES, CSV_SAVES);
 				neurophSearch.onePlotLRs(lrates, transfer, combination);
 
@@ -80,7 +81,7 @@ public class NeurophSolver extends GlobalConstants {
 	}
 
 	public static void findBestNetwork() {
-		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+		DataSet allDataset = DataSet.createFromFile(Problem.getFullpath(), 14, 1, ";");
 		File folder = new File(NET_SAVES);
 		File[] listOfFiles = folder.listFiles();
 		String bestNetworkFile = "";
@@ -133,7 +134,7 @@ public class NeurophSolver extends GlobalConstants {
 	public static void networkTest(String inputFile, String outputFile) {
 		String outputFilePath = CSV_SAVES + outputFile;
 		String inputFilePath = NET_SAVES + inputFile;
-		DataSet allDataset = DataSet.createFromFile(FULLPATH, 14, 1, ";");
+		DataSet allDataset = DataSet.createFromFile(Problem.getFullpath(), 14, 1, ";");
 		try {
 			FileWriter fw = new FileWriter(outputFilePath, false);
 			BufferedWriter bw = new BufferedWriter(fw);
