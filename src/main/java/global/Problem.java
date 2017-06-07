@@ -34,7 +34,6 @@ public class Problem {
 	private static final double NORMALIZATION_RANGE_PERCENTAGE = 0.15;
 	
 	protected Problem() {
-		System.out.println("INSTANCIANDO");
 		String cadena;
 		FileReader f;
 		HashMap<Integer, YearInfo> auxYears = new HashMap<>();
