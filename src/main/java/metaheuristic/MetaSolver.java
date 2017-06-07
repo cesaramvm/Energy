@@ -24,7 +24,7 @@ import util.optimizers.Optimizer;
 public class MetaSolver {
 
 	private final ArrayList<Future<List<MetaSolution>>> futures = new ArrayList<>();
-	private final ArrayList<MetaSolution> soluciones = new ArrayList<>();
+	private final ArrayList<MetaSolution> allSolutions = new ArrayList<>();
 	private final int numBranches;
 	private final int branchLeaves;
 	private final int parts;
@@ -61,7 +61,7 @@ public class MetaSolver {
 	private void search() {
 
 		futures.clear();
-		soluciones.clear();
+		allSolutions.clear();
 		ExecutorService es = Executors.newCachedThreadPool();
 		try {
 			totalConcurrentTime = System.currentTimeMillis();
@@ -75,7 +75,7 @@ public class MetaSolver {
 			}
 			for (Future<List<MetaSolution>> f : futures) {
 				List<MetaSolution> s = f.get();
-				soluciones.addAll(s);
+				allSolutions.addAll(s);
 			}
 			totalConcurrentTime = System.currentTimeMillis() - totalConcurrentTime;
 		} catch (InterruptedException | ExecutionException | NoSuchMethodException | SecurityException
@@ -91,19 +91,19 @@ public class MetaSolver {
 
 	public MetaResults getAndSaveResults() {
 		if (results == null) {
-			MetaSolution bestSolution = soluciones.get(0);
+			MetaSolution bestSolution = allSolutions.get(0);
 			Long totalSecuentialTime = 0L;
 			Double avgErrorAux = 0.0;
 
-			for (MetaSolution sol : soluciones) {
+			for (MetaSolution sol : allSolutions) {
 				if (sol.getEvaluation() < bestSolution.getEvaluation()) {
 					bestSolution = sol;
 				}
 				totalSecuentialTime += sol.getExecutionTime();
 				avgErrorAux += sol.getEvaluation();
 			}
-			Long avgTime = totalSecuentialTime / soluciones.size();
-			Double avgError = avgErrorAux / soluciones.size();
+			Long avgTime = totalSecuentialTime / allSolutions.size();
+			Double avgError = avgErrorAux / allSolutions.size();
 			results = new MetaResults(bestSolution, totalSecuentialTime, totalConcurrentTime, avgTime, avgError);
 		}
 
