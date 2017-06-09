@@ -1,2 +1,2 @@
 @echo off
-C:\sonar-scanner\bin\sonar-scanner.bat
+D:\Windows\Programas\sonar-scanner\bin\sonar-scanner.bat
