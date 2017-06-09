@@ -60,18 +60,4 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 		this.restoreParamsIndex();
 	}
 
-	@Override
-	protected Double getNewEpsilon() {
-		Double newEpsilon = epsilonListCopy.get(random.nextInt(epsilonListCopy.size()));
-		epsilonListCopy.remove(newEpsilon);
-		return newEpsilon;
-	}
-
-	@Override
-	protected Double getNewValue() {
-		Double newValue = valueListCopy.get(random.nextInt(valueListCopy.size()));
-		valueListCopy.remove(newValue);
-		return newValue;
-	}
-
 }
