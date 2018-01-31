@@ -80,7 +80,7 @@ public class NeurophSearch {
 		for (Double learningRate : learningRates) {
 			this.train(learningRate, transferType, layers);
 		}
-		String graphName = "Graph " + transferType.toString() + " " + learningRates.toString() + " " + Arrays.toString(layers);
+		String graphName = "Graph " + transferType.toString() + " " + Arrays.toString(layers);
 		this.graphProcedure(graphName);
 	}
 
@@ -89,7 +89,7 @@ public class NeurophSearch {
 		for (TransferFunctionType transferType : transferTypes) {
 			train(learningRate, transferType, layers);
 		}
-		String graphName = "Test LR:" + learningRate.toString() + " " + transferTypes.toString() + " " + Arrays.toString(layers);
+		String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
 		this.graphProcedure(graphName);
 	}
 	

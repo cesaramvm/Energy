@@ -57,7 +57,7 @@ public class LineChartSample extends Thread {
 		frame = new JFrame(mseChartTitle);
 		final JFXPanel fxPanel = new JFXPanel();
 		frame.add(fxPanel);
-		frame.setSize(600, 360);
+		frame.setSize(800, 450);
 		frame.setVisible(true);
 		Platform.setImplicitExit(false);
 		Platform.runLater(() -> initFX(fxPanel));
