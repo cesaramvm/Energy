@@ -98,7 +98,6 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			if (learningStr == null) {
 				return;
 			}
-
 			TransferFunctionType[] transfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
 					TransferFunctionType.GAUSSIAN };
 			TransferFunctionType transferClass = (TransferFunctionType) JOptionPane.showInputDialog(null,
