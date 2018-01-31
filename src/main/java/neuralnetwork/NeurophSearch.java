@@ -33,7 +33,7 @@ public class NeurophSearch {
 
 	private static final int INPUT = 14;
 	private static final int OUTPUT = 1;
-	private static final DecimalFormat LR_FORMAT = new DecimalFormat("0.00");
+	private static final DecimalFormat LR_FORMAT = new DecimalFormat("0.000");
 	private static final DecimalFormat ERROR_FORMAT = new DecimalFormat("0.00000");
 	
 
