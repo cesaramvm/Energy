@@ -65,31 +65,31 @@ public class NeurophSearch {
 		this.tableWriter = writer;
 	}
 
-	public void singlePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers) {
+	public void singlePlot(int linesNum, Double learningRate, TransferFunctionType transferType, int[] layers, String propagationType) {
 		clearAll();
 		for (int i = 0; i < linesNum; i++) {
-			this.train(learningRate, transferType, layers);
+			this.train(learningRate, transferType, layers, propagationType);
 		}
-		String graphName = "Test TF:" + transferType.toString() + " LR:" + learningRate.toString() + " "
+		String graphName = propagationType + " " + transferType.toString() + " LR:" + learningRate.toString() + " "
 				+ Arrays.toString(layers);
 		this.graphProcedure(graphName);
 	}
 
-	public void onePlotLRs(List<Double> learningRates, TransferFunctionType transferType, int[] layers) {
+	public void onePlotLRs(List<Double> learningRates, TransferFunctionType transferType, int[] layers, String  propagationType) {
 		clearAll();
 		for (Double learningRate : learningRates) {
-			this.train(learningRate, transferType, layers);
+			this.train(learningRate, transferType, layers, propagationType);
 		}
-		String graphName = "Graph " + transferType.toString() + " " + Arrays.toString(layers);
+		String graphName = propagationType + " " + transferType.toString() + " " + Arrays.toString(layers);
 		this.graphProcedure(graphName);
 	}
 
-	public void onePlotTFs(Double learningRate, List<TransferFunctionType> transferTypes, int[] layers) {
+	public void onePlotTFs(Double learningRate, List<TransferFunctionType> transferTypes, int[] layers, String  propagationType) {
 		clearAll();
 		for (TransferFunctionType transferType : transferTypes) {
-			train(learningRate, transferType, layers);
+			train(learningRate, transferType, layers, propagationType);
 		}
-		String graphName = "Test LR:" + learningRate.toString() + " " + Arrays.toString(layers);
+		String graphName = propagationType + " " + learningRate.toString() + " " + Arrays.toString(layers);
 		this.graphProcedure(graphName);
 	}
 	
@@ -102,7 +102,7 @@ public class NeurophSearch {
 		
 	}
 
-	private void train(Double learningRate, TransferFunctionType transferType, int[] layers) {
+	private void train(Double learningRate, TransferFunctionType transferType, int[] layers, String propagationType) {
 		try {
 			NeuralNetwork<BackPropagation> neuralNetwork = new MultiLayerPerceptron(transferType, layers);
 
@@ -116,7 +116,7 @@ public class NeurophSearch {
 			rule.setLearningRate(learningRate);
 			neuralNetwork.learn(trainingDataSet, (BackPropagation) rule);
 			Double mse = netWorkMSE(neuralNetwork, testingDataSet);
-			neuralNetwork.save(netSaves + ERROR_FORMAT.format(mse) + "-Network-"
+			neuralNetwork.save(netSaves + ERROR_FORMAT.format(mse) + "-" + propagationType + "-"
 					+ transferType.toString().substring(0, 2) + "-" + learningRate + "-" + Arrays.toString(layers)
 					+ ".nnet");
 

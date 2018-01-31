@@ -20,6 +20,8 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
+import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.ResilientPropagation;
 
 import global.Problem;
 import util.Normalizer;
@@ -42,7 +44,8 @@ public class NeurophSolver {
 
 		neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, Problem.getTrainpath(), Problem.getTestpath(), fileName,
 				NET_SAVES, CSV_SAVES);
-		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers);
+		String propagationType = (propagationTypeClass == BackPropagation.class) ? "BackPropagation" : "ResilientPropagation";
+		neurophSearch.singlePlot(numLines, learningRate, transfer, hiddenLayers, propagationType);
 		try {
 			neurophSearch.writeRows();
 			neurophSearch.closeTableWriter();
@@ -67,7 +70,8 @@ public class NeurophSolver {
 				}
 				neurophSearch = new NeurophSearch(iterations, propagationTypeClass, saveGraph, Problem.getTrainpath(), Problem.getTestpath(),
 						fileName, NET_SAVES, CSV_SAVES);
-				neurophSearch.onePlotLRs(lrates, transfer, combination);
+				String propagationType = (propagationTypeClass == BackPropagation.class) ? "BackPropagation" : "ResilientPropagation";
+				neurophSearch.onePlotLRs(lrates, transfer, combination, propagationType);
 
 				try {
 					neurophSearch.writeRows();
