@@ -79,8 +79,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			}
 
 			Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class };
-			Class<?> propagationClass = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador",
-					"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
+			Class<?> propagationClass = (Class<?>) JOptionPane.showInputDialog(null, "Tipo de propagación",
+					"Propagación", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
 			if (propagationClass == null) {
 				return;
 			}
@@ -163,8 +163,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			}
 
 			Class<?>[] propagations = { ResilientPropagation.class, BackPropagation.class };
-			Class<?> propagationClass = (Class<?>) JOptionPane.showInputDialog(null, "Clase del optimizador",
-					"Optimizadores", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
+			Class<?> propagationClass = (Class<?>) JOptionPane.showInputDialog(null, "Tipo de propagación",
+					"Propagación", JOptionPane.QUESTION_MESSAGE, null, propagations, propagations[0]);
 			if (propagationClass == null) {
 				return;
 			}
