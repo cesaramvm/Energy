@@ -90,47 +90,57 @@ public class NeurophSolver {
 		String bestNetworkFile = "";
 		Double minMeanError = Double.POSITIVE_INFINITY;
 		Double minError = Double.POSITIVE_INFINITY;
-		for (File f : listOfFiles) {
-			if (f.getName().toLowerCase().endsWith(NETWORK_EXTENSION)) {
-				Double networkSumError = 0.0;
-				Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
-				NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
-				for (DataSetRow dataRow : allDataset.getRows()) {
-					neuralNetwork.setInput(dataRow.getInput());
-					neuralNetwork.calculate();
-					double[] networkOutput = neuralNetwork.getOutput();
-					double[] desiredOut = dataRow.getDesiredOutput();
-					Normalizer n = problem.getNormalizer();
-					Double calculado = n.denormalizeObjective(networkOutput[0]);
-					Double deseado = n.denormalizeObjective(desiredOut[0]);
-					Double error = abs(calculado - deseado);
-					networkSumError += error;
-					if (error > maxErrorNetwork) {
-						maxErrorNetwork = error;
+		if(null != listOfFiles) {
+			for (File f : listOfFiles) {
+				if (f.getName().toLowerCase().endsWith(NETWORK_EXTENSION)) {
+					Double networkSumError = 0.0;
+					Double maxErrorNetwork = Double.NEGATIVE_INFINITY;
+					NeuralNetwork<?> neuralNetwork = NeuralNetwork.createFromFile(f.toString());
+					for (DataSetRow dataRow : allDataset.getRows()) {
+						neuralNetwork.setInput(dataRow.getInput());
+						neuralNetwork.calculate();
+						double[] networkOutput = neuralNetwork.getOutput();
+						double[] desiredOut = dataRow.getDesiredOutput();
+						Normalizer n = problem.getNormalizer();
+						Double calculado = n.denormalizeObjective(networkOutput[0]);
+						Double deseado = n.denormalizeObjective(desiredOut[0]);
+						Double error = abs(calculado - deseado);
+						networkSumError += error;
+						if (error > maxErrorNetwork) {
+							maxErrorNetwork = error;
+						}
+					}
+					Double meanError = networkSumError / (allDataset.getRows().size());
+					if (meanError < minMeanError) {
+						minError = maxErrorNetwork;
+						minMeanError = meanError;
+						bestNetworkFile = f.toString();
 					}
 				}
-				Double meanError = networkSumError / (allDataset.getRows().size());
-				if (meanError < minMeanError) {
-					minError = maxErrorNetwork;
-					minMeanError = meanError;
-					bestNetworkFile = f.toString();
-				}
 			}
-		}
-
-		if (bestNetworkFile == "") {
-			String resultado = "No se han encontrado archivos de guardado de redes neuronales (.nnet) en la carpeta "
+			if (bestNetworkFile == "") {
+				String resultado = "No se han encontrado archivos de guardado de redes neuronales (.nnet) en la carpeta "
+						+ NET_SAVES;
+				JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+				final JDialog dlg = msg.createDialog("Ningúna red encontrada");
+				dlg.setVisible(true);
+			} else {
+				String resultado = "La mejor red es: \n" + bestNetworkFile + "\n" + "Con un error minimo de " + minError
+						+ "\n" + "Y un error medio de " + minMeanError;
+				JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+				final JDialog dlg = msg.createDialog("Mejor red neuronal");
+				dlg.setVisible(true);
+			}
+		} else {
+			String resultado = "No se ha encontrado la carpeta "
 					+ NET_SAVES;
 			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
-			final JDialog dlg = msg.createDialog("Ningúna red encontrada");
-			dlg.setVisible(true);
-		} else {
-			String resultado = "La mejor red es: \n" + bestNetworkFile + "\n" + "Con un error minimo de " + minError
-					+ "\n" + "Y un error medio de " + minMeanError;
-			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
-			final JDialog dlg = msg.createDialog("Mejor red neuronal");
+			final JDialog dlg = msg.createDialog("Carpeta no encontrada");
 			dlg.setVisible(true);
 		}
+		
+
+		
 
 	}
 
@@ -166,8 +176,12 @@ public class NeurophSolver {
 			final JDialog dlg = msg.createDialog("Test de red neuronal");
 			dlg.setVisible(true);
 		
-		} catch (IOException ex) {
-			Logger.getLogger(NeurophSolver.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (org.neuroph.core.exceptions.NeurophException | IOException ex) {
+			String resultado = "No se ha encontrado o ha habido un problema al cargar la red desde el directorio "
+					+ NET_SAVES;
+			JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
+			final JDialog dlg = msg.createDialog("Error");
+			dlg.setVisible(true);
 		}
 	}
 
