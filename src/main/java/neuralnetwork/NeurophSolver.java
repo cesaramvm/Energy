@@ -21,7 +21,6 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
 import org.neuroph.nnet.learning.BackPropagation;
-import org.neuroph.nnet.learning.ResilientPropagation;
 
 import global.Problem;
 import util.Normalizer;

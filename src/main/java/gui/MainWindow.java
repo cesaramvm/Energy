@@ -26,11 +26,11 @@ public class MainWindow extends JPanel {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		ImageIcon icon = null;
 
-		tabbedPane.addTab(metaGui.getTitle(), icon, metaGui.getTabContent(), metaGui.getMouseOver());
-		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
 		tabbedPane.addTab(neuralGui.getTitle(), icon, neuralGui.getTabContent(), neuralGui.getMouseOver());
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+		
+		tabbedPane.addTab(metaGui.getTitle(), icon, metaGui.getTabContent(), metaGui.getMouseOver());
+		tabbedPane.setMnemonicAt(1, KeyEvent.VK_1);
 
 		// Add the tabbed pane to this panel.
 		this.add(tabbedPane);

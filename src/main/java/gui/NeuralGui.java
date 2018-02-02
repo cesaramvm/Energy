@@ -100,8 +100,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			}
 			TransferFunctionType[] goodTransfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
 					TransferFunctionType.GAUSSIAN };
-			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
-					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
+//			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
+//					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
 			TransferFunctionType[] transfers = goodTransfers;
 			TransferFunctionType transferClass = (TransferFunctionType) JOptionPane.showInputDialog(null,
 					"¿Qué función de transferencia?", "Función de transferencia", JOptionPane.QUESTION_MESSAGE, null,
@@ -196,8 +196,8 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			List<Double> lRates = lRatesList;
 			TransferFunctionType[] goodTransfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
 					TransferFunctionType.GAUSSIAN };
-			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
-					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
+//			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
+//					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
 			TransferFunctionType[] transfers = goodTransfers;
 			TransferFunctionType transferClass = (TransferFunctionType) JOptionPane.showInputDialog(null,
 					"¿Qué función de transferencia?", "Función de transferencia", JOptionPane.QUESTION_MESSAGE, null,
