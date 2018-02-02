@@ -218,7 +218,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			while (neuronsNumStr != null && neuronsNumList.isEmpty()) {
 				neuronsNumStr = JOptionPane.showInputDialog(null,
 						"Introduce todos los posbiles números de neurona en cada capa separados por , (Se estudiarán todas las posibles combinaciones para cada número que insertes en cada capa)",
-						"6,10,14");
+						"6,7,8,9,10,11,12,13,14");
 				if (neuronsNumStr != null) {
 					neuronsNumStr = neuronsNumStr.replaceAll("\\s", "");
 					int[] neuronsNumArray = Arrays.asList(neuronsNumStr.split(",")).stream().mapToInt(this::giveInteger)
