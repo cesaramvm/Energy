@@ -98,8 +98,11 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			if (learningStr == null) {
 				return;
 			}
-			TransferFunctionType[] transfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
+			TransferFunctionType[] goodTransfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
 					TransferFunctionType.GAUSSIAN };
+			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
+					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
+			TransferFunctionType[] transfers = goodTransfers;
 			TransferFunctionType transferClass = (TransferFunctionType) JOptionPane.showInputDialog(null,
 					"¿Qué función de transferencia?", "Función de transferencia", JOptionPane.QUESTION_MESSAGE, null,
 					transfers, transfers[0]);
@@ -156,8 +159,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			new Thread(() -> neurophSolver.simpleSearch(iterations, propagationClass, lines, learningRate,
 					transferClass, layers, saveGraph, fileName)).start();
 		} else if (e.getSource() == lRatesdButton) {
-			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 1000)", "Iteraciones",
-					JOptionPane.QUESTION_MESSAGE);
+			String iterationsStr = JOptionPane.showInputDialog(null, "Número de iteraciones (min 1000)", "15000");
 			if (iterationsStr == null) {
 				return;
 			}
@@ -173,8 +175,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			String lRatesStr = "";
 			while (lRatesStr != null && lRatesList.isEmpty()) {
 				lRatesStr = JOptionPane.showInputDialog(null,
-						"Introduce los LearningRates que quieres estudiar separados por ,", "Hojas",
-						JOptionPane.QUESTION_MESSAGE);
+						"Introduce los LearningRates que quieres estudiar separados por ,", "0.001,0.01,0.1,0.3");
 				if (lRatesStr != null) {
 					lRatesStr = lRatesStr.replaceAll("\\s", "");
 					double[] lRatesArray = Arrays.asList(lRatesStr.split(",")).stream().mapToDouble(this::giveDouble)
@@ -193,8 +194,11 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			}
 
 			List<Double> lRates = lRatesList;
-			TransferFunctionType[] transfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
+			TransferFunctionType[] goodTransfers = { TransferFunctionType.SIN, TransferFunctionType.TANH,
 					TransferFunctionType.GAUSSIAN };
+			TransferFunctionType[] badTransfers = { TransferFunctionType.LINEAR, TransferFunctionType.LOG, TransferFunctionType.RAMP
+					, TransferFunctionType.SGN, TransferFunctionType.SIGMOID, TransferFunctionType.STEP, TransferFunctionType.TRAPEZOID};		
+			TransferFunctionType[] transfers = goodTransfers;
 			TransferFunctionType transferClass = (TransferFunctionType) JOptionPane.showInputDialog(null,
 					"¿Qué función de transferencia?", "Función de transferencia", JOptionPane.QUESTION_MESSAGE, null,
 					transfers, transfers[0]);
@@ -204,7 +208,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 
 			String maxHiddenLayersStr = JOptionPane.showInputDialog(null,
 					"Número máximo de capas ocultas (Min 1 Max 4 Def 3). Se estudiará desde 1 capa hasta el número de capas que se inserte",
-					"Capas ocultas", JOptionPane.QUESTION_MESSAGE);
+					"3");
 			if (maxHiddenLayersStr == null) {
 				return;
 			}
@@ -214,7 +218,7 @@ public class NeuralGui extends DefaultTab implements ActionListener {
 			while (neuronsNumStr != null && neuronsNumList.isEmpty()) {
 				neuronsNumStr = JOptionPane.showInputDialog(null,
 						"Introduce todos los posbiles números de neurona en cada capa separados por , (Se estudiarán todas las posibles combinaciones para cada número que insertes en cada capa)",
-						"Hojas", JOptionPane.QUESTION_MESSAGE);
+						"6,10,14");
 				if (neuronsNumStr != null) {
 					neuronsNumStr = neuronsNumStr.replaceAll("\\s", "");
 					int[] neuronsNumArray = Arrays.asList(neuronsNumStr.split(",")).stream().mapToInt(this::giveInteger)
