@@ -59,5 +59,15 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 		}
 		this.restoreParamsIndex();
 	}
+	
+
+	@Override
+	protected Double getNewEpsilon() {
+		return epsilonListCopy.get(random.nextInt(epsilonListCopy.size()));
+	}
+	@Override
+	protected Double getNewValue() {
+		return valueListCopy.get(random.nextInt(valueListCopy.size()));
+	}
 
 }
