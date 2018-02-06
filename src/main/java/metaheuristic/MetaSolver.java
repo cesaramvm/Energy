@@ -69,7 +69,9 @@ public class MetaSolver {
 		try {
 			totalConcurrentTime = System.currentTimeMillis();
 			for (int i = 1; i <= numBranches; i++) {
-				int seed = i*numBranches;
+				int preSeed1 = ((numBranches+branchLeaves)*(numBranches+branchLeaves+1)/2)+branchLeaves;
+				int preSeed2 = ((i+parts)*(i+parts+1)/2)+parts;
+				int seed = ((preSeed1+preSeed2)*(preSeed1+preSeed2+1)/2)+preSeed2;
 				Random r = new Random(seed);
 				Constructor<?> cons = evaluationClass.getConstructor(int.class, Random.class);
 				Optimizer eo = (Optimizer) cons.newInstance(parts, r);
