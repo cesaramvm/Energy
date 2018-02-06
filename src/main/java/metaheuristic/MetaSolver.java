@@ -63,7 +63,6 @@ public class MetaSolver {
 	}
 
 	private void search() {
-
 		futures.clear();
 		allSolutions.clear();
 		ExecutorService es = Executors.newCachedThreadPool();

@@ -22,9 +22,7 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 	@Override
 	public void optimize(MetaSolution solution) {
 		double newEvaluation = solution.getEvaluation();
-		int i = 0;
 		while (!paramsIndex.isEmpty()) {
-			i = i + 1;
 			valueListCopy = new ArrayList<>(valueList);
 			epsilonListCopy = new ArrayList<>(epsilonList);
 
@@ -36,8 +34,10 @@ public class LSFIEvaluationOptimizer extends LSEvaluationOptimizer {
 					&& !epsilonListCopy.isEmpty()) {
 				if (selectedChange == 14) {
 					newEpsilon = this.getNewEpsilon();
+					epsilonListCopy.remove(newEpsilon);
 				} else {
 					Double newValue = this.getNewValue();
+					valueListCopy.remove(newValue);
 					Boolean changeAlpha = random.nextBoolean();
 					if (changeAlpha) {
 						newProbVariables.get(selectedChange).setAlfa(newValue);

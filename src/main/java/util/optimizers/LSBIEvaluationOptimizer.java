@@ -20,9 +20,7 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
 	@Override
 	public void optimize(MetaSolution solution) {
 		Double newEvaluation;
-		int i = 0;
 		while (!paramsIndex.isEmpty()) {
-			i = i+1;
 			ArrayList<Double> evaluations = new ArrayList<>();
 			Integer selectedChange = paramsIndex.get(random.nextInt(paramsIndex.size()));
 			Double newEpsilon = solution.getEpsilon();
@@ -33,8 +31,8 @@ public class LSBIEvaluationOptimizer extends LSEvaluationOptimizer {
 					evaluations.add(this.evaluate(newProbVariables, d));
 				}
 				int minIndex = evaluations.indexOf(Collections.min(evaluations));
-				newEvaluation = evaluations.get(minIndex);
 				newEpsilon = epsilonList.get(minIndex);
+				newEvaluation = evaluations.get(minIndex);
 			} else {
 				newProbVariables = this.cloneMap(solution.getProbVariables());
 				Boolean changeAlpha = random.nextBoolean();
