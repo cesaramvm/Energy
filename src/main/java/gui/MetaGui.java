@@ -240,14 +240,6 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			}
 		}
 		tw.close();
-	    try {
-	    	Runtime runtime = Runtime.getRuntime();
-			Process proc = runtime.exec("shutdown -s -t 0");
-			System.exit(0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		String resultado = "Para visualizar los resultados abrir el archivo " + fileName;
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
 		final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
