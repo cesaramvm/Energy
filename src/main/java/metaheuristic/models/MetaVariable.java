@@ -42,7 +42,7 @@ public class MetaVariable{
 
 	@Override
 	public String toString() {
-		return "SolutionVariable {" + "alfa=" + alfa + ", beta=" + beta + "}\n";
+		return "MetaVariable {" + "alfa=" + alfa + ", beta=" + beta + "}\n";
 	}
 
 }

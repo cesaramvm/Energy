@@ -2,8 +2,10 @@ package metaheuristic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -12,9 +14,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import metaheuristic.models.MetaResults;
 import metaheuristic.models.MetaSolution;
+import metaheuristic.models.MetaVariable;
 import util.CSVTableWriter;
 import util.optimizers.Optimizer;
 
@@ -65,13 +69,13 @@ public class MetaSolver {
 		ExecutorService es = Executors.newCachedThreadPool();
 		try {
 			totalConcurrentTime = System.currentTimeMillis();
-			for (int i = 0; i < numBranches; i++) {
-				int seed = i + 5;
+			for (int i = 1; i <= numBranches; i++) {
+				int seed = i*numBranches;
 				Random r = new Random(seed);
 				Constructor<?> cons = evaluationClass.getConstructor(int.class, Random.class);
 				Optimizer eo = (Optimizer) cons.newInstance(parts, r);
 				metaSearches.add(new MetaSearch(branchLeaves, eo, r));
-				futures.add(es.submit(metaSearches.get(i)));
+				futures.add(es.submit(metaSearches.get(i-1)));
 			}
 			for (Future<List<MetaSolution>> f : futures) {
 				List<MetaSolution> s = f.get();
@@ -127,10 +131,19 @@ public class MetaSolver {
 	private void writeRow() {
 		try {
 			ArrayList<String> nextRow = new ArrayList<>();
+			
 			String evalName = evaluationClass.getName();
-			Double minMAe = results.getBestSolution().getEvaluation();
 			Double avgMae = results.getAvgError();
-
+			
+			MetaSolution bestSolution = results.getBestSolution();
+			Double minMAe = bestSolution.getEvaluation();
+			Double epsilon = bestSolution.getEpsilon();
+			
+			
+			Collection<MetaVariable> metaVariables = bestSolution.getProbVariables().values();
+			List<String> alphas = metaVariables.stream().map(MetaVariable::getAlfa).map(MetaSolver::variableFormat).collect(Collectors.toList());
+			List<String> betas = metaVariables.stream().map(MetaVariable::getBeta).map(MetaSolver::variableFormat).collect(Collectors.toList());
+			
 			nextRow.add(evalName.substring(evalName.lastIndexOf('.') + 1, evalName.indexOf('E')));
 			nextRow.add(String.valueOf(numBranches));
 			nextRow.add(String.valueOf(branchLeaves));
@@ -140,6 +153,9 @@ public class MetaSolver {
 			nextRow.add(String.valueOf(results.getTotalSecuentialTime()));
 			nextRow.add(avgMae.toString().replace('.', ','));
 			nextRow.add(String.valueOf(results.getAvgTime()));
+			nextRow.add(String.valueOf(epsilon).replace('.', ','));
+			nextRow.add("\"" + String.valueOf(alphas).replace('.', ',').replace(" ", "\n") + "\"");
+			nextRow.add("\"" + String.valueOf(betas).replace('.', ',').replace(" ", "\n") + "\"");
 
 			tableWriter.printRow(nextRow);
 
@@ -147,13 +163,19 @@ public class MetaSolver {
 			Logger.getLogger(MetaSolver.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+	
+	private static String variableFormat(Double d) {
+		
+		DecimalFormat errorFormat = new DecimalFormat("0.0000");
+		return errorFormat.format(d);
+	}
 
 	public static CSVTableWriter initTableWriter(String path) {
 		String realpath = CSV_SAVES;
 		realpath += path;
 		ArrayList<String> tableHeaders = new ArrayList<>();
 		tableHeaders.addAll(Arrays.asList("Eval", "Branches", "Leaves", "Parts", "min MAE", "real Time", "sum Time",
-				"avg Mae", "avg Time"));
+				"avg Mae", "avg Time", "epsilon", "alphas", "betas"));
 		CSVTableWriter tw = null;
 		try {
 			tw = new CSVTableWriter(realpath, tableHeaders);

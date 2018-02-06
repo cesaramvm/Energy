@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -101,6 +102,9 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			JCheckBox randomCheck = new JCheckBox("RandomEvaluationOptimizer");
 			JCheckBox lsfiCheck = new JCheckBox("LSFIEvaluationOptimize");
 			JCheckBox lsbiCheck = new JCheckBox("LSBIEvaluationOptimize");
+			randomCheck.setSelected(true);
+			lsfiCheck.setSelected(true);
+			lsbiCheck.setSelected(true);
 			String msg = "Selecciona las clases";
 			Object[] msgContent = { msg, randomCheck, lsfiCheck, lsbiCheck };
 			boolean someSelected = false;
@@ -130,8 +134,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			List<Integer> numBranches = new ArrayList<>();
 			String branchesStr = "";
 			while (branchesStr != null && numBranches.isEmpty()) {
-				branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "Ramas",
-						JOptionPane.QUESTION_MESSAGE);
+				branchesStr = JOptionPane.showInputDialog(null, "Número de ramas separadas por ,", "1,2,4,8");
 				if (branchesStr != null) {
 					branchesStr = branchesStr.replaceAll("\\s", "");
 					int[] branchesArray = Arrays.asList(branchesStr.split(",")).stream().mapToInt(this::giveInteger)
@@ -154,8 +157,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			List<Integer> numLeaves = new ArrayList<>();
 			String leavesStr = "";
 			while (leavesStr != null && numLeaves.isEmpty()) {
-				leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "Hojas",
-						JOptionPane.QUESTION_MESSAGE);
+				leavesStr = JOptionPane.showInputDialog(null, "Número de hojas separadas por ,", "5,50,100");
 				if (leavesStr != null) {
 					leavesStr = leavesStr.replaceAll("\\s", "");
 					int[] leavesArray = Arrays.asList(leavesStr.split(",")).stream().mapToInt(this::giveInteger)
@@ -177,8 +179,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			List<Integer> numParts = new ArrayList<>();
 			String partsStr = "";
 			while (partsStr != null && numParts.isEmpty()) {
-				partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "Partes",
-						JOptionPane.QUESTION_MESSAGE);
+				partsStr = JOptionPane.showInputDialog(null, "Número de partes separadas por ,", "99,499,999,2999");
 				if (partsStr != null) {
 					int[] partsArray = Arrays.asList(partsStr.split(",")).stream().mapToInt(this::giveInteger)
 							.filter(this::validPart).toArray();
@@ -195,8 +196,7 @@ public class MetaGui extends DefaultTab implements ActionListener {
 				return;
 			}
 
-			String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "Archivo",
-					JOptionPane.QUESTION_MESSAGE);
+			String file = JOptionPane.showInputDialog(null, "Nombre del arhivo de guardado", "All");
 			if (file == null) {
 				return;
 			}
@@ -224,12 +224,15 @@ public class MetaGui extends DefaultTab implements ActionListener {
 
 	private void metaAdvanced(List<Class<? extends Object>> optimizers, List<Integer> parts, List<Integer> numBranches,
 			List<Integer> numLeaves, String fileName) {
-
 		CSVTableWriter tw = MetaSolver.initTableWriter(fileName);
 		for (int leaves : numLeaves) {
 			for (int part : parts) {
 				for (int branches : numBranches) {
 					for (Class<? extends Object> optimizer : optimizers) {
+						System.out.println("branches" + branches);
+						System.out.println("leaves" + leaves);
+						System.out.println("part" + part);
+						System.out.println("optimizer" + optimizer);
 						MetaSolver metaSol = new MetaSolver(branches, leaves, part, optimizer, tw);
 						metaSol.getAndSaveResults();
 					}
@@ -237,7 +240,14 @@ public class MetaGui extends DefaultTab implements ActionListener {
 			}
 		}
 		tw.close();
-
+	    try {
+	    	Runtime runtime = Runtime.getRuntime();
+			Process proc = runtime.exec("shutdown -s -t 0");
+			System.exit(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String resultado = "Para visualizar los resultados abrir el archivo " + fileName;
 		JOptionPane msg = new JOptionPane(resultado, JOptionPane.INFORMATION_MESSAGE);
 		final JDialog dlg = msg.createDialog("Metaheurística Avanzada Finalizada");
